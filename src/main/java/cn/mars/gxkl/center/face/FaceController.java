@@ -1,0 +1,94 @@
+package cn.mars.gxkl.center.face;
+
+import cn.mars.gxkl.UI.Default;
+import cn.mars.gxkl.controller.DetailContoller;
+import cn.mars.gxkl.controller.MachineInfoController;
+import cn.mars.gxkl.controller.RealTimeTabController;
+import cn.mars.gxkl.controller.WorkerBaseInfoController;
+import cn.mars.gxkl.controller.dataobject.MachineInfoProperty;
+import cn.mars.gxkl.controller.dataobject.ObjectPair;
+
+public class FaceController implements DetailContoller,MachineInfoController,RealTimeTabController,WorkerBaseInfoController{
+	
+	private Default face;
+
+	@Override
+	public void setWorkerInfo(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMachineInfo(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setWorkerImage(String url) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addInfo(int id, String message, int index) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void cleanInfo(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int addMachine(MachineInfoProperty property) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void changeInfo(MachineInfoProperty property) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteMachine(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addScalpels(ObjectPair... objectPair) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addHammers(ObjectPair... objectPair) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addForcepses(ObjectPair... objectPair) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Default getFace() {
+		return face;
+	}
+
+	public void setFace(Default face) {
+		this.face = face;
+	}
+
+}
