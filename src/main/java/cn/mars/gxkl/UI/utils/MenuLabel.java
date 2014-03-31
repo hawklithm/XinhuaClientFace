@@ -20,6 +20,10 @@ import cn.mars.gxkl.protocol.Item;
 
 public class MenuLabel extends JLabel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8561256246025724122L;
 	private int width,height;
 	private String text;
 	private boolean flag = false;

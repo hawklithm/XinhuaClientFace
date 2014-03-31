@@ -14,6 +14,10 @@ import cn.mars.gxkl.protocol.Person;
 
 public class StaffInfoPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6199340767530723008L;
 	private int width,height;
 	private double scaleImgRate = 1.0;
 	private Person staff;

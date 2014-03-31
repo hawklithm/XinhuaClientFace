@@ -3,8 +3,6 @@ package cn.mars.gxkl.netty;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import javax.swing.JFrame;
-
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -16,12 +14,10 @@ import org.jboss.netty.channel.SimpleChannelHandler;
 
 public abstract class NettyHandler extends SimpleChannelHandler {
 
-	private JFrame face;
-	
 	@Override
 	final public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
 		ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
-		System.out.println("receive: " + buffer.toString(Charset.defaultCharset()));
+//		System.out.println("receive: " + buffer.toString(Charset.defaultCharset()));
 		messageHandler(buffer.toString(Charset.defaultCharset()));
 	}
 
@@ -65,9 +61,4 @@ public abstract class NettyHandler extends SimpleChannelHandler {
 	  *
 	  **/
 	public abstract void messageHandler(String message);
-	
-	public void setFace(JFrame face) {
-		this.face = face;
-	}
-	
 }

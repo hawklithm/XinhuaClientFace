@@ -27,6 +27,10 @@ import cn.mars.gxkl.controller.PannelExecutor;
  *    TODO 界面左下角详情栏中的详情列 
  */
 public class BriefDetailPanel extends JPanel implements MouseListener,ActionListener,PannelExecutor<BriefDetailObject>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5808306429972803032L;
 	String str,value,titel;
 	int width,height;
 	JPanel panel;

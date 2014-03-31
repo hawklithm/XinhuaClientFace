@@ -27,10 +27,15 @@ import cn.mars.gxkl.protocol.Equipment;
  *    TODO ºÚΩÈ–≈œ¢¿∏ 
  */
 
-public class briefPanel extends JPanel {
+public class BriefPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -252570012266809058L;
 	private int width,height;
 	private Equipment equipment; 
+	private BriefDetailPanel briefDetailPanel;
 	
 	private JLabel rfid, type, create,modified, repair,
 			manufacturer;
@@ -43,7 +48,7 @@ public class briefPanel extends JPanel {
 	 * @param height ºÚΩÈ¿∏∏ﬂ∂»
 	 * @param equipment ºÚΩÈ¿∏ƒ⁄»›
 	 */
-	public briefPanel(int width, int height,Equipment equipment) {
+	public BriefPanel(int width, int height,Equipment equipment) {
 		super();
 		this.width = width;
 		this.height = height;

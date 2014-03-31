@@ -15,7 +15,7 @@ import cn.mars.gxkl.UI.utils.HistoryPanel;
 import cn.mars.gxkl.UI.utils.SearchPanel;
 import cn.mars.gxkl.UI.utils.StaffInfoPanel;
 import cn.mars.gxkl.UI.utils.WorkerHandlingPanel;
-import cn.mars.gxkl.UI.utils.briefPanel;
+import cn.mars.gxkl.UI.utils.BriefPanel;
 import cn.mars.gxkl.constant.Constant;
 import cn.mars.gxkl.observe.DataCenter;
 import cn.mars.gxkl.observe.Observer;
@@ -73,7 +73,7 @@ public class Default extends JFrame {
 		equipment.setREPAIR("2014/3/5 14:30:22");
 		equipment.setMANUFACTURER("shinva");
 		equipment.setDETAIL("试剂一浓度：xxxx\n"+"试剂二浓度：xxxx\n"+"试剂三浓度：xxxx\n"+"试剂浓度四：xxxxx\n");
-		left.add(new briefPanel((int) (width * 0.22),(int) (height * 0.75),equipment));
+		left.add(new BriefPanel((int) (width * 0.22),(int) (height * 0.75),equipment));
 		//this.add(new briefPanel((int) (width * 0.22),(int) (height * 0.75),equipment));
 		this.add(left);
 		

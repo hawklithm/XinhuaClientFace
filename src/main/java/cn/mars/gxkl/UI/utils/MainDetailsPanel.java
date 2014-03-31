@@ -8,6 +8,11 @@ import javax.swing.JPanel;
 
 public class MainDetailsPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6704346101922191756L;
+
 	private int width,height;
 	
 	JPanel left,right;

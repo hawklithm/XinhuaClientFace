@@ -19,6 +19,10 @@ import cn.mars.gxkl.protocol.Item;
 
 public class HandlingPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4006036352771735562L;
 	private int width,height;
 	private String[] text = {
 			"手术钳：1234567把","定制牌手术刀：2345678把","好用牌手术锤子：3456789把"

@@ -8,13 +8,35 @@
           http://www.springframework.org/schema/security  http://www.springframework.org/schema/security/spring-security-3.0.xsd"
 	default-autowire="byName" default-lazy-init="false">
 
-  	<bean id="dataCenter" class="cn.mars.gxkl.observe.DataCenter"></bean>
-	
+	<bean id="dataCenter" class="cn.mars.gxkl.observe.DataCenter"></bean>
+
 	<bean id="defaultUI" class="cn.mars.gxkl.UI.Default">
 		<constructor-arg ref="dataCenter" />
 	</bean>
+
+	<bean id="communicationCenter" class="cn.mars.gxkl.center.communication.CommunicationCenter"
+		init-method="initialization">
+		<property name="map">
+			<map>
+				<entry key="/ProcessInfoManager" value-ref="flowRecordRealTimeInfoExecutor" />
+			</map>
+		</property>
+	</bean>
+	<bean id="client" class="cn.mars.gxkl.netty.ClientService">
+		<constructor-arg value="48800" />
+	</bean>
 	
-	<!--  <bean id="testUI" class="cn.mars.gxkl.test.Default">
-		<constructor-arg ref="dataCenter" />
-	</bean>-->
+	<bean id="flowRecordRealTimeInfoExecutor" class="cn.mars.gxkl.center.executor.FlowRecordRealTimeInfoExecutor">
+		<property name="targetUrl" value="/ProcessInfoManager"/>
+	</bean>
+
+	<!-- <bean id="testUI" class="cn.mars.gxkl.test.Default"> <constructor-arg 
+		ref="dataCenter" /> </bean> -->
+	<!-- <bean id="briefDetailPanel" class="cn.mars.gxkl.UI.utils.BriefDetailPanel"/> 
+		<bean id=" briefPanel" class="cn.mars.gxkl.UI.utils.BriefPanel"/> <bean id="handlingPanel" 
+		class="cn.mars.gxkl.UI.utils.HandlingPanel"/> <bean id="historyPanel" class="cn.mars.gxkl.UI.utils.HistoryPanel"/> 
+		<bean id="mainDetailPanel" class="cn.mars.gxkl.UI.utils.MainDetailsPanel"/> 
+		<bean id="menuLabel" class="cn.mars.gxkl.UI.utils.MenuLabel"/> <bean id="searchPanel" 
+		class="cn.mars.gxkl.UI.utils.SearchPanel"/> <bean id="staffInfoPanel" class="cn.mars.gxkl.UI.utils.StaffInfoPanel"/> 
+		<bean id="workerHandlingPanel" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel"/> -->
 </beans>

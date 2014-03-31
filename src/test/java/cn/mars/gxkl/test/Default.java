@@ -16,7 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import cn.mars.gxkl.UI.utils.HandlingPanel;
 import cn.mars.gxkl.UI.utils.SearchPanel;
 import cn.mars.gxkl.UI.utils.StaffInfoPanel;
-import cn.mars.gxkl.UI.utils.briefPanel;
+import cn.mars.gxkl.UI.utils.BriefPanel;
 import cn.mars.gxkl.constant.Constant;
 import cn.mars.gxkl.observe.DataCenter;
 import cn.mars.gxkl.observe.Observer;

@@ -21,6 +21,10 @@ import javax.swing.JTextField;
  */
 public class SearchPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4132678401935867541L;
 	private int width, height;
 	private List<String> SearchType;
 

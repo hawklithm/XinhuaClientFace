@@ -15,6 +15,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class WorkerHandlingPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2312768428623069441L;
 	private int width, height;
 	private JPanel right, left, topStatistics, bottomStatistics;
 	private String titel = ":实时统计信息";

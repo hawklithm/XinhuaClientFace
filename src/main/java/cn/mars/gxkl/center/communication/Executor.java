@@ -1,5 +1,11 @@
 package cn.mars.gxkl.center.communication;
 
-public interface Executor {
+import cn.mars.gxkl.protocol.AppProtocol;
 
+public interface Executor {
+	 boolean  isInitialFirst();
+
+	void sendInitRequest();
+
+	void decode(AppProtocol response);
 }

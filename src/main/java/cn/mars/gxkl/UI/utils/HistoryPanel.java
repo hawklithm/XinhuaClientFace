@@ -27,6 +27,10 @@ import javax.swing.event.ChangeListener;
  *    TODO  流水信息框
  */
 public class HistoryPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5390410285673282364L;
 	private int index = 0;
 	private int Num;
 	private int width, height;
