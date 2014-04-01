@@ -18,7 +18,7 @@
 		init-method="initialization">
 		<property name="map">
 			<map>
-				<entry key="/ProcessInfoManager" value-ref="flowRecordRealTimeInfoExecutor" />
+				<entry key="/ProcessInfoManager" value-ref="processInfoExecutor" />
 			</map>
 		</property>
 	</bean>
@@ -26,7 +26,7 @@
 		<constructor-arg value="48800" />
 	</bean>
 	
-	<bean id="flowRecordRealTimeInfoExecutor" class="cn.mars.gxkl.center.executor.FlowRecordRealTimeInfoExecutor">
+	<bean id="processInfoExecutor" class="cn.mars.gxkl.center.executor.ProcessInfoExecutor">
 		<property name="targetUrl" value="/ProcessInfoManager"/>
 	</bean>
 

@@ -12,13 +12,14 @@ import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.protocol.FrontEndingCommunicationProtocol;
 import cn.mars.gxkl.protocol.HandleDetails;
 import cn.mars.gxkl.protocol.LiveMessageProtocol;
+import cn.mars.gxkl.utils.Jsoner;
 import cn.mars.gxkl.utils.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 
-public class FlowRecordRealTimeInfoExecutor implements Executor {
+public class ProcessInfoExecutor implements Executor {
 	
 	private boolean isInitialFirst=true;
 	private ClientService client;
@@ -40,13 +41,13 @@ public class FlowRecordRealTimeInfoExecutor implements Executor {
 		for (int i=0;i<pairs.size();i++){
 			System.out.println(pairs.get(i).getFirst().toString()+": "+pairs.get(i).getLast());
 		}
+		//TODO 添加处理控件显示
 	}
 	
 	private List<Pair<Date, String>> translate(AppProtocol response){
 		try {
 			List<Pair<Date, String>> ans = new ArrayList<Pair<Date, String>>();
-			Gson gson = new Gson();
-			FrontEndingCommunicationProtocol<LiveMessageProtocol> msgContent = gson.fromJson(
+			FrontEndingCommunicationProtocol<LiveMessageProtocol> msgContent = Jsoner.fromJson(
 					response.getResponse(),
 					new TypeToken<FrontEndingCommunicationProtocol<LiveMessageProtocol>>() {
 					}.getType());
