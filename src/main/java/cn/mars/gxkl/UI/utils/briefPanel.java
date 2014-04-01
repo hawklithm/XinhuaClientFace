@@ -66,8 +66,8 @@ public class BriefPanel extends JPanel {
 	private void initialization() {	
 		
 		type=getJLabel("设备型号："+equipment.getTYPE());
-		rfid=getJLabel("RFID:"+equipment.getRFID());
-		create=getJLabel("入场时间:"+equipment.getCREATE());
+		rfid=getJLabel("RFID:"+equipment.getID());
+		create=getJLabel("入场时间:"+equipment.getGMT_CREATE());
 		modified=getJLabel("最近操作:"+equipment.getMODIFIED());
 		repair=getJLabel("最近修复:"+equipment.getREPAIR());
 		manufacturer=getJLabel("生产厂商:"+equipment.getMANFACTURER());
@@ -115,8 +115,8 @@ public class BriefPanel extends JPanel {
 	public void setEquipment(Equipment equipment){
 		this.equipment=equipment;
 		type.setText("设备型号:"+equipment.getTYPE());
-		rfid.setText("RFID:"+equipment.getRFID());
-		create.setText("入场时间:"+equipment.getCREATE());
+		rfid.setText("RFID:"+equipment.getID());
+		create.setText("入场时间:"+equipment.getGMT_CREATE());
 		modified.setText("最近操作:"+equipment.getMODIFIED());
 		repair.setText("最近修复:"+equipment.getREPAIR());
 		manufacturer.setText("生产厂商:"+equipment.getMANFACTURER());

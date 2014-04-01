@@ -67,8 +67,8 @@ public class Default extends JFrame {
 		
 		Equipment equipment=new Equipment();
 		equipment.setTYPE("ÇåÏ´Ïû¶¾»ú");
-		equipment.setRFID("12345678901");
-		equipment.setCREATE("2014/3/4 15:00:39");
+		equipment.setID("12345678901");
+		equipment.setGMT_CREATE("2014/3/4 15:00:39");
 		equipment.setMODIFIED("2014/3/5 16:00:48");
 		equipment.setREPAIR("2014/3/5 14:30:22");
 		equipment.setMANUFACTURER("shinva");
