@@ -5,50 +5,57 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FrontEndingCommunicationProtocol<T> {
-	
+public class FrontEndingCommunicationProtocol<T> extends Protocol {
+
 	private static final String OPERATE_TYPE = "operateType",
 			TABLE_TYPE = "tableType", STATUS = "status",
 			LENGTH = "lengths", OFFSET = "offset", RETURN_STATE_OK = "ok",
 			RETURN_STATE_FAIL_STRING = "fail";
-	private Map<String, Object> condition = new HashMap<String, Object>();
 	
 	private List<T> rows = new ArrayList<T>();
+	
+	public FrontEndingCommunicationProtocol() {
+		super();
+	}
+	
+	public FrontEndingCommunicationProtocol(Map<String, Object> condition) {
+		super(condition);
+	}
 
 	public Map<String, Object> getCondition() {
-		return condition;
+		return getCondition();
 	}
 
 	public void setCondition(Map<String, Object> condition) {
-		this.condition = condition;
+		setCondition(condition);
 	}
 
 	public String getTableName() {
-		return (String) condition.get(TABLE_TYPE);
+		return (String)getProperty(TABLE_TYPE);
 	}
 
 	public String getOperateType() {
-		return (String) condition.get(OPERATE_TYPE);
+		return (String)getProperty(OPERATE_TYPE);
 	}
 
 	public String getStatus() {
-		return (String) condition.get(STATUS);
+		return (String)getProperty(STATUS);
 	}
 
 	public void setStatusOk() {
-		condition.put(STATUS, RETURN_STATE_OK);
+		setProperty(STATUS, RETURN_STATE_OK);
 	}
 
 	public void setStatusFail() {
-		condition.put(STATUS, RETURN_STATE_FAIL_STRING);
+		setProperty(STATUS, RETURN_STATE_FAIL_STRING);
 	}
 
 	public Integer getLength() {
-		return (Integer) condition.get(LENGTH);
+		return (Integer)getProperty(LENGTH);
 	}
 
 	public Integer getOffset() {
-		return (Integer) condition.get(OFFSET);
+		return (Integer)getProperty(OFFSET);
 	}
 
 	public List<T> getRows() {

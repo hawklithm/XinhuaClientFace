@@ -5,14 +5,16 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.protocol.Person;
 
-public class StaffInfoPanel extends JPanel {
+public class StaffInfoPanel extends JPanel  implements Msg2Face {
 
 	/**
 	 * 
@@ -100,6 +102,12 @@ public class StaffInfoPanel extends JPanel {
 		id.setText("年龄：" + staff.getID());
 		rfid.setText("电话：" + staff.getRFID());
 		job.setText("工段名：" + staff.getJob());
+	}
+
+	@Override
+	public void setText(List<Object> msg) {
+		Person staff = (Person)msg.get(0);
+		setStaff(staff);
 	}
 
 }

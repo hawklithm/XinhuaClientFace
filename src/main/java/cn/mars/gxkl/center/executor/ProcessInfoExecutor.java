@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.mars.gxkl.center.communication.Executor;
+import cn.mars.gxkl.center.communication.Sender;
 import cn.mars.gxkl.netty.ClientService;
 import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.protocol.FrontEndingCommunicationProtocol;
@@ -14,16 +15,18 @@ import cn.mars.gxkl.protocol.HandleDetails;
 import cn.mars.gxkl.protocol.LiveMessageProtocol;
 import cn.mars.gxkl.utils.Jsoner;
 import cn.mars.gxkl.utils.Pair;
+import org.hawklithm.constant.Constant;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 
-public class ProcessInfoExecutor implements Executor {
+public class ProcessInfoExecutor implements Executor,Sender {
 	
 	private boolean isInitialFirst=true;
 	private ClientService client;
 	private String targetUrl;
+	private String processName=Constant.processName[0];
 
 	@Override
 	public boolean isInitialFirst() {
@@ -32,21 +35,23 @@ public class ProcessInfoExecutor implements Executor {
 
 	@Override
 	public void sendInitRequest() {
+		LiveMessageProtocol msg=new LiveMessageProtocol();
+		msg.setProcessName(processName);
 		client.sendMessage(encoder(new LiveMessageProtocol()));
 	}
 
 	@Override
 	public void decode(AppProtocol response) {
-		List<Pair<Date, String>>pairs=translate(response);
+		List<Pair<ItemInfoDO, String>>pairs=translate(response);
 		for (int i=0;i<pairs.size();i++){
 			System.out.println(pairs.get(i).getFirst().toString()+": "+pairs.get(i).getLast());
 		}
-		//TODO Ê∑ªÂä†Â§ÑÁêÜÊéß‰ª∂ÊòæÁ§∫
+		//TODO ÃÌº”¥¶¿Ìøÿº˛œ‘ æ
 	}
 	
-	private List<Pair<Date, String>> translate(AppProtocol response){
+	private List<Pair<ItemInfoDO, String>> translate(AppProtocol response){
 		try {
-			List<Pair<Date, String>> ans = new ArrayList<Pair<Date, String>>();
+			List<Pair<ItemInfoDO, String>> ans = new ArrayList<Pair<ItemInfoDO, String>>();
 			FrontEndingCommunicationProtocol<LiveMessageProtocol> msgContent = Jsoner.fromJson(
 					response.getResponse(),
 					new TypeToken<FrontEndingCommunicationProtocol<LiveMessageProtocol>>() {
@@ -65,10 +70,10 @@ public class ProcessInfoExecutor implements Executor {
 					}
 					int rfid = handleDetails.getMachineRfid();
 					try {
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "ÂÆåÊàêÂ§ÑÁêÜ", "Âô®Ê¢∞"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "ÂÆåÊàêÂ§ÑÁêÜ", "Âô®Ê¢∞"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "ÂºÄÂßãÂ§ÑÁêÜ","ÊâãÊúØÂåÖ"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "ÂÆåÊàêÂ§ÑÁêÜ","ÊâãÊúØÂåÖ"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "ÕÍ≥…¥¶¿Ì", "∆˜–µ"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "ÕÍ≥…¥¶¿Ì", "∆˜–µ"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "ø™ º¥¶¿Ì"," ÷ ı∞¸"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "ÕÍ≥…¥¶¿Ì"," ÷ ı∞¸"));
 					} catch (NullPointerException e) {
 						continue;
 					}
@@ -93,12 +98,6 @@ public class ProcessInfoExecutor implements Executor {
 			ret.setGmtModified(new Date((String) map.get("gmtModified")));
 		}
 		if (map.containsKey("itemName")) {
-//			try {
-//				ret.setItemName(changeCharset((String) map.get("itemName"),"UTF-8","GBK"));
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			ret.setItemName((String) map.get("itemName"));
 		}
 		if (map.containsKey("itemType")) {
@@ -108,39 +107,26 @@ public class ProcessInfoExecutor implements Executor {
 			ret.setHospitalId(((Double) map.get("hospitalId")).intValue());
 		}
 		if (map.containsKey("manufacturer")) {
-//			try {
-//				ret.setManufacturer(changeCharset((String) map.get("manufacturer"), "UTF-8", "GBK"));
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			ret.setManufacturer((String) map.get("manufacturer"));
 		}
 		if (map.containsKey("interconvertible")) {
 			ret.setInterconvertible((Boolean) map.get("interconvertible"));
 		}
 		if (map.containsKey("remark")) {
-//			try {
-//				ret.setRemark(changeCharset((String) map.get("remark"),"UTF-8","GBK"));
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			ret.setRemark((String) map.get("remark"));
 		}
 
 		return ret;
 	}
 
-	private List<Pair<Date, String>> handleRetValue(Date time, List<Object> rfid, String dir,
+	private List<Pair<ItemInfoDO, String>> handleRetValue(Date time, List<Object> rfid, String dir,
 			String type) {
-		List<Pair<Date, String>> ans = new ArrayList<Pair<Date, String>>();
+		List<Pair<ItemInfoDO, String>> ans = new ArrayList<Pair<ItemInfoDO, String>>();
 		int size = rfid.size();
 		for (int i = 0; i < size; i++) {
-			// System.out.println(rfid.get(i).toString());
 			ItemInfoDO itemInfo = map2ItemInfoDO((Map<String, Object>) rfid.get(i));
 
-			ans.add(new Pair<Date, String>(time, type + " " + itemInfo.getItemName() + " " + dir
+			ans.add(new Pair<ItemInfoDO, String>(itemInfo,"["+ itemInfo.getGmtCreate().toString()+"]"+ type + " " + itemInfo.getItemName() + " " + dir
 					+ " RFID:" + itemInfo.getItemId().toString()));
 		}
 		return ans;
@@ -180,6 +166,32 @@ public class ProcessInfoExecutor implements Executor {
 
 	public void setTargetUrl(String targetUrl) {
 		this.targetUrl = targetUrl;
+	}
+
+	@Override
+	public void query(Object object) {
+		processName=(String)object;
+		LiveMessageProtocol msg=new LiveMessageProtocol();
+		msg.setProcessName(processName);
+		client.sendMessage(encoder(new LiveMessageProtocol()));
+	}
+
+	@Override
+	public void update(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getProcessName() {
+		return processName;
+	}
+
+	public void setProcessName(String processName) {
+		this.processName = processName;
+	}
+
+	public void setInitialFirst(boolean isInitialFirst) {
+		this.isInitialFirst = isInitialFirst;
 	}
 
 }

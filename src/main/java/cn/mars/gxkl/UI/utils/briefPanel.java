@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.protocol.Equipment;
 
 /**
@@ -27,7 +28,7 @@ import cn.mars.gxkl.protocol.Equipment;
  *    TODO 简介信息栏 
  */
 
-public class BriefPanel extends JPanel {
+public class BriefPanel extends JPanel implements Msg2Face {
 
 	/**
 	 * 
@@ -65,12 +66,12 @@ public class BriefPanel extends JPanel {
 	 */
 	private void initialization() {	
 		
-		type=getJLabel("设备型号："+equipment.getTYPE());
-		rfid=getJLabel("RFID:"+equipment.getID());
-		create=getJLabel("入场时间:"+equipment.getGMT_CREATE());
-		modified=getJLabel("最近操作:"+equipment.getMODIFIED());
-		repair=getJLabel("最近修复:"+equipment.getREPAIR());
-		manufacturer=getJLabel("生产厂商:"+equipment.getMANFACTURER());
+		type=getJLabel("设备型号："+equipment.getType());
+		rfid=getJLabel("RFID:"+equipment.getId());
+		create=getJLabel("入场时间:"+equipment.getGmtCreate());
+		modified=getJLabel("最近操作:"+equipment.getGmtModified());
+		repair=getJLabel("最近修复:"+equipment.getGmtLastRepair());
+		manufacturer=getJLabel("生产厂商:"+equipment.getManufacturer());
 		
 		this.add(type);
 		this.add(rfid);
@@ -78,7 +79,7 @@ public class BriefPanel extends JPanel {
 		this.add(modified);
 		this.add(repair);
 		this.add(manufacturer);
-		for(String str:equipment.getDETAIL()){
+		for(String str:equipment.getDetail()){
 			detailList_Panel.add(new BriefDetailPanel((int)width,height/15-14,str));
 			this.add(detailList_Panel.get(detailList_Panel.size()-1));
 		}
@@ -114,16 +115,22 @@ public class BriefPanel extends JPanel {
 
 	public void setEquipment(Equipment equipment){
 		this.equipment=equipment;
-		type.setText("设备型号:"+equipment.getTYPE());
-		rfid.setText("RFID:"+equipment.getID());
-		create.setText("入场时间:"+equipment.getGMT_CREATE());
-		modified.setText("最近操作:"+equipment.getMODIFIED());
-		repair.setText("最近修复:"+equipment.getREPAIR());
-		manufacturer.setText("生产厂商:"+equipment.getMANFACTURER());
+		type.setText("设备型号:"+equipment.getType());
+		rfid.setText("RFID:"+equipment.getId());
+		create.setText("入场时间:"+equipment.getGmtCreate());
+		modified.setText("最近操作:"+equipment.getGmtModified());
+		repair.setText("最近修复:"+equipment.getGmtLastRepair());
+		manufacturer.setText("生产厂商:"+equipment.getManufacturer());
 		int i=0;
 		for(BriefDetailPanel detailpanel:detailList_Panel){
-			detailpanel.setString(equipment.getDETAIL().get(i));
+			detailpanel.setString(equipment.getDetail().get(i));
 			i++;
 		}
+	}
+
+	@Override
+	public void setText(List<Object> msg) {
+		Equipment equipment = (Equipment)msg.get(0);
+		setEquipment(equipment);
 	}
 }

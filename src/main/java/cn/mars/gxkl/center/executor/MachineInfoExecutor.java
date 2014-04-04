@@ -1,26 +1,23 @@
 package cn.mars.gxkl.center.executor;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
-
 import cn.mars.gxkl.center.communication.Executor;
+import cn.mars.gxkl.center.communication.Sender;
 import cn.mars.gxkl.netty.ClientService;
 import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.protocol.Equipment;
 import cn.mars.gxkl.protocol.FrontEndingCommunicationProtocol;
-import cn.mars.gxkl.protocol.HandleDetails;
-import cn.mars.gxkl.protocol.LiveMessageProtocol;
 import cn.mars.gxkl.utils.Jsoner;
 import cn.mars.gxkl.utils.Pair;
 
-public class MachineInfoExecutor implements Executor {
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+public class MachineInfoExecutor implements Executor,Sender {
 
 	private boolean isInitialFirst=false;
 	private ClientService client;
@@ -36,19 +33,20 @@ public class MachineInfoExecutor implements Executor {
 		return;
 //		client.sendMessage(encoder(new LiveMessageProtocol()));
 	}
+	
 
 	@Override
 	public void decode(AppProtocol response) {
-		List<Pair<Date, String>>pairs=translate(response);
+		List<Pair<String, Equipment>>pairs=translate(response);
 		for (int i=0;i<pairs.size();i++){
-			System.out.println(pairs.get(i).getFirst().toString()+": "+pairs.get(i).getLast());
+			System.out.println("[MachineInfoExecutor]"+pairs.get(i).getFirst().toString()+": "+Jsoner.toJson(pairs.get(i).getLast()));
 		}
 		//TODO 添加处理控件显示
 	}
 	
-	private List<Pair<Date, String>> translate(AppProtocol response){
+	private List<Pair<String, Equipment>> translate(AppProtocol response){
 		try {
-			List<Pair<Date, String>> ans = new ArrayList<Pair<Date, String>>();
+			List<Pair<String, Equipment>> ans = new ArrayList<Pair<String, Equipment>>();
 			FrontEndingCommunicationProtocol<Equipment> msgContent = Jsoner.fromJson(
 					response.getResponse(),
 					new TypeToken<FrontEndingCommunicationProtocol<Equipment>>() {
@@ -56,25 +54,7 @@ public class MachineInfoExecutor implements Executor {
 			List<Equipment> liveMessage = msgContent.getRows();
 			for (int i = 0; i < liveMessage.size(); i++) {
 				Equipment pro = liveMessage.get(i);
-				List<Map<String, Object>> retValue = pro.getRetValue();
-				int size = retValue.size();
-				for (int j = 0; j < size; j++) {
-					HandleDetails handleDetails;
-					try {
-						handleDetails = new HandleDetails(retValue.get(j));
-					} catch (IndexOutOfBoundsException e) {
-						continue;
-					}
-					int rfid = handleDetails.getMachineRfid();
-					try {
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "完成处理", "器械"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "完成处理", "器械"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "开始处理","手术包"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "完成处理","手术包"));
-					} catch (NullPointerException e) {
-						continue;
-					}
-				}
+				ans.add(new Pair<String,Equipment>(pro.getMachineNumber(),pro));
 			}
 			return ans;
 		} catch (NullPointerException e) {
@@ -82,81 +62,15 @@ public class MachineInfoExecutor implements Executor {
 		}
 		return null;
 	}
-	private ItemInfoDO map2ItemInfoDO(Map<String, Object> map) {
-		ItemInfoDO ret = new ItemInfoDO();
-
-		if (map.containsKey("itemId")) {
-			ret.setItemId(((Double) map.get("itemId")).intValue());
-		}
-		if (map.containsKey("gmtCreate")) {
-			ret.setGmtCreate(new Date((String) map.get("gmtCreate")));
-		}
-		if (map.containsKey("gmtModified")) {
-			ret.setGmtModified(new Date((String) map.get("gmtModified")));
-		}
-		if (map.containsKey("itemName")) {
-//			try {
-//				ret.setItemName(changeCharset((String) map.get("itemName"),"UTF-8","GBK"));
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			ret.setItemName((String) map.get("itemName"));
-		}
-		if (map.containsKey("itemType")) {
-			ret.setItemType(((Double) map.get("itemType")).intValue());
-		}
-		if (map.containsKey("hospitalId")) {
-			ret.setHospitalId(((Double) map.get("hospitalId")).intValue());
-		}
-		if (map.containsKey("manufacturer")) {
-//			try {
-//				ret.setManufacturer(changeCharset((String) map.get("manufacturer"), "UTF-8", "GBK"));
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			ret.setManufacturer((String) map.get("manufacturer"));
-		}
-		if (map.containsKey("interconvertible")) {
-			ret.setInterconvertible((Boolean) map.get("interconvertible"));
-		}
-		if (map.containsKey("remark")) {
-//			try {
-//				ret.setRemark(changeCharset((String) map.get("remark"),"UTF-8","GBK"));
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			ret.setRemark((String) map.get("remark"));
-		}
-
-		return ret;
-	}
-
-	private List<Pair<Date, String>> handleRetValue(Date time, List<Object> rfid, String dir,
-			String type) {
-		List<Pair<Date, String>> ans = new ArrayList<Pair<Date, String>>();
-		int size = rfid.size();
-		for (int i = 0; i < size; i++) {
-			// System.out.println(rfid.get(i).toString());
-			ItemInfoDO itemInfo = map2ItemInfoDO((Map<String, Object>) rfid.get(i));
-
-			ans.add(new Pair<Date, String>(time, type + " " + itemInfo.getItemName() + " " + dir
-					+ " RFID:" + itemInfo.getItemId().toString()));
-		}
-		return ans;
-	}
-	
-	private String encoder(LiveMessageProtocol liveMsg) {
+	private String encoder(Equipment liveMsg,String operateType) {
 //		LiveMessageProtocol liveMsg = new LiveMessageProtocol();
 //		liveMsg.setProcessName(processNow);
-		List<LiveMessageProtocol> rows = new ArrayList<LiveMessageProtocol>();
+		List<Equipment> rows = new ArrayList<Equipment>();
 		rows.add(liveMsg);
-		FrontEndingCommunicationProtocol<LiveMessageProtocol> content = new FrontEndingCommunicationProtocol<LiveMessageProtocol>();
+		FrontEndingCommunicationProtocol<Equipment> content = new FrontEndingCommunicationProtocol<Equipment>();
 		content.setRows(null);
 		Map<String, Object> condition = new HashMap<String, Object>();
-		condition.put("operateType", "operateQuery");
+		condition.put("operateType", operateType);
 		content.setCondition(condition);
 		content.setRows(rows);
 		Gson gson = new Gson();
@@ -182,6 +96,21 @@ public class MachineInfoExecutor implements Executor {
 
 	public void setTargetUrl(String targetUrl) {
 		this.targetUrl = targetUrl;
+	}
+
+
+	@Override
+	public void query(Object object) {
+		Integer id=(Integer) object;
+		Equipment equipment=new Equipment();
+		equipment.setEquipmentId(id);
+		client.sendMessage(encoder(equipment,"operateQuery"));
+	}
+
+	@Override
+	public void update(Object object) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

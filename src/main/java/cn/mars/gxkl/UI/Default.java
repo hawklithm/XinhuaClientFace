@@ -5,20 +5,18 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import cn.mars.gxkl.UI.utils.HandlingPanel;
+import cn.mars.gxkl.UI.utils.BriefPanel;
 import cn.mars.gxkl.UI.utils.HistoryPanel;
 import cn.mars.gxkl.UI.utils.SearchPanel;
 import cn.mars.gxkl.UI.utils.StaffInfoPanel;
 import cn.mars.gxkl.UI.utils.WorkerHandlingPanel;
-import cn.mars.gxkl.UI.utils.BriefPanel;
-import cn.mars.gxkl.constant.Constant;
 import cn.mars.gxkl.observe.DataCenter;
-import cn.mars.gxkl.observe.Observer;
 import cn.mars.gxkl.protocol.Equipment;
 import cn.mars.gxkl.protocol.Person;
 
@@ -66,13 +64,13 @@ public class Default extends JFrame {
 		//this.add(new StaffInfoPanel((int) (width * 0.22),(int) (height * 0.25),staff));
 		
 		Equipment equipment=new Equipment();
-		equipment.setTYPE("清洗消毒机");
-		equipment.setID("12345678901");
-		equipment.setGMT_CREATE("2014/3/4 15:00:39");
-		equipment.setMODIFIED("2014/3/5 16:00:48");
-		equipment.setREPAIR("2014/3/5 14:30:22");
-		equipment.setMANUFACTURER("shinva");
-		equipment.setDETAIL("试剂一浓度：xxxx\n"+"试剂二浓度：xxxx\n"+"试剂三浓度：xxxx\n"+"试剂浓度四：xxxxx\n");
+		equipment.setType("清洗消毒机");
+		equipment.setId("12345678901");
+		equipment.setGmtCreate(new Date("2014/3/4 15:00:39"));
+		equipment.setGmtModified(new Date("2014/3/5 16:00:48"));
+		equipment.setGmtLastRepair(new Date("2014/3/5 14:30:22"));
+		equipment.setManufacturer("shinva");
+		equipment.setDetail("试剂一浓度：xxxx\n"+"试剂二浓度：xxxx\n"+"试剂三浓度：xxxx\n"+"试剂浓度四：xxxxx\n");
 		left.add(new BriefPanel((int) (width * 0.22),(int) (height * 0.75),equipment));
 		//this.add(new briefPanel((int) (width * 0.22),(int) (height * 0.75),equipment));
 		this.add(left);

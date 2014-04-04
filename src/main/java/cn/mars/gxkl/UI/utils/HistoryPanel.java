@@ -17,22 +17,27 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
+
+import cn.mars.gxkl.UI.Msg2Face;
+import cn.mars.gxkl.protocol.HandleDetails;
+import cn.mars.gxkl.utils.Pair;
 
 /**
- * 	Copyright   2014  MARS
- *
- *    All    right   reserved.
- *    afsd-pc   下午7:12:35
- *
- *    TODO  流水信息框
+ * Copyright 2014 MARS
+ * 
+ * All right reserved. afsd-pc 下午7:12:35
+ * 
+ * TODO 流水信息框
  */
-public class HistoryPanel extends JPanel {
+public class HistoryPanel extends JPanel implements Msg2Face {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5390410285673282364L;
 	private int index = 0;
 	private int Num;
+
 	private int width, height;
 	private List<String> subTitel;
 	private List<JTextArea> textAreaList = new ArrayList<JTextArea>();
@@ -41,6 +46,8 @@ public class HistoryPanel extends JPanel {
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
 	private int limit = 20;
 	private boolean Enend;
+
+	private Msg2Face statisticInfo;
 
 	public HistoryPanel(int width, int height, List<String> subTitel) {
 		super();
@@ -92,15 +99,15 @@ public class HistoryPanel extends JPanel {
 			}
 
 		});
-		JButton button2=new JButton("end");
-		button2.addActionListener(new ActionListener(){
+		JButton button2 = new JButton("end");
+		button2.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				setEnend(!Enend);
 			}
-			
+
 		});
 		this.add(button1);
 		this.add(button2);
@@ -118,31 +125,33 @@ public class HistoryPanel extends JPanel {
 		scrollpane = new JScrollPane(textarea);
 		return scrollpane;
 	}
-	
+
 	/**
 	 * 设置流水信息框数据是否置于最下层
+	 * 
 	 * @param Enend
 	 */
-	public void setEnend(boolean Enend){
-		this.Enend=Enend;
+	public void setEnend(boolean Enend) {
+		this.Enend = Enend;
 	}
-	
-	
+
 	/**
 	 * 在流水信息框中添加字符串，
-	 * @param index 所选择的标签页
-	 * @param str 所要添加的字符串
+	 * 
+	 * @param index
+	 *            所选择的标签页
+	 * @param str
+	 *            所要添加的字符串
 	 */
 	public void addString(int index, String str) {
 		String value;
-		int Position=0;
-		int l=0;
+		int Position = 0;
+		int l = 0;
 		value = textAreaList.get(index).getText();
 		if (value.split("\n").length >= limit) {
-			Position=textAreaList.get(index).getCaretPosition();
-			l=value.indexOf("\n") + 1;
-			textAreaList.get(index).setText(
-					value.substring(l));
+			Position = textAreaList.get(index).getCaretPosition();
+			l = value.indexOf("\n") + 1;
+			textAreaList.get(index).setText(value.substring(l));
 		}
 		System.out.println(textAreaList.get(index).getCaretPosition());
 		textAreaList.get(index).append(str + "\n");
@@ -150,10 +159,29 @@ public class HistoryPanel extends JPanel {
 			textAreaList.get(index).setCaretPosition(
 					textAreaList.get(index).getText().length());
 			textAreaList.get(index).requestFocus();
-		}else{
-			textAreaList.get(index).setCaretPosition(Position-l);
+		} else {
+			textAreaList.get(index).setCaretPosition(Position - l);
 			textAreaList.get(index).requestFocus();
 		}
+	}
+	
+	public Msg2Face getStatisticInfo() {
+		return statisticInfo;
+	}
+
+	public void setStatisticInfo(Msg2Face statisticInfo) {
+		this.statisticInfo = statisticInfo;
+	}
+
+	@Override
+	public void setText(List<Object> msg) {
+		List<Object> itemInfo = new ArrayList<Object>();
+		for (Object object : msg) {
+			Pair<ItemInfoDO, String> info = (Pair<ItemInfoDO, String>) msg;
+			addString(index, info.getLast());
+			itemInfo.add(info.getFirst());
+		}
+		statisticInfo.setText(itemInfo);
 	}
 
 }

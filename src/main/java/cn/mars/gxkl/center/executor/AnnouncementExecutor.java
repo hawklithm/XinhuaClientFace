@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.mars.gxkl.center.communication.Executor;
+import cn.mars.gxkl.center.communication.Sender;
 import cn.mars.gxkl.netty.ClientService;
 import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.protocol.FrontEndingCommunicationProtocol;
@@ -18,7 +19,7 @@ import cn.mars.gxkl.utils.Pair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class AnnouncementExecutor implements Executor{
+public class AnnouncementExecutor implements Executor,Sender{
 
 	private boolean isInitialFirst=true;
 	private ClientService client;
@@ -115,5 +116,18 @@ public class AnnouncementExecutor implements Executor{
 	public void setInitialFirst(boolean isInitialFirst) {
 		this.isInitialFirst = isInitialFirst;
 	}
+
+	@Override
+	public void query(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

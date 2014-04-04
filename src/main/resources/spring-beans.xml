@@ -19,6 +19,8 @@
 		<property name="map">
 			<map>
 				<entry key="/ProcessInfoManager" value-ref="processInfoExecutor" />
+				<entry key="/Announcement" value-ref="announcementExecutor"/>
+				<entry key="/MachineManager" value-ref="machineInfoExecutor"/>
 			</map>
 		</property>
 	</bean>
@@ -26,17 +28,15 @@
 		<constructor-arg value="48800" />
 	</bean>
 	
+	<bean id="machineInfoExecutor" class="cn.mars.gxkl.center.executor.MachineInfoExecutor">
+		<property name="targetUrl" value="/MachineManager"/>
+	</bean>
+	
 	<bean id="processInfoExecutor" class="cn.mars.gxkl.center.executor.ProcessInfoExecutor">
 		<property name="targetUrl" value="/ProcessInfoManager"/>
 	</bean>
+	<bean id="announcementExecutor" class="cn.mars.gxkl.center.executor.AnnouncementExecutor">
+		<property name="targetUrl" value="/Announcement"/>
+	</bean>
 
-	<!-- <bean id="testUI" class="cn.mars.gxkl.test.Default"> <constructor-arg 
-		ref="dataCenter" /> </bean> -->
-	<!-- <bean id="briefDetailPanel" class="cn.mars.gxkl.UI.utils.BriefDetailPanel"/> 
-		<bean id=" briefPanel" class="cn.mars.gxkl.UI.utils.BriefPanel"/> <bean id="handlingPanel" 
-		class="cn.mars.gxkl.UI.utils.HandlingPanel"/> <bean id="historyPanel" class="cn.mars.gxkl.UI.utils.HistoryPanel"/> 
-		<bean id="mainDetailPanel" class="cn.mars.gxkl.UI.utils.MainDetailsPanel"/> 
-		<bean id="menuLabel" class="cn.mars.gxkl.UI.utils.MenuLabel"/> <bean id="searchPanel" 
-		class="cn.mars.gxkl.UI.utils.SearchPanel"/> <bean id="staffInfoPanel" class="cn.mars.gxkl.UI.utils.StaffInfoPanel"/> 
-		<bean id="workerHandlingPanel" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel"/> -->
 </beans>

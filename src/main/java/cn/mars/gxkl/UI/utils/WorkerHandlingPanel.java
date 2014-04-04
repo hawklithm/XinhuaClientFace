@@ -14,7 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class WorkerHandlingPanel extends JPanel {
+import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
+
+import cn.mars.gxkl.UI.Msg2Face;
+
+public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 	/**
 	 * 
 	 */
@@ -24,6 +28,8 @@ public class WorkerHandlingPanel extends JPanel {
 	private String titel = ":实时统计信息";
 	private Font font_titel,font_detatil_titel,font_detatil_value;
 	private Color color = new Color(0x16, 0x49, 0x9a);
+	
+	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
 
 	public WorkerHandlingPanel(int width, int height) {
 		this.width = width;
@@ -186,6 +192,13 @@ public class WorkerHandlingPanel extends JPanel {
 		panel.add(topic);
 		panel.add(scrollPane);
 		return panel;
+	}
+
+	@Override
+	public void setText(List<Object> msg) {
+		for(Object object : msg) {
+			itemCache.add((ItemInfoDO)object);
+		}
 	}
 
 }
