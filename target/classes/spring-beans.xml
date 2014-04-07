@@ -10,17 +10,23 @@
 
 	<bean id="dataCenter" class="cn.mars.gxkl.observe.DataCenter"></bean>
 
-	<bean id="defaultUI" class="cn.mars.gxkl.UI.Default">
+	<bean id="defaultUI" class="cn.mars.gxkl.UI.Default" init-method="initialization">
 		<constructor-arg ref="dataCenter" />
+	<!--  	<property name="historyPanel" ref="historyPanel"/> -->
 	</bean>
+	
+	<bean id="historyPanel"  class="cn.mars.gxkl.UI.utils.HistoryPanel">
+	</bean>
+	
 
 	<bean id="communicationCenter" class="cn.mars.gxkl.center.communication.CommunicationCenter"
 		init-method="initialization">
 		<property name="map">
 			<map>
 				<entry key="/ProcessInfoManager" value-ref="processInfoExecutor" />
-				<entry key="/Announcement" value-ref="announcementExecutor"/>
+<!--  				<entry key="/Announcement" value-ref="announcementExecutor"/>
 				<entry key="/MachineManager" value-ref="machineInfoExecutor"/>
+				-->
 			</map>
 		</property>
 	</bean>
@@ -34,6 +40,7 @@
 	
 	<bean id="processInfoExecutor" class="cn.mars.gxkl.center.executor.ProcessInfoExecutor">
 		<property name="targetUrl" value="/ProcessInfoManager"/>
+		<property name="msg2Face" ref="historyPanel"/>
 	</bean>
 	<bean id="announcementExecutor" class="cn.mars.gxkl.center.executor.AnnouncementExecutor">
 		<property name="targetUrl" value="/Announcement"/>

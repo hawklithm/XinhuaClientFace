@@ -105,8 +105,8 @@ public class Equipment extends Protocol {
 		setProperty(GMT_CREATE, gmtCreate);
 	}
 
-	public String getGmtModified() {
-		return (String) getProperty(GMT_MODIFIED);
+	public Date getGmtModified() {
+		return (Date) getProperty(GMT_MODIFIED);
 	}
 
 	public void setGmtModified(Date gmtModified) {

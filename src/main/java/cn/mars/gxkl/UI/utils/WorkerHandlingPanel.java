@@ -195,7 +195,7 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 	}
 
 	@Override
-	public void setText(List<Object> msg) {
+	public void setText(List<?> msg) {
 		for(Object object : msg) {
 			itemCache.add((ItemInfoDO)object);
 		}

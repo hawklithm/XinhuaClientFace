@@ -30,6 +30,8 @@ public class Default extends JFrame {
 	private DataCenter dataCenter;
 	private int width, height;
 	private JPanel left,right;
+	
+	private HistoryPanel historyPanel;
 
 	/**
 	 * @param dataCenter
@@ -42,7 +44,7 @@ public class Default extends JFrame {
 		this.width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		this.height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		
-		initialization();
+//		initialization();
 	}
 
 	/**
@@ -89,7 +91,12 @@ public class Default extends JFrame {
 		List<String> HistoryType=new ArrayList<String>();
 		HistoryType.add("…Ë±∏");
 		HistoryType.add("π§∂Œ");
-		right.add(new HistoryPanel((int)(width*0.77),(int)(height*0.32),HistoryType));
+		historyPanel.setWidth((int) (width*0.77));
+		historyPanel.setHeight((int) (height*0.32));
+		historyPanel.setSubTitel(HistoryType);
+		historyPanel.initialization();
+//		right.add(new HistoryPanel((int)(width*0.77),(int)(height*0.32),HistoryType));
+		right.add(historyPanel);
 		this.add(right);
 	}
 
@@ -110,6 +117,14 @@ public class Default extends JFrame {
 
 	public int getheight() {
 		return height;
+	}
+
+	public HistoryPanel getHistoryPanel() {
+		return historyPanel;
+	}
+
+	public void setHistoryPanel(HistoryPanel historyPanel) {
+		this.historyPanel = historyPanel;
 	}
 
 }

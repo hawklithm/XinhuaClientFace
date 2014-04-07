@@ -32,6 +32,7 @@ public class CommunicationCenter implements Runnable {
 			}
 		}
 		requestAll();
+		new Thread(this).start();
 	}
 
 	public boolean getACK() {
@@ -67,7 +68,8 @@ public class CommunicationCenter implements Runnable {
 	}
 
 	private void infoHandler() {
-		AppProtocol response = new AppProtocol();// client.getMessage();
+//		AppProtocol response = new AppProtocol();// client.getMessage();
+		AppProtocol response =client.getMessage();
 		if (response == null) {
 			return;
 		}

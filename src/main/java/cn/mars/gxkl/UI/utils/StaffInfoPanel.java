@@ -105,7 +105,7 @@ public class StaffInfoPanel extends JPanel  implements Msg2Face {
 	}
 
 	@Override
-	public void setText(List<Object> msg) {
+	public void setText(List<?> msg) {
 		Person staff = (Person)msg.get(0);
 		setStaff(staff);
 	}

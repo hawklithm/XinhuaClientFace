@@ -129,7 +129,7 @@ public class BriefPanel extends JPanel implements Msg2Face {
 	}
 
 	@Override
-	public void setText(List<Object> msg) {
+	public void setText(List<?> msg) {
 		Equipment equipment = (Equipment)msg.get(0);
 		setEquipment(equipment);
 	}

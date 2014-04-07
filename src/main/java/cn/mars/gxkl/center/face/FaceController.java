@@ -1,5 +1,7 @@
 package cn.mars.gxkl.center.face;
 
+import java.util.List;
+
 import cn.mars.gxkl.UI.Default;
 import cn.mars.gxkl.controller.DetailContoller;
 import cn.mars.gxkl.controller.MachineInfoController;
@@ -7,6 +9,7 @@ import cn.mars.gxkl.controller.RealTimeTabController;
 import cn.mars.gxkl.controller.WorkerBaseInfoController;
 import cn.mars.gxkl.controller.dataobject.MachineInfoProperty;
 import cn.mars.gxkl.controller.dataobject.ObjectPair;
+import cn.mars.gxkl.utils.Pair;
 
 public class FaceController implements DetailContoller,MachineInfoController,RealTimeTabController,WorkerBaseInfoController{
 	
@@ -30,10 +33,6 @@ public class FaceController implements DetailContoller,MachineInfoController,Rea
 		
 	}
 
-	@Override
-	public void addInfo(int id, String message, int index) {
-		// TODO Auto-generated method stub
-	}
 
 	@Override
 	public void cleanInfo(int index) {
@@ -89,6 +88,12 @@ public class FaceController implements DetailContoller,MachineInfoController,Rea
 
 	public void setFace(Default face) {
 		this.face = face;
+	}
+
+	@Override
+	public void addInfo(List<Pair<Object, String>> msg, int index) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

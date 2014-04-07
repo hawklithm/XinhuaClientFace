@@ -24,7 +24,7 @@ public class HandleDetails {
 		condition.put(TIME_STAMP, time);
 	}
 	public Date getTimeStamp(){
-		return (Date)condition.get(TIME_STAMP);
+		return (Date)new Date((String) condition.get(TIME_STAMP));
 	}
 	public void setCondition(Map<String, Object> condition) {
 		this.condition = condition;

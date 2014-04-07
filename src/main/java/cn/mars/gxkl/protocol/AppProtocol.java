@@ -2,7 +2,7 @@ package cn.mars.gxkl.protocol;
 
 public class AppProtocol {
 	
-	private String targetUrl,status,content,authenticate,response;
+	private String targetUrl,status,content,authenticate,response,keepAlive;
 	
 	public AppProtocol(String content) {
 		this.content = content;
@@ -11,7 +11,7 @@ public class AppProtocol {
 	public AppProtocol() {
 		/***
 		 * 
-		 *  空构造函数
+		 *  绌烘瀯閫犲嚱鏁�
 		 * 
 		 ***/
 	}
@@ -54,5 +54,13 @@ public class AppProtocol {
 
 	public void setResponse(String response) {
 		this.response = response;
+	}
+
+	public String getKeepAlive() {
+		return keepAlive;
+	}
+
+	public void setKeepAlive(String keepAlive) {
+		this.keepAlive = keepAlive;
 	}
 }

@@ -17,11 +17,10 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
-
 import cn.mars.gxkl.UI.Msg2Face;
-import cn.mars.gxkl.protocol.HandleDetails;
 import cn.mars.gxkl.utils.Pair;
+
+import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 
 /**
  * Copyright 2014 MARS
@@ -49,20 +48,21 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 
 	private Msg2Face statisticInfo;
 
-	public HistoryPanel(int width, int height, List<String> subTitel) {
-		super();
-		this.width = width;
-		this.height = height;
-		this.subTitel = subTitel;
+//	public HistoryPanel(int width, int height, List<String> subTitel) {
+//		super();
+//		this.width = width;
+//		this.height = height;
+//		this.subTitel = subTitel;
+	
+//		initialization();
+//		Enend = true;
+//	}
+
+	public void initialization() {
 		font = new Font("ËÎÌו", Font.PLAIN, (int) (width * 0.015));
 		this.setPreferredSize(new Dimension(width, height));
 		this.setBackground(bgColor);
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		initialization();
-		Enend = true;
-	}
-
-	private void initialization() {
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setTabPlacement(JTabbedPane.TOP);
 		tabbedPane.setPreferredSize(new Dimension(width - 30, height - 50));
@@ -111,6 +111,7 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 		});
 		this.add(button1);
 		this.add(button2);
+		Enend = true;
 	}
 
 	private JScrollPane getPanel(int i) {
@@ -174,14 +175,38 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 	}
 
 	@Override
-	public void setText(List<Object> msg) {
+	public void setText(List<?> msg) {
 		List<Object> itemInfo = new ArrayList<Object>();
 		for (Object object : msg) {
-			Pair<ItemInfoDO, String> info = (Pair<ItemInfoDO, String>) msg;
+			Pair<ItemInfoDO, String> info = (Pair<ItemInfoDO, String>) object;
 			addString(index, info.getLast());
 			itemInfo.add(info.getFirst());
 		}
-		statisticInfo.setText(itemInfo);
+//		statisticInfo.setText(itemInfo);
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public List<String> getSubTitel() {
+		return subTitel;
+	}
+
+	public void setSubTitel(List<String> subTitel) {
+		this.subTitel = subTitel;
 	}
 
 }

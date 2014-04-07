@@ -23,11 +23,11 @@ public class FrontEndingCommunicationProtocol<T> extends Protocol {
 	}
 
 	public Map<String, Object> getCondition() {
-		return getCondition();
+		return super.getCondition();
 	}
 
 	public void setCondition(Map<String, Object> condition) {
-		setCondition(condition);
+		super.setCondition(condition);
 	}
 
 	public String getTableName() {

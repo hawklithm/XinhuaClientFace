@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hawklithm.constant.Constant;
+
+import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.center.communication.Executor;
 import cn.mars.gxkl.center.communication.Sender;
 import cn.mars.gxkl.netty.ClientService;
@@ -15,7 +18,6 @@ import cn.mars.gxkl.protocol.HandleDetails;
 import cn.mars.gxkl.protocol.LiveMessageProtocol;
 import cn.mars.gxkl.utils.Jsoner;
 import cn.mars.gxkl.utils.Pair;
-import org.hawklithm.constant.Constant;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +29,7 @@ public class ProcessInfoExecutor implements Executor,Sender {
 	private ClientService client;
 	private String targetUrl;
 	private String processName=Constant.processName[0];
+	private Msg2Face msg2Face;
 
 	@Override
 	public boolean isInitialFirst() {
@@ -37,7 +40,7 @@ public class ProcessInfoExecutor implements Executor,Sender {
 	public void sendInitRequest() {
 		LiveMessageProtocol msg=new LiveMessageProtocol();
 		msg.setProcessName(processName);
-		client.sendMessage(encoder(new LiveMessageProtocol()));
+		client.sendMessage(encoder(msg,true));
 	}
 
 	@Override
@@ -46,7 +49,8 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		for (int i=0;i<pairs.size();i++){
 			System.out.println(pairs.get(i).getFirst().toString()+": "+pairs.get(i).getLast());
 		}
-		//TODO Ìí¼Ó´¦Àí¿Ø¼þÏÔÊ¾
+		msg2Face.setText(pairs);
+		//TODO ï¿½ï¿½Ó´ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½Ê¾
 	}
 	
 	private List<Pair<ItemInfoDO, String>> translate(AppProtocol response){
@@ -70,10 +74,10 @@ public class ProcessInfoExecutor implements Executor,Sender {
 					}
 					int rfid = handleDetails.getMachineRfid();
 					try {
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "Íê³É´¦Àí", "Æ÷Ðµ"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "Íê³É´¦Àí", "Æ÷Ðµ"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "¿ªÊ¼´¦Àí","ÊÖÊõ°ü"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "Íê³É´¦Àí","ÊÖÊõ°ü"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "è¿›å…¥è®¾å¤‡", "å™¨æ¢°"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "ç¦»å¼€è®¾å¤‡", "å™¨æ¢°"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "è¿›å…¥è®¾å¤‡","æ‰‹æœ¯åŒ…"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "ç¦»å¼€è®¾å¤‡","æ‰‹æœ¯åŒ…"));
 					} catch (NullPointerException e) {
 						continue;
 					}
@@ -132,7 +136,7 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		return ans;
 	}
 	
-	private String encoder(LiveMessageProtocol liveMsg) {
+	private String encoder(LiveMessageProtocol liveMsg,boolean keepAlive) {
 //		LiveMessageProtocol liveMsg = new LiveMessageProtocol();
 //		liveMsg.setProcessName(processNow);
 		List<LiveMessageProtocol> rows = new ArrayList<LiveMessageProtocol>();
@@ -149,6 +153,9 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		 msg.setTargetUrl(targetUrl);
 		msg.setContent(gson.toJson(content));
 		msg.setAuthenticate("");
+		if (keepAlive){
+			msg.setKeepAlive("keep_alive_true");
+		}
 		return gson.toJson(msg);
 	}
 
@@ -173,7 +180,7 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		processName=(String)object;
 		LiveMessageProtocol msg=new LiveMessageProtocol();
 		msg.setProcessName(processName);
-		client.sendMessage(encoder(new LiveMessageProtocol()));
+		client.sendMessage(encoder(msg,true));
 	}
 
 	@Override
@@ -192,6 +199,14 @@ public class ProcessInfoExecutor implements Executor,Sender {
 
 	public void setInitialFirst(boolean isInitialFirst) {
 		this.isInitialFirst = isInitialFirst;
+	}
+
+	public Msg2Face getMsg2Face() {
+		return msg2Face;
+	}
+
+	public void setMsg2Face(Msg2Face msg2Face) {
+		this.msg2Face = msg2Face;
 	}
 
 }
