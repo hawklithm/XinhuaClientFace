@@ -9,9 +9,12 @@ import java.util.Map;
  * @author afsd-pc 设备描述类 包含对应参数
  */
 public class Equipment extends Protocol {
-	private String MANUFACTURER = "manufacturer", DETAIL = "detail", ID = "id", NAME="name",GMT_BUY = "gmtBuy",
-			GMT_LAST_REPAIR = "gmtLastRepair", MACHINE_NUMBER = "machineNumber",
-			EQUIPMENT_ID = "equipmentId", TYPE = "type", GMT_CREATE = "gmtCreate",
+	private String MANUFACTURER = "manufacturer", DETAILTITEL = "detailtitel",
+			DETAILVALUE = "detalvalue", ID = "id", NAME = "name",
+			CAPACITY = "capacity", GMT_BUY = "gmtBuy",
+			GMT_LAST_REPAIR = "gmtLastRepair",
+			MACHINE_NUMBER = "machineNumber", EQUIPMENT_ID = "equipmentId",
+			TYPE = "type", GMT_CREATE = "gmtCreate",
 			GMT_MODIFIED = "gmtModified";
 
 	public Equipment() {
@@ -37,12 +40,23 @@ public class Equipment extends Protocol {
 	public String getType() {
 		return (String) getProperty(TYPE);
 	}
-	public void setName(String name){
-		setProperty(NAME,name);
+
+	public void setName(String name) {
+		setProperty(NAME, name);
 	}
-	public String getName(){
+
+	public String getName() {
 		return (String) getProperty(NAME);
 	}
+
+	public void setCapacity(String capacity) {
+		setProperty(CAPACITY, capacity);
+	}
+
+	public String getCapacity() {
+		return (String) getProperty(CAPACITY);
+	}
+
 	public void setManufacturer(String manufacturer) {
 		setProperty(MANUFACTURER, manufacturer);
 	}
@@ -51,23 +65,20 @@ public class Equipment extends Protocol {
 		return (String) getProperty(MANUFACTURER);
 	}
 
-	public void setDetail(String detail) {
-		List<String> detailList = new ArrayList<String>();
-		int i = 0;
-		int j = 0;
-		while (detail.indexOf("\n", i) >= 0) {
-			j = detail.indexOf("\n", i);
-			detailList.add(detail.substring(i, j));
-			i = j + 1;
-		}
-		if (i < detail.length()) {
-			detailList.add(detail.substring(i));
-		}
-		setProperty(DETAIL, detailList);
+	public void setDetailTitel(List<String> detailtitel) {
+		setProperty(DETAILTITEL, detailtitel);
 	}
 
-	public List<String> getDetail() {
-		return (List<String>) getProperty(DETAIL);
+	public List<String> getDetailTitel() {
+		return (List<String>) getProperty(DETAILTITEL);
+	}
+
+	public void setDetailValue(List<String> detailvalue) {
+		setProperty(DETAILVALUE, detailvalue);
+	}
+
+	public List<String> getDetailValue() {
+		return (List<String>) getProperty(DETAILVALUE);
 	}
 
 	public Date getGmtBuy() {

@@ -12,14 +12,14 @@
 
 	<bean id="workerUI" class="cn.mars.gxkl.UI.WorkerUI" init-method="initialization">
 		<constructor-arg ref="dataCenter" />
-	<!--  	<property name="historyPanel" ref="historyPanel"/> -->
+	  	<property name="historyPanel" ref="historyPanel1"/> 
 	</bean>
  	
 	<bean id="managerUI" class="cn.mars.gxkl.UI.ManagerUI" init-method="initialization">
 	    <constructor-arg ref="dataCenter" />
 	</bean>
   	
-	<bean id="historyPanel"  class="cn.mars.gxkl.UI.utils.HistoryPanel">
+	<bean id="historyPanel1"  class="cn.mars.gxkl.UI.utils.HistoryPanel">
 	</bean>
 
 	
@@ -45,7 +45,7 @@
 	
 	<bean id="processInfoExecutor" class="cn.mars.gxkl.center.executor.ProcessInfoExecutor">
 		<property name="targetUrl" value="/ProcessInfoManager"/>
-		<property name="msg2Face" ref="historyPanel"/>
+		<property name="msg2Face" ref="historyPanel1"/>
 	</bean>
 	<bean id="announcementExecutor" class="cn.mars.gxkl.center.executor.AnnouncementExecutor">
 		<property name="targetUrl" value="/Announcement"/>

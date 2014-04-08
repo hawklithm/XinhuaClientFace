@@ -74,15 +74,25 @@ public class WorkerUI extends JFrame {
 		staffinfoPanel.initialization();
 		left.add(staffinfoPanel);
 		
+		List<String> detailTitel=new ArrayList<String>();
+		detailTitel.add("试剂一");
+		detailTitel.add("试剂二");
+		detailTitel.add("试剂三");
+		List<String> detailValue=new ArrayList<String>();
+		detailValue.add("30g/ml");
+		detailValue.add("50g/ml");
+		detailValue.add("30g/ml");
 		Equipment equipment=new Equipment();
 		equipment.setType("清洗消毒机");
 		equipment.setName("清洗消毒1号机");
 		equipment.setId("12345678901");
+		equipment.setCapacity("40把");
 		equipment.setGmtCreate(new Date("2014/3/4 15:00:39"));
 		equipment.setGmtModified(new Date("2014/3/5 16:00:48"));
 		equipment.setGmtLastRepair(new Date("2014/3/5 14:30:22"));
 		equipment.setManufacturer("shinva");
-		equipment.setDetail("试剂一浓度：xxxx\n"+"试剂二浓度：xxxx\n"+"试剂三浓度：xxxx\n"+"试剂浓度四：xxxxx\n");
+		equipment.setDetailTitel(detailTitel);
+		equipment.setDetailValue(detailValue);
 		
 		equipmentbriefPanel=new EquipmentBriefPanel();
 		equipmentbriefPanel.setWidth((int)(width*0.22));
@@ -120,7 +130,7 @@ public class WorkerUI extends JFrame {
 		List<String> HistoryType=new ArrayList<String>();
 		HistoryType.add("设备");
 		HistoryType.add("工段");
-		//historyPanel=new HistoryPanel();
+//		historyPanel=new HistoryPanel();
 		historyPanel.setWidth((int) (width*0.77));
 		historyPanel.setHeight((int) (height*0.32));
 		historyPanel.setSubTitel(HistoryType);

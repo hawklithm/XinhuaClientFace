@@ -12,11 +12,9 @@ public class MainProgram {
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
 		WorkerUI workerUI = (WorkerUI)context.getBean("workerUI");
-//		StaffInfoPanel staffInfoPanel = (StaffInfoPanel)context.getBean("staffInfoPanel");
-//		defaultUI.add(staffInfoPanel);
-//		workerUI.showUp();
-		ManagerUI managerUI=(ManagerUI)context.getBean("managerUI");
-		managerUI.showUp();
+		workerUI.showUp();
+//		ManagerUI managerUI=(ManagerUI)context.getBean("managerUI");
+//		managerUI.showUp();
 		
 	}
 }

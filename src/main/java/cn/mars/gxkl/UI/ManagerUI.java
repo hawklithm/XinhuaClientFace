@@ -14,11 +14,13 @@ import javax.swing.JPanel;
 import cn.mars.gxkl.UI.utils.EquipmentBriefPanel;
 import cn.mars.gxkl.UI.utils.HistoryPanel;
 import cn.mars.gxkl.UI.utils.SearchPanel;
+import cn.mars.gxkl.UI.utils.SectionBriefPanel;
 import cn.mars.gxkl.UI.utils.StaffInfoPanel;
 import cn.mars.gxkl.UI.utils.WorkerHandlingPanel;
 import cn.mars.gxkl.observe.DataCenter;
 import cn.mars.gxkl.protocol.Equipment;
 import cn.mars.gxkl.protocol.Person;
+import cn.mars.gxkl.protocol.Section;
 
 public class ManagerUI extends JFrame {
 
@@ -32,6 +34,7 @@ public class ManagerUI extends JFrame {
 	
 	private StaffInfoPanel staffinfoPanel;
 	private EquipmentBriefPanel equipmentbriefpanel;
+	private SectionBriefPanel sectionbriefpanel;
 	private WorkerHandlingPanel workerhandlingpanel;
 	private SearchPanel searchpanel;
 	private HistoryPanel historyPanel;
@@ -62,21 +65,45 @@ public class ManagerUI extends JFrame {
 		staffinfoPanel.initialization();
 		left.add(staffinfoPanel);
 		
-		Equipment equipment=new Equipment();
-		equipment.setType("清洗消毒机");
-		equipment.setId("12345678901");
-		equipment.setGmtCreate(new Date("2014/3/4 15:00:39"));
-		equipment.setGmtModified(new Date("2014/3/5 16:00:48"));
-		equipment.setGmtLastRepair(new Date("2014/3/5 14:30:22"));
-		equipment.setManufacturer("shinva");
-		equipment.setDetail("试剂一浓度：xxxx\n"+"试剂二浓度：xxxx\n"+"试剂三浓度：xxxx\n"+"试剂浓度四：xxxxx\n");
+		List<String> detailTitel=new ArrayList<String>();
+		detailTitel.add("试剂一");
+		detailTitel.add("试剂二");
+		detailTitel.add("试剂三");
+		detailTitel.add("试剂四");
+		List<String> detailValue=new ArrayList<String>();
+		detailValue.add("30g/ml");
+		detailValue.add("50g/ml");
+		detailValue.add("30g/ml");
+		detailValue.add("30g/ml");
+		Equipment equipment1=new Equipment();
+		equipment1.setType("清洗消毒机");
+		equipment1.setName("清洗消毒1号机");
+		equipment1.setId("12345678901");
+		equipment1.setCapacity("40把");
+		equipment1.setGmtCreate(new Date("2014/3/4 15:00:39"));
+		equipment1.setGmtModified(new Date("2014/3/5 16:00:48"));
+		equipment1.setGmtLastRepair(new Date("2014/3/5 14:30:22"));
+		equipment1.setManufacturer("shinva");
+		equipment1.setDetailTitel(detailTitel);
+		equipment1.setDetailValue(detailValue);
 		
-		equipmentbriefpanel=new EquipmentBriefPanel();
-		equipmentbriefpanel.setWidth((int)(width*0.22));
-		equipmentbriefpanel.setHeight((int)(height*0.75));
-		equipmentbriefpanel.setEquipment(equipment);
-		equipmentbriefpanel.initialization();
-		left.add(equipmentbriefpanel);
+		List<Equipment> equipments=new ArrayList<Equipment>();
+		equipments.add(equipment1);
+		
+		
+		Section section=new Section();
+		section.setName("清洗消毒");
+		section.setCapacity("180把");
+		section.setManager("张三");
+		section.setManagerID("1234567901");
+		section.setEquipments(equipments);
+		
+		sectionbriefpanel=new SectionBriefPanel();
+		sectionbriefpanel.setWidth((int)(width*0.22));
+		sectionbriefpanel.setHeight((int)(height*0.75));
+		sectionbriefpanel.setSection(section);
+		sectionbriefpanel.initialization();
+		left.add(sectionbriefpanel);
 		this.add(left);
 		
 		right=new JPanel();

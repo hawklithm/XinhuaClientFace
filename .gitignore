@@ -7,6 +7,7 @@
 .metadata
 bin/
 tmp/
+target/
 *.tmp
 *.bak
 *.swp
@@ -141,6 +142,7 @@ AppPackages/
 
 # Others
 sql/
+target/
 *.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*

@@ -31,15 +31,6 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 
 	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
 
-	/*
-	 * public WorkerHandlingPanel(int width, int height) { this.width = width;
-	 * this.height = height; this.setLayout(new FlowLayout(FlowLayout.LEFT, 5,
-	 * 5)); this.setPreferredSize(new Dimension(width, height));
-	 * this.setBackground(color); font_titel = new Font("宋体", Font.BOLD, width /
-	 * 50); font_detatil_titel=new Font("宋体", Font.BOLD, height / 20);
-	 * font_detatil_value=new Font("宋体", Font.BOLD, height / 20);
-	 * initialization(); }
-	 */
 
 	public void initialization() {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -63,10 +54,10 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		panel.setBackground(color);
 		panel.setOpaque(false);
 		topStatistics = getStatisticsPanel((int) (width * 0.9),
-				(int) (height * 0.5), "xxxx工段");
+				(int) (height * 0.5), "清洗消毒工段");
 		panel.add(topStatistics);
 		bottomStatistics = getStatisticsPanel((int) (width * 0.9),
-				(int) (height * 0.5), "xxxx设备");
+				(int) (height * 0.5), "清洗消毒1号机");
 		panel.add(bottomStatistics);
 		return panel;
 	}
@@ -123,7 +114,7 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		detailPanel.add(getDetailItemPanel(width, height / 18, "正在进行", "清洗消毒"));
 		detailPanel.add(getDetailItemPanel(width, height / 18, "当前操作员", "李华"));
 		detailPanel.add(getDetailItemPanel(width, height / 18, "所属单位", "中心自有"));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "开始操作时间",
+		detailPanel.add(getDetailItemPanel(width, height / 18, "开机时间",
 				"2014/3/30 14:50"));
 		detailPanel.add(getDetailItemPanel(width, height / 18, "所属单位", "华西医院"));
 
