@@ -2,7 +2,7 @@ package cn.mars.gxkl.center.face;
 
 import java.util.List;
 
-import cn.mars.gxkl.UI.Default;
+import cn.mars.gxkl.UI.WorkerUI;
 import cn.mars.gxkl.controller.DetailContoller;
 import cn.mars.gxkl.controller.MachineInfoController;
 import cn.mars.gxkl.controller.RealTimeTabController;
@@ -13,7 +13,7 @@ import cn.mars.gxkl.utils.Pair;
 
 public class FaceController implements DetailContoller,MachineInfoController,RealTimeTabController,WorkerBaseInfoController{
 	
-	private Default face;
+	private WorkerUI face;
 
 	@Override
 	public void setWorkerInfo(String message) {
@@ -82,11 +82,11 @@ public class FaceController implements DetailContoller,MachineInfoController,Rea
 		
 	}
 
-	public Default getFace() {
+	public WorkerUI getFace() {
 		return face;
 	}
 
-	public void setFace(Default face) {
+	public void setFace(WorkerUI face) {
 		this.face = face;
 	}
 

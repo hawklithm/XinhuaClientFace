@@ -9,7 +9,7 @@ import java.util.Map;
  * @author afsd-pc 设备描述类 包含对应参数
  */
 public class Equipment extends Protocol {
-	private String MANUFACTURER = "manufacturer", DETAIL = "detail", ID = "id", GMT_BUY = "gmtBuy",
+	private String MANUFACTURER = "manufacturer", DETAIL = "detail", ID = "id", NAME="name",GMT_BUY = "gmtBuy",
 			GMT_LAST_REPAIR = "gmtLastRepair", MACHINE_NUMBER = "machineNumber",
 			EQUIPMENT_ID = "equipmentId", TYPE = "type", GMT_CREATE = "gmtCreate",
 			GMT_MODIFIED = "gmtModified";
@@ -37,7 +37,12 @@ public class Equipment extends Protocol {
 	public String getType() {
 		return (String) getProperty(TYPE);
 	}
-
+	public void setName(String name){
+		setProperty(NAME,name);
+	}
+	public String getName(){
+		return (String) getProperty(NAME);
+	}
 	public void setManufacturer(String manufacturer) {
 		setProperty(MANUFACTURER, manufacturer);
 	}

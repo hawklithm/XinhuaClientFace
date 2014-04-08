@@ -19,9 +19,10 @@ import com.google.gson.reflect.TypeToken;
 
 public class MachineInfoExecutor implements Executor,Sender {
 
-	private boolean isInitialFirst=false;
+	private boolean isInitialFirst=true;
 	private ClientService client;
 	private String targetUrl;
+	private int targetMachineRFID=1025;
 
 	@Override
 	public boolean isInitialFirst() {
@@ -30,8 +31,8 @@ public class MachineInfoExecutor implements Executor,Sender {
 
 	@Override
 	public void sendInitRequest() {
+		query(new Integer(targetMachineRFID));
 		return;
-//		client.sendMessage(encoder(new LiveMessageProtocol()));
 	}
 	
 
@@ -111,6 +112,14 @@ public class MachineInfoExecutor implements Executor,Sender {
 	public void update(Object object) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getTargetMachineRFID() {
+		return targetMachineRFID;
+	}
+
+	public void setTargetMachineRFID(int targetMachineRFID) {
+		this.targetMachineRFID = targetMachineRFID;
 	}
 
 }

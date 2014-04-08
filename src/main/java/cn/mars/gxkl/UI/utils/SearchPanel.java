@@ -34,20 +34,21 @@ public class SearchPanel extends JPanel {
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
 	private Font font;
 
-	public SearchPanel(int width, int height, List<String> SearchType) {
+	/*public SearchPanel(int width, int height, List<String> SearchType) {
 		super();
 		this.width = width;
 		this.height = height;
 		this.SearchType = SearchType;
+		
+		initialization();
+	}
+*/
+	public void initialization() {
 		font = new Font("ËÎÌו", Font.PLAIN, (int) (width * 0.015));
 		this.setPreferredSize(new Dimension(width,(int) (height*0.9)));
 		this.setBackground(bgColor);
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		initialization();
-	}
-
-	private void initialization() {
-
+		
 		searchType = getTypeJPanel((int) (width * 0.1), (int) (height * 0.7),
 				SearchType);
 		searchField = getJTextField((int) (width * 0.75), (int) (height * 0.8));
@@ -94,5 +95,20 @@ public class SearchPanel extends JPanel {
 		button.setPreferredSize(new Dimension(width, height));
 		button.setFont(font);
 		return button;
+	}
+	public void setWidth(int width){
+		this.width=width;
+	}
+	public int getWidth(){
+		return width;
+	}
+	public void setHeight(int height){
+		this.height=height;
+	}
+	public int getHeight(){
+		return height;
+	}
+	public void setSearchType(List<String> SearchType){
+		this.SearchType=SearchType;
 	}
 }

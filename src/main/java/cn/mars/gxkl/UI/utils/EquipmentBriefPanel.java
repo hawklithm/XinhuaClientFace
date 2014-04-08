@@ -28,7 +28,7 @@ import cn.mars.gxkl.protocol.Equipment;
  *    TODO 简介信息栏 
  */
 
-public class BriefPanel extends JPanel implements Msg2Face {
+public class EquipmentBriefPanel extends JPanel implements Msg2Face {
 
 	/**
 	 * 
@@ -38,35 +38,23 @@ public class BriefPanel extends JPanel implements Msg2Face {
 	private Equipment equipment; 
 	private BriefDetailPanel briefDetailPanel;
 	
-	private JLabel rfid, type, create,modified, repair,
+	private JLabel rfid, type,name, create,modified, repair,
 			manufacturer;
 	private List<BriefDetailPanel>detailList_Panel=new ArrayList<BriefDetailPanel>();
 	private Color bgColor= new Color(0x16,0x49,0x9a),fgColor=Color.white;
 	private Font font;
 	
 	/**
-	 * @param width 简介栏宽度
-	 * @param height 简介栏高度
-	 * @param equipment 简介栏内容
+	 * 初始化Panel
 	 */
-	public BriefPanel(int width, int height,Equipment equipment) {
-		super();
-		this.width = width;
-		this.height = height;
-		this.equipment=equipment;
+	public void initialization() {	
 		font=new Font("宋体",Font.PLAIN,(int)(width*0.055));
 		this.setPreferredSize(new Dimension(width,height));
 		this.setBackground(bgColor);
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,5,0));
-		initialization();
-	}
-	
-	/**
-	 * 初始化Panel
-	 */
-	private void initialization() {	
 		
 		type=getJLabel("设备型号："+equipment.getType());
+		name=getJLabel("设备名称："+equipment.getName());
 		rfid=getJLabel("RFID:"+equipment.getId());
 		create=getJLabel("入场时间:"+equipment.getGmtCreate());
 		modified=getJLabel("最近操作:"+equipment.getGmtModified());
@@ -74,6 +62,7 @@ public class BriefPanel extends JPanel implements Msg2Face {
 		manufacturer=getJLabel("生产厂商:"+equipment.getManufacturer());
 		
 		this.add(type);
+		this.add(name);
 		this.add(rfid);
 		this.add(create);
 		this.add(modified);
@@ -112,8 +101,23 @@ public class BriefPanel extends JPanel implements Msg2Face {
 		panel.add(label);
 		return panel;
 	}
-
+	
+	public void setWidth(int width){
+		this.width=width;
+	}
+	public int getWidth(){
+		return width;
+	}
+	public void setHeight(int height){
+		this.height=height;
+	}
+	public int getHeigth(){
+		return height;
+	}
 	public void setEquipment(Equipment equipment){
+		this.equipment=equipment;
+	}
+	public void changeEquipment(Equipment equipment){
 		this.equipment=equipment;
 		type.setText("设备型号:"+equipment.getType());
 		rfid.setText("RFID:"+equipment.getId());

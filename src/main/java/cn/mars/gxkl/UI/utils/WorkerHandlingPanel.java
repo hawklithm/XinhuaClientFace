@@ -26,24 +26,29 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 	private int width, height;
 	private JPanel right, left, topStatistics, bottomStatistics;
 	private String titel = ":实时统计信息";
-	private Font font_titel,font_detatil_titel,font_detatil_value;
+	private Font font_titel, font_detatil_titel, font_detatil_value;
 	private Color color = new Color(0x16, 0x49, 0x9a);
-	
+
 	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
 
-	public WorkerHandlingPanel(int width, int height) {
-		this.width = width;
-		this.height = height;
+	/*
+	 * public WorkerHandlingPanel(int width, int height) { this.width = width;
+	 * this.height = height; this.setLayout(new FlowLayout(FlowLayout.LEFT, 5,
+	 * 5)); this.setPreferredSize(new Dimension(width, height));
+	 * this.setBackground(color); font_titel = new Font("宋体", Font.BOLD, width /
+	 * 50); font_detatil_titel=new Font("宋体", Font.BOLD, height / 20);
+	 * font_detatil_value=new Font("宋体", Font.BOLD, height / 20);
+	 * initialization(); }
+	 */
+
+	public void initialization() {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		this.setPreferredSize(new Dimension(width, height));
 		this.setBackground(color);
 		font_titel = new Font("宋体", Font.BOLD, width / 50);
-		font_detatil_titel=new Font("宋体", Font.BOLD, height / 20);
-		font_detatil_value=new Font("宋体", Font.BOLD, height / 20);
-		initialization();
-	}
+		font_detatil_titel = new Font("宋体", Font.BOLD, height / 20);
+		font_detatil_value = new Font("宋体", Font.BOLD, height / 20);
 
-	private void initialization() {
 		left = getLeft((int) (width * 0.4), height);
 		right = getRight((int) (width * 0.57), height);
 
@@ -68,27 +73,27 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 
 	private JPanel getRight(int width, int height) {
 		JPanel panel = new JPanel();
-		JPanel titelPanel=new JPanel();
-		JPanel detailPanel=new JPanel();
-		
+		JPanel titelPanel = new JPanel();
+		JPanel detailPanel = new JPanel();
+
 		panel.setPreferredSize(new Dimension(width, height));
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 5));
 		panel.setBackground(color);
 		panel.setOpaque(false);
-		
-		titelPanel.setPreferredSize(new Dimension(width,height/18));
+
+		titelPanel.setPreferredSize(new Dimension(width, height / 18));
 		titelPanel.setBackground(color);
-		titelPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,0));
-		
+		titelPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+
 		titelPanel.setOpaque(false);
-		
-		JLabel titelLabel=new JLabel("xxx设备：正在处理");
-		titelLabel.setPreferredSize(new Dimension(width/3,height/18));
+
+		JLabel titelLabel = new JLabel("xxx设备：正在处理");
+		titelLabel.setPreferredSize(new Dimension(width / 3, height / 18));
 		titelLabel.setFont(new Font("宋体", Font.BOLD, width / 30));
 		titelLabel.setForeground(Color.white);
 		titelPanel.add(titelLabel);
-		
-		List<String> subtitel=new ArrayList<String>();
+
+		List<String> subtitel = new ArrayList<String>();
 		subtitel.add("RFID:123124123124124");
 		subtitel.add("RFID:123124123124124");
 		subtitel.add("RFID:123124123124124");
@@ -97,52 +102,57 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		subtitel.add("RFID:123124123124124");
 		subtitel.add("RFID:123124123124124");
 		subtitel.add("RFID:123124123124124");
-		final DefaultComboBoxModel subtitels=new DefaultComboBoxModel();
-		for (String str:subtitel){
+		final DefaultComboBoxModel subtitels = new DefaultComboBoxModel();
+		for (String str : subtitel) {
 			subtitels.addElement(str);
 		}
-		JComboBox subTitel=new JComboBox(subtitels);
+		JComboBox subTitel = new JComboBox(subtitels);
 		subTitel.setSelectedIndex(0);
-		subTitel.setPreferredSize(new Dimension(width*2/3-20, height/18));
+		subTitel.setPreferredSize(new Dimension(width * 2 / 3 - 20, height / 18));
 		subTitel.setFont(new Font("宋体", Font.BOLD, width / 30));
 		titelPanel.add(subTitel);
 		panel.add(titelPanel);
-		
-		detailPanel.setPreferredSize(new Dimension(width,height*16/18));
+
+		detailPanel.setPreferredSize(new Dimension(width, height * 16 / 18));
 		detailPanel.setBackground(Color.white);
 		detailPanel.setOpaque(true);
-		detailPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,0));
-		detailPanel.add(getDetailItemPanel(width,height/18,"RFID","12345645687"));
-		detailPanel.add(getDetailItemPanel(width,height/18,"名称","手术锤"));
-		detailPanel.add(getDetailItemPanel(width,height/18,"正在进行","清洗消毒"));
-		detailPanel.add(getDetailItemPanel(width,height/18,"当前操作员","李华"));
-		detailPanel.add(getDetailItemPanel(width,height/18,"所属单位","中心自有"));
-		detailPanel.add(getDetailItemPanel(width,height/18,"开始操作时间","2014/3/30 14:50"));
-		detailPanel.add(getDetailItemPanel(width,height/18,"所属单位","华西医院"));
-		
-		
+		detailPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		detailPanel.add(getDetailItemPanel(width, height / 18, "RFID",
+				"12345645687"));
+		detailPanel.add(getDetailItemPanel(width, height / 18, "名称", "手术锤"));
+		detailPanel.add(getDetailItemPanel(width, height / 18, "正在进行", "清洗消毒"));
+		detailPanel.add(getDetailItemPanel(width, height / 18, "当前操作员", "李华"));
+		detailPanel.add(getDetailItemPanel(width, height / 18, "所属单位", "中心自有"));
+		detailPanel.add(getDetailItemPanel(width, height / 18, "开始操作时间",
+				"2014/3/30 14:50"));
+		detailPanel.add(getDetailItemPanel(width, height / 18, "所属单位", "华西医院"));
+
 		panel.add(detailPanel);
 		return panel;
 	}
-	private JPanel getDetailItemPanel(int width,int height,String Titel,String Value){
-		JPanel DetailItemPanel=new JPanel();
-		DetailItemPanel.setPreferredSize(new Dimension(width,height));
+
+	private JPanel getDetailItemPanel(int width, int height, String Titel,
+			String Value) {
+		JPanel DetailItemPanel = new JPanel();
+		DetailItemPanel.setPreferredSize(new Dimension(width, height));
 		DetailItemPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		DetailItemPanel.add(getDetailTitelLabel(Titel));
 		DetailItemPanel.add(getDetailValueLabel(Value));
 		return DetailItemPanel;
 	}
-	private JLabel getDetailTitelLabel(String str){
-		JLabel detailTitelLabel=new JLabel(str+"：");
+
+	private JLabel getDetailTitelLabel(String str) {
+		JLabel detailTitelLabel = new JLabel(str + "：");
 		detailTitelLabel.setFont(font_detatil_titel);
 		return detailTitelLabel;
 	}
-	private JLabel getDetailValueLabel(String str){
-		JLabel detailValueLabel=new JLabel(str);
+
+	private JLabel getDetailValueLabel(String str) {
+		JLabel detailValueLabel = new JLabel(str);
 		detailValueLabel.setFont(font_detatil_value);
 		return detailValueLabel;
 	}
-	
+
 	private JPanel getStatisticsPanel(int width, int height, String str) {
 		JPanel panel = new JPanel();
 		JLabel topic = new JLabel(str + titel);
@@ -194,10 +204,26 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		return panel;
 	}
 
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
 	@Override
 	public void setText(List<?> msg) {
-		for(Object object : msg) {
-			itemCache.add((ItemInfoDO)object);
+		for (Object object : msg) {
+			itemCache.add((ItemInfoDO) object);
 		}
 	}
 

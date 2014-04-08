@@ -10,23 +10,28 @@
 
 	<bean id="dataCenter" class="cn.mars.gxkl.observe.DataCenter"></bean>
 
-	<bean id="defaultUI" class="cn.mars.gxkl.UI.Default" init-method="initialization">
+	<bean id="workerUI" class="cn.mars.gxkl.UI.WorkerUI" init-method="initialization">
 		<constructor-arg ref="dataCenter" />
 	<!--  	<property name="historyPanel" ref="historyPanel"/> -->
 	</bean>
-	
+ 	
+	<bean id="managerUI" class="cn.mars.gxkl.UI.ManagerUI" init-method="initialization">
+	    <constructor-arg ref="dataCenter" />
+	</bean>
+  	
 	<bean id="historyPanel"  class="cn.mars.gxkl.UI.utils.HistoryPanel">
 	</bean>
+
 	
 
 	<bean id="communicationCenter" class="cn.mars.gxkl.center.communication.CommunicationCenter"
 		init-method="initialization">
 		<property name="map">
 			<map>
-				<entry key="/ProcessInfoManager" value-ref="processInfoExecutor" />
+<!--  				<entry key="/ProcessInfoManager" value-ref="processInfoExecutor" /> -->
 <!--  				<entry key="/Announcement" value-ref="announcementExecutor"/>
-				<entry key="/MachineManager" value-ref="machineInfoExecutor"/>
 				-->
+				<entry key="/MachineManager" value-ref="machineInfoExecutor"/>
 			</map>
 		</property>
 	</bean>

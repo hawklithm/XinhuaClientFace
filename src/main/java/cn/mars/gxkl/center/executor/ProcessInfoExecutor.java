@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hawklithm.constant.Constant;
-
 import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.center.communication.Executor;
 import cn.mars.gxkl.center.communication.Sender;
+import cn.mars.gxkl.constant.Constant;
 import cn.mars.gxkl.netty.ClientService;
 import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.protocol.FrontEndingCommunicationProtocol;
@@ -50,7 +49,6 @@ public class ProcessInfoExecutor implements Executor,Sender {
 			System.out.println(pairs.get(i).getFirst().toString()+": "+pairs.get(i).getLast());
 		}
 		msg2Face.setText(pairs);
-		//TODO ï¿½ï¿½Ó´ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½Ê¾
 	}
 	
 	private List<Pair<ItemInfoDO, String>> translate(AppProtocol response){
@@ -74,10 +72,10 @@ public class ProcessInfoExecutor implements Executor,Sender {
 					}
 					int rfid = handleDetails.getMachineRfid();
 					try {
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "è¿›å…¥è®¾å¤‡", "å™¨æ¢°"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "ç¦»å¼€è®¾å¤‡", "å™¨æ¢°"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "è¿›å…¥è®¾å¤‡","æ‰‹æœ¯åŒ…"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "ç¦»å¼€è®¾å¤‡","æ‰‹æœ¯åŒ…"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "½øÈëÉè±¸", "Æ÷Ðµ"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "Àë¿ªÉè±¸", "Æ÷Ðµ"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "½øÈëÉè±¸","ÊÖÊõ°ü"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "Àë¿ªÉè±¸","ÊÖÊõ°ü"));
 					} catch (NullPointerException e) {
 						continue;
 					}

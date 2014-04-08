@@ -6,4 +6,9 @@ public class Constant {
 		"DefaultUI","ClientService","Translator"
 	};
 	
+	public static final String processName[] = {"sortingprocess","cleananddisinfectprocess",
+		"packagingprocess","secondarydisinfectprocess",
+		"sterilestorageprocess"
+	};
+	
 }

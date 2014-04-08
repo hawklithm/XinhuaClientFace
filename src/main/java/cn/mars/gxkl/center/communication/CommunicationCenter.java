@@ -22,7 +22,7 @@ public class CommunicationCenter implements Runnable {
 
 	public void initialization() {
 		System.out.println("connecting");
-		while (!client.isConnected()) {
+	/*	while (!client.isConnected()) {
 			System.out.print(".");
 			try {
 				Thread.sleep(10);
@@ -31,7 +31,7 @@ public class CommunicationCenter implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		requestAll();
+		requestAll();*/
 		new Thread(this).start();
 	}
 
