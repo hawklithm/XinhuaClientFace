@@ -75,15 +75,9 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 
 		});
 
-		Num = subTitel.size();
+
 		tabbedPane.setFont(font);
-		int i = 0;
-		for (String str : subTitel) {
-			// JPanel panel=new JPanel();
-			// tabbedPane.addTab(str,getJLabel(width-50,height-30,str));
-			tabbedPane.addTab(str, getPanel(i));
-			i++;
-		}
+		
 		this.add(tabbedPane);
 
 		JButton button1 = new JButton("add");
@@ -205,8 +199,22 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 		return subTitel;
 	}
 
-	public void setSubTitel(List<String> subTitel) {
-		this.subTitel = subTitel;
+
+	public void setSubTitel(List<String> subTitel){
+		if(this.subTitel!=null){
+			for(int i=0;i<this.subTitel.size();i++){
+				tabbedPane.removeTabAt(0);
+			}
+		}
+		this.subTitel=subTitel;
+		Num = subTitel.size();
+		int i = 0;
+		for (String str : subTitel) {
+			// JPanel panel=new JPanel();
+			// tabbedPane.addTab(str,getJLabel(width-50,height-30,str));
+			tabbedPane.addTab(str, getPanel(i));
+			i++;
+		}
 	}
 
 }

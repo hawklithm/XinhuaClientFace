@@ -12,17 +12,43 @@
 
 	<bean id="workerUI" class="cn.mars.gxkl.UI.WorkerUI" init-method="initialization">
 		<constructor-arg ref="dataCenter" />
-	  	<property name="historyPanel" ref="historyPanel1"/> 
+	  	<property name="historyPanel" ref="historyPanel_worker"/> 
+	 	<property name="equipmentBriefPanel" ref="equipmentbriefPanel_worker" />
+	 	<property name="workerHandlingPanel" ref="workerhandlingPanel_worker" />
+	 	<property name="searchPanel" ref="searchpanel_worker"/>
+	 	<property name="staffInfoPanel" ref="staffpanel_worker"/>
 	</bean>
  	
 	<bean id="managerUI" class="cn.mars.gxkl.UI.ManagerUI" init-method="initialization">
 	    <constructor-arg ref="dataCenter" />
+	    <property name="historyPanel" ref="historyPanel_manager"/> 
+	 	<property name="sectionBriefPanel" ref="sectionBriefPanel_manager" />
+	 	<property name="workerHandlingPanel" ref="workerhandlingPanel_manager" />
+	 	<property name="searchPanel" ref="searchpanel_manager" />
+	 	<property name="staffInfoPanel" ref="staffpanel_manager" />
 	</bean>
   	
-	<bean id="historyPanel1"  class="cn.mars.gxkl.UI.utils.HistoryPanel">
+	<bean id="historyPanel_worker"  class="cn.mars.gxkl.UI.utils.HistoryPanel">
 	</bean>
-
+	<bean id="equipmentbriefPanel_worker" class="cn.mars.gxkl.UI.utils.EquipmentBriefPanel">
+	</bean>
+	<bean id="workerhandlingPanel_worker" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel">
+	</bean>
+	<bean id="searchpanel_worker" class="cn.mars.gxkl.UI.utils.SearchPanel">
+	</bean>
+	<bean id="staffpanel_worker" class="cn.mars.gxkl.UI.utils.StaffInfoPanel">
+	</bean>	
 	
+	<bean id="historyPanel_manager"  class="cn.mars.gxkl.UI.utils.HistoryPanel">
+	</bean>
+	<bean id="sectionBriefPanel_manager" class="cn.mars.gxkl.UI.utils.SectionBriefPanel">
+	</bean>
+	<bean id="workerhandlingPanel_manager" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel">
+	</bean>
+	<bean id="searchpanel_manager" class="cn.mars.gxkl.UI.utils.SearchPanel">
+	</bean>
+	<bean id="staffpanel_manager" class="cn.mars.gxkl.UI.utils.StaffInfoPanel">
+	</bean>	
 
 	<bean id="communicationCenter" class="cn.mars.gxkl.center.communication.CommunicationCenter"
 		init-method="initialization">
@@ -41,11 +67,12 @@
 	
 	<bean id="machineInfoExecutor" class="cn.mars.gxkl.center.executor.MachineInfoExecutor">
 		<property name="targetUrl" value="/MachineManager"/>
+		<property name="msg2Face" ref="equipmentbriefPanel_worker"/>
 	</bean>
 	
 	<bean id="processInfoExecutor" class="cn.mars.gxkl.center.executor.ProcessInfoExecutor">
 		<property name="targetUrl" value="/ProcessInfoManager"/>
-		<property name="msg2Face" ref="historyPanel1"/>
+		<property name="msg2Face" ref="historyPanel_worker"/>
 	</bean>
 	<bean id="announcementExecutor" class="cn.mars.gxkl.center.executor.AnnouncementExecutor">
 		<property name="targetUrl" value="/Announcement"/>

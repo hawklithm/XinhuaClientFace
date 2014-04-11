@@ -9,9 +9,9 @@ import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.utils.Pair;
 
 /**
- * 通锟斤拷锟斤拷锟斤拷
- * 
- * @author hawklithm 2014-3-30锟斤拷锟斤拷2:12:39
+ *控制中心 
+ * @author hawklithm
+ * 2014-4-11下午5:56:56
  */
 public class CommunicationCenter implements Runnable {
 
@@ -22,7 +22,7 @@ public class CommunicationCenter implements Runnable {
 
 	public void initialization() {
 		System.out.println("connecting");
-	/*	while (!client.isConnected()) {
+		while (!client.isConnected()) {
 			System.out.print(".");
 			try {
 				Thread.sleep(10);
@@ -31,7 +31,7 @@ public class CommunicationCenter implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		requestAll();*/
+		requestAll();
 		new Thread(this).start();
 	}
 

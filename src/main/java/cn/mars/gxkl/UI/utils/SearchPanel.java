@@ -26,14 +26,14 @@ public class SearchPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -4132678401935867541L;
 	private int width, height;
-	private List<String> SearchType;
+	private List<String> searchTypeList;
 
 	private JTextField searchField;
 	private JButton searchButton;
 	private JScrollPane searchType;
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
 	private Font font;
-
+	private final DefaultComboBoxModel type = new DefaultComboBoxModel();
 	/*public SearchPanel(int width, int height, List<String> SearchType) {
 		super();
 		this.width = width;
@@ -49,28 +49,23 @@ public class SearchPanel extends JPanel {
 		this.setBackground(bgColor);
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		searchType = getTypeJPanel((int) (width * 0.1), (int) (height * 0.7),
-				SearchType);
+		searchType = getTypeJPanel((int) (width * 0.1), (int) (height * 0.7));
 		searchField = getJTextField((int) (width * 0.75), (int) (height * 0.8));
 		searchButton = getJButton((int) (width * 0.1), (int) (height * 0.8),
 				"ËÑË÷");
-
 		this.add(searchType);
 		this.add(searchField);
 		this.add(searchButton);
 	}
-
-	private JScrollPane getTypeJPanel(int width, int height, List<String> list) {
+	
+	private JScrollPane getTypeJPanel(int width, int height) {
 		JScrollPane typepanel = new JScrollPane();
-		final DefaultComboBoxModel type = new DefaultComboBoxModel();
-		for (String str : list) {
-			type.addElement(str);
-		}
+		
 		final JComboBox typeJCombo = new JComboBox(type);
-		typeJCombo.setSelectedIndex(0);
 		typeJCombo.setPreferredSize(new Dimension(width, height));
 		typeJCombo.setFont(font);
 		typepanel = new JScrollPane(typeJCombo);
+		type.addElement("test");
 		return typepanel;
 	}
 
@@ -108,7 +103,12 @@ public class SearchPanel extends JPanel {
 	public int getHeight(){
 		return height;
 	}
-	public void setSearchType(List<String> SearchType){
-		this.SearchType=SearchType;
+	
+	public void setSearchType(List<String> searchTypeList){
+		type.removeAllElements();
+		this.searchTypeList=searchTypeList;
+		for(String str:searchTypeList){
+			type.addElement(str);
+		}
 	}
 }

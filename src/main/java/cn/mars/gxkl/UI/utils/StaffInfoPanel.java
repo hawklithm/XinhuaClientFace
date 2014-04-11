@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Image;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -55,27 +54,27 @@ public class StaffInfoPanel extends JPanel implements Msg2Face {
 		this.setPreferredSize(new Dimension(width, height));
 		this.setBackground(bgColor);
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		ImageIcon imgIcon = new ImageIcon(staff.getImgPath());
+	/*	ImageIcon imgIcon = new ImageIcon(staff.getImgPath());
 		// 缩小图片，解注下行
 		imgIcon.setImage(imgIcon.getImage().getScaledInstance(
 				(int) (scaleImgRate * imgIcon.getIconWidth()),
 				(int) (scaleImgRate * imgIcon.getIconHeight()),
-				Image.SCALE_SMOOTH));
-		img = new JLabel(imgIcon);
+				Image.SCALE_SMOOTH));*/
+		img = new JLabel();
 		img.setPreferredSize(new Dimension((int) (width * 0.46), height));
 
 		right = new JPanel();
 		right.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 5));
 		right.setPreferredSize(new Dimension((int) (width * 0.54 - 15), height));
 		right.setOpaque(false);
-		name = getJLabel("姓名：" + staff.getName());
-		gender = getJLabel("性别：" + staff.getGender());
+		name = getJLabel("姓名：");
+		gender = getJLabel("性别：");
 		id = getJLabel("工号：" );
-		idvalue=getJLabel("   "+ staff.getID());
+		idvalue=getJLabel("   ");
 		rfid = getJLabel("RFID号：" );
-		rfidvalue=getJLabel("   "+ staff.getRFID());
+		rfidvalue=getJLabel("   ");
 		job = getJLabel("工作名：" );
-		jobvalue=getJLabel("   "+ staff.getJob());
+		jobvalue=getJLabel("   ");
 		right.add(name);
 		right.add(gender);
 		right.add(id);
@@ -120,17 +119,15 @@ public class StaffInfoPanel extends JPanel implements Msg2Face {
 		return height;
 	}
 
-	public void setStaff(Person staff) {
-		this.staff=staff;
-	}
-	public void changeStaff(Person staff){
+	public void setStaff(Person staff){
 		this.staff = staff;
 		img.setIcon(new ImageIcon(staff.getImgPath()));
 		name.setText("姓名：" + staff.getName());
 		gender.setText("性别：" + staff.getGender());
-		id.setText("年龄：" + staff.getID());
-		rfid.setText("电话：" + staff.getRFID());
-		job.setText("工段名：" + staff.getJob());
+		idvalue.setText("   "+ staff.getID());
+//		rfidvalue.setText("   "+ staff.getRFID());
+		jobvalue.setText("   "+ staff.getJob());
+		
 	}
 	@Override
 	public void setText(List<?> msg) {

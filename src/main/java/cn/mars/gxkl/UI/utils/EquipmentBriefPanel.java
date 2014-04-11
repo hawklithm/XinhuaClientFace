@@ -1,21 +1,16 @@
 package cn.mars.gxkl.UI.utils;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.protocol.Equipment;
@@ -44,7 +39,8 @@ public class EquipmentBriefPanel extends JPanel implements Msg2Face {
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
 	private Font font;
 	private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
+	
+	private Msg2Face statisticInfo;
 	/**
 	 * 初始化Panel
 	 */
@@ -54,15 +50,15 @@ public class EquipmentBriefPanel extends JPanel implements Msg2Face {
 		this.setBackground(bgColor);
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 
-		type = getJLabel("设备型号：" + equipment.getType());
-		name = getJLabel("设备名称：" + equipment.getName());
-		rfid = getJLabel("RFID：" + equipment.getId());
-		capacity = getJLabel("容量：" + equipment.getCapacity());
+		type = getJLabel("设备型号：");
+		name = getJLabel("设备名称：");
+		rfid = getJLabel("RFID：");
+		capacity = getJLabel("容量：");
 
-		create = getJLabel("购买时间:" + df.format(equipment.getGmtCreate()));
-		modified = getJLabel("最近操作:" + df.format(equipment.getGmtModified()));
-		repair = getJLabel("最近修复:" + df.format(equipment.getGmtLastRepair()));
-		manufacturer = getJLabel("生产厂商:" + equipment.getManufacturer());
+		create = getJLabel("购买时间：");
+		modified = getJLabel("最近操作：");
+		repair = getJLabel("最近修复：");
+		manufacturer = getJLabel("生产厂商：");
 
 		this.add(type);
 		this.add(name);
@@ -72,15 +68,7 @@ public class EquipmentBriefPanel extends JPanel implements Msg2Face {
 		this.add(modified);
 		this.add(repair);
 		this.add(manufacturer);
-		if (equipment.getDetailTitel().size() == equipment.getDetailValue()
-				.size()) {
-			for (int i = 0; i < equipment.getDetailTitel().size(); i++) {
-				detailList_Panel.add(new BriefDetailPanel((int) width,
-						height / 15 - 14, equipment.getDetailTitel().get(i),
-						equipment.getDetailValue().get(i)));
-				this.add(detailList_Panel.get(i));
-			}
-		}
+		
 
 	}
 
@@ -129,22 +117,33 @@ public class EquipmentBriefPanel extends JPanel implements Msg2Face {
 
 	public void setEquipment(Equipment equipment) {
 		this.equipment = equipment;
-	}
-
-	public void changeEquipment(Equipment equipment) {
-		this.equipment = equipment;
-		type.setText("设备型号:" + equipment.getType());
-		rfid.setText("RFID:" + equipment.getId());
+		type.setText("设备型号：" + equipment.getType());
+		name.setText("设备名称："+equipment.getName());
+		rfid.setText("RFID：" + equipment.getEquipmentId());
 		capacity.setText("容量：" + equipment.getCapacity());
-		create.setText("购买时间:" + df.format(equipment.getGmtCreate()));
-		modified.setText("最近操作:" + df.format(equipment.getGmtModified()));
-		repair.setText("最近修复:" + df.format(equipment.getGmtLastRepair()));
-		manufacturer.setText("生产厂商:" + equipment.getManufacturer());
-		int i = 0;
-		for (BriefDetailPanel detailpanel : detailList_Panel) {
-			detailpanel.setTitel(equipment.getDetailTitel().get(i));
-			detailpanel.setTitel(equipment.getDetailValue().get(i));
-			i++;
+		create.setText("购买时间：" + df.format(equipment.getGmtCreate()));
+		modified.setText("最近操作：" + df.format(equipment.getGmtModified()));
+		Date lastRepair=equipment.getGmtLastRepair();
+		if (lastRepair!=null){
+			repair.setText("最近修复：" + df.format(lastRepair));
+		}
+		manufacturer.setText("生产厂商：" + equipment.getManufacturer());
+		
+		if (detailList_Panel.isEmpty()) {
+			for (int i = 0; i < equipment.getDetailTitel().size(); i++) {
+				detailList_Panel.add(new BriefDetailPanel((int) width,
+						height / 15 - 14, "",""/*equipment.getDetailTitel().get(i),
+						equipment.getDetailValue().get(i)*/));
+				this.add(detailList_Panel.get(i));
+			}
+		}else{
+//			int i=0;
+//			for (BriefDetailPanel detailpanel : detailList_Panel) {
+//				detailpanel.setName(equipment.getDetailTitel().get(i));
+//				detailpanel.setTitel(equipment.getDetailTitel().get(i));
+//				detailpanel.setTitel(equipment.getDetailValue().get(i));
+//				i++;
+//			}
 		}
 	}
 
@@ -152,5 +151,12 @@ public class EquipmentBriefPanel extends JPanel implements Msg2Face {
 	public void setText(List<?> msg) {
 		Equipment equipment = (Equipment) msg.get(0);
 		setEquipment(equipment);
+	}
+	public Msg2Face getStatisticInfo() {
+		return statisticInfo;
+	}
+
+	public void setStatisticInfo(Msg2Face statisticInfo) {
+		this.statisticInfo = statisticInfo;
 	}
 }

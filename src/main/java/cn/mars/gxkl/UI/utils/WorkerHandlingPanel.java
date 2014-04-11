@@ -10,9 +10,11 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 
@@ -158,10 +160,7 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 
 		String[] titels = { new String("器械类型"), new String("已处理"),
 				new String("待处理"), new String("正在处理") };
-		String[][] info = { { "手术锤", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" },
+		String[][] info = {
 				{ "手术锤", "1003", "1005", "300" },
 				{ "手术钳子", "1003", "1005", "300" },
 				{ "手术剪刀", "1003", "1005", "300" },
@@ -170,6 +169,10 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 				{ "手术钳子", "1003", "1005", "300" },
 				{ "手术剪刀", "1003", "1005", "300" },
 				{ "手术棒槌", "1003", "1005", "300" },
+				{ "手术锤", "1003", "1005", "300" },
+				{ "手术钳子", "1003", "1005", "300" },
+				{ "手术剪刀", "1003", "1005", "300" },
+				{ "手术棒槌", "1003", "1005", "300" },
 				{ "手术钳子", "1003", "1005", "300" },
 				{ "手术剪刀", "1003", "1005", "300" },
 				{ "手术棒槌", "1003", "1005", "300" },
@@ -182,12 +185,21 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 				{ "手术锤", "1003", "1005", "300" },
 				{ "手术钳子", "1003", "1005", "300" },
 				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" }, };
-		table = new JTable(info, titels);
+				{ "手术棒槌", "1003", "1005", "300" }
+			};
+		DefaultTableModel model = new DefaultTableModel(info, titels) {
+			public boolean isCellEditable(int row,int column) {
+				
+				return false;
+			}
+		};
+		table = new JTable(model);
 		Font font = new Font("宋体", Font.BOLD, width / 35);
 		table.setFont(font);
 		table.setPreferredScrollableViewportSize(new Dimension(width - 20,
 				height / 8 * 7 - 10));
+//		table.setEnabled(false);
+		table.setModel(model);
 		JScrollPane scrollPane = new JScrollPane(table);
 
 		panel.add(topic);

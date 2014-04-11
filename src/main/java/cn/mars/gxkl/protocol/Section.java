@@ -35,7 +35,7 @@ public class Section extends Protocol {
 		setProperty(MANAGER, manager);
 	}
 
-	public String getManamger() {
+	public String getManager() {
 		return (String) getProperty(MANAGER);
 	}
 

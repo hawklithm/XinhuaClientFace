@@ -10,19 +10,17 @@ import cn.mars.gxkl.center.communication.Executor;
 import cn.mars.gxkl.center.communication.Sender;
 import cn.mars.gxkl.netty.ClientService;
 import cn.mars.gxkl.protocol.AppProtocol;
-import cn.mars.gxkl.protocol.Equipment;
 import cn.mars.gxkl.protocol.FrontEndingCommunicationProtocol;
+import cn.mars.gxkl.protocol.Person;
 import cn.mars.gxkl.utils.Jsoner;
-import cn.mars.gxkl.utils.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class MachineInfoExecutor implements Executor,Sender {
-
+public class StaffInfoExecutor implements Executor,Sender{
 	private boolean isInitialFirst=true;
 	private ClientService client;
-	private String targetUrl;
+	private String targetUrl="/StaffManager";
 	private int targetMachineRFID=1025;
 	private Msg2Face msg2Face;
 
@@ -40,32 +38,32 @@ public class MachineInfoExecutor implements Executor,Sender {
 
 	@Override
 	public void decode(AppProtocol response) {
-		List<Equipment> equipments=translate(response);
+		List<Person> equipments=translate(response);
 		for (int i=0;i<equipments.size();i++){
 			System.out.println("[MachineInfoExecutor]"+Jsoner.toJson(equipments.get(i)));
 		}
 		msg2Face.setText(equipments);
 	}
 	
-	private List< Equipment> translate(AppProtocol response){
+	private List< Person> translate(AppProtocol response){
 		try {
-			FrontEndingCommunicationProtocol<Equipment> msgContent = Jsoner.fromJson(
+			FrontEndingCommunicationProtocol<Person> msgContent = Jsoner.fromJson(
 					response.getResponse(),
-					new TypeToken<FrontEndingCommunicationProtocol<Equipment>>() {
+					new TypeToken<FrontEndingCommunicationProtocol<Person>>() {
 					}.getType());
-			List<Equipment> liveMessage = msgContent.getRows();
+			List<Person> liveMessage = msgContent.getRows();
 			return liveMessage;
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	private String encoder(Equipment liveMsg,String operateType) {
+	private String encoder(Person liveMsg,String operateType) {
 //		LiveMessageProtocol liveMsg = new LiveMessageProtocol();
 //		liveMsg.setProcessName(processNow);
-		List<Equipment> rows = new ArrayList<Equipment>();
+		List<Person> rows = new ArrayList<Person>();
 		rows.add(liveMsg);
-		FrontEndingCommunicationProtocol<Equipment> content = new FrontEndingCommunicationProtocol<Equipment>();
+		FrontEndingCommunicationProtocol<Person> content = new FrontEndingCommunicationProtocol<Person>();
 		content.setRows(null);
 		Map<String, Object> condition = new HashMap<String, Object>();
 		condition.put("operateType", operateType);
@@ -100,9 +98,9 @@ public class MachineInfoExecutor implements Executor,Sender {
 	@Override
 	public void query(Object object) {
 		Integer id=(Integer) object;
-		Equipment equipment=new Equipment();
-		equipment.setEquipmentId(id);
-		client.sendMessage(encoder(equipment,"operateQuery"));
+		Person person=new Person();
+		person.setEquipmentId(id);
+		client.sendMessage(encoder(person,"operateQuery"));
 	}
 
 	@Override
@@ -126,5 +124,6 @@ public class MachineInfoExecutor implements Executor,Sender {
 	public void setMsg2Face(Msg2Face msg2Face) {
 		this.msg2Face = msg2Face;
 	}
+
 
 }

@@ -54,25 +54,57 @@ public class WorkerUI extends JFrame {
 	/**
 	 * 
 	 */
+	
 	private void initialization() {
-		Person staff = new Person();
-		staff.setID("201106004000");
-		staff.setGender("男");
-		staff.setImgPath("imgs/head.png");
-		staff.setName("李华");
-		staff.setRFID("1234567901");
-		staff.setJob("清洗消毒操作员");
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		this.setBackground(Color.black);
 		left=new JPanel();
 		left.setPreferredSize(new Dimension((int)(width*0.22),height));
 		
-		staffinfoPanel=new StaffInfoPanel();
 		staffinfoPanel.setWidth((int)(width*0.22));
 		staffinfoPanel.setHeight((int)(height*0.25));
-		staffinfoPanel.setStaff(staff);
 		staffinfoPanel.initialization();
 		left.add(staffinfoPanel);
+	
+		equipmentbriefPanel.setWidth((int)(width*0.22));
+		equipmentbriefPanel.setHeight((int)(height*0.75));
+		equipmentbriefPanel.initialization();
+		left.add(equipmentbriefPanel);
+		this.add(left);
+
+		right=new JPanel();
+		right.setPreferredSize(new Dimension((int)(width*0.77),height));
+		
+		workerhandlingPanel.setWidth((int)(width*0.77));
+		workerhandlingPanel.setHeight((int)(height*0.6));
+		workerhandlingPanel.initialization();
+		right.add(workerhandlingPanel);
+		
+		searchPanel.setWidth((int)(width*0.77));
+		searchPanel.setHeight((int)(height*0.055));
+		searchPanel.initialization();
+		right.add(searchPanel);
+		
+		
+		historyPanel.setWidth((int) (width*0.77));
+		historyPanel.setHeight((int) (height*0.32));
+		historyPanel.initialization();
+
+		right.add(historyPanel);
+		this.add(right);
+		
+		testData();
+	}
+
+	private void testData(){
+		Person staff = new Person();
+		staff.setID("201106004000");
+		staff.setGender("男");
+		staff.setImgPath("imgs/head.png");
+		staff.setName("李华");
+//		staff.setRFID("1234567901");
+		staff.setJob("清洗消毒操作员");
+		staffinfoPanel.setStaff(staff);
 		
 		List<String> detailTitel=new ArrayList<String>();
 		detailTitel.add("试剂一");
@@ -93,53 +125,22 @@ public class WorkerUI extends JFrame {
 		equipment.setManufacturer("shinva");
 		equipment.setDetailTitel(detailTitel);
 		equipment.setDetailValue(detailValue);
-		
-		equipmentbriefPanel=new EquipmentBriefPanel();
-		equipmentbriefPanel.setWidth((int)(width*0.22));
-		equipmentbriefPanel.setHeight((int)(height*0.75));
 		equipmentbriefPanel.setEquipment(equipment);
-		equipmentbriefPanel.initialization();
-		left.add(equipmentbriefPanel);
-		this.add(left);
 		
-		right=new JPanel();
-		right.setPreferredSize(new Dimension((int)(width*0.77),height));
-//		right.add(new HandlingPanel((int)(width*0.77),(int)(height*0.6)));
-		
-		workerhandlingPanel=new WorkerHandlingPanel();
-		workerhandlingPanel.setWidth((int)(width*0.77));
-		workerhandlingPanel.setHeight((int)(height*0.6));
-		workerhandlingPanel.initialization();
-		right.add(workerhandlingPanel);
-	//	right.add(new WorkerHandlingPanel((int)(width*0.77),(int)(height*0.6)));
-		
-		
+
 		List<String> searchtype=new ArrayList<String>();
 		searchtype.add("RFID");
 		searchtype.add("姓名");
 		searchtype.add("设备");
 		searchtype.add("测试");
-		
-		searchPanel=new SearchPanel();
-		searchPanel.setWidth((int)(width*0.77));
-		searchPanel.setHeight((int)(height*0.055));
 		searchPanel.setSearchType(searchtype);
-		searchPanel.initialization();
-		right.add(searchPanel);
 		
 		List<String> HistoryType=new ArrayList<String>();
 		HistoryType.add("设备");
 		HistoryType.add("工段");
-//		historyPanel=new HistoryPanel();
-		historyPanel.setWidth((int) (width*0.77));
-		historyPanel.setHeight((int) (height*0.32));
 		historyPanel.setSubTitel(HistoryType);
-		historyPanel.initialization();
-//		right.add(new HistoryPanel((int)(width*0.77),(int)(height*0.32),HistoryType));
-		right.add(historyPanel);
-		this.add(right);
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -166,5 +167,28 @@ public class WorkerUI extends JFrame {
 	public void setHistoryPanel(HistoryPanel historyPanel) {
 		this.historyPanel = historyPanel;
 	}
-
+	public EquipmentBriefPanel getEquipmentBriefPanel(){
+		return equipmentbriefPanel;
+	}
+	public void setEquipmentBriefPanel(EquipmentBriefPanel equipmentBriefPanel){
+		this.equipmentbriefPanel=equipmentBriefPanel;
+	}
+	public void setWorkerHandlingPanel(WorkerHandlingPanel workerHandlingPanel){
+		this.workerhandlingPanel=workerHandlingPanel;
+	}
+	public WorkerHandlingPanel getworkerHandlingPanel(){
+		return workerhandlingPanel;
+	}
+	public void setSearchPanel(SearchPanel searchPanel){
+		this.searchPanel=searchPanel;
+	}
+	public SearchPanel getSearchPanel(){
+		return searchPanel;
+	}
+	public void setStaffInfoPanel(StaffInfoPanel staffInfoPanel){
+		this.staffinfoPanel=staffInfoPanel;
+	}
+	public StaffInfoPanel getStaffInfoPanel(){
+		return staffinfoPanel;
+	}
 }

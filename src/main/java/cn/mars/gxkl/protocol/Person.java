@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Person extends Protocol {
 	
-	private String PATH = "path",NAME = "name",GENDER = "gender",ID = "id",RFID = "rfid",JOB = "job";
+	private String PATH = "userIconPath",NAME = "staffName",GENDER = "gender",ID = "staffId",JOB = "departmentName",EQUIPMENT_ID="equipmentId";
 	
 	public Person() {
 		super();
@@ -46,13 +46,6 @@ public class Person extends Protocol {
 		setProperty(GENDER,gender);
 	}
 	
-	public String getRFID() {
-		return (String)getProperty(RFID);
-	}
-	
-	public void setRFID(String rfid) {
-		setProperty(RFID,rfid);
-	}
 	
 	public String getJob() {
 		return (String)getProperty(JOB);
@@ -60,6 +53,14 @@ public class Person extends Protocol {
 	
 	public void setJob(String job) {
 		setProperty(JOB,job);
+	}
+	
+	public void setEquipmentId(int id){
+		setProperty(EQUIPMENT_ID, id);
+	}
+	
+	public Integer getEquipmentId(){
+		return (Integer)getProperty(EQUIPMENT_ID);
 	}
 	
 }

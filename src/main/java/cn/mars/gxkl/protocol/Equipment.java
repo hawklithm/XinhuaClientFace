@@ -1,6 +1,5 @@
 package cn.mars.gxkl.protocol;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +8,12 @@ import java.util.Map;
  * @author afsd-pc 设备描述类 包含对应参数
  */
 public class Equipment extends Protocol {
-	private String MANUFACTURER = "manufacturer", DETAILTITEL = "detailtitel",
+	private String MANUFACTURER = "manufacturer", DETAIL = "detail",
 			DETAILVALUE = "detalvalue", ID = "id", NAME = "name",
 			CAPACITY = "capacity", GMT_BUY = "gmtBuy",
 			GMT_LAST_REPAIR = "gmtLastRepair",
 			MACHINE_NUMBER = "machineNumber", EQUIPMENT_ID = "equipmentId",
-			TYPE = "type", GMT_CREATE = "gmtCreate",
+			TYPE = "equipmentType", GMT_CREATE = "gmtCreate",
 			GMT_MODIFIED = "gmtModified";
 
 	public Equipment() {
@@ -30,6 +29,10 @@ public class Equipment extends Protocol {
 	}
 
 	public String getId() {
+		Object ans=getProperty(ID);
+		if (ans instanceof Double){
+			return String.valueOf(((Double)getProperty(ID)).intValue());
+		}
 		return (String) getProperty(ID);
 	}
 
@@ -64,13 +67,19 @@ public class Equipment extends Protocol {
 	public String getManufacturer() {
 		return (String) getProperty(MANUFACTURER);
 	}
-
+	public void setDetail(String detail){
+		
+	}
+	public String getDetail(){
+		String detail="";
+		return detail;
+	}
 	public void setDetailTitel(List<String> detailtitel) {
-		setProperty(DETAILTITEL, detailtitel);
+		setProperty(DETAIL, detailtitel);
 	}
 
 	public List<String> getDetailTitel() {
-		return (List<String>) getProperty(DETAILTITEL);
+		return (List<String>) getProperty(DETAIL);
 	}
 
 	public void setDetailValue(List<String> detailvalue) {
@@ -82,7 +91,7 @@ public class Equipment extends Protocol {
 	}
 
 	public Date getGmtBuy() {
-		return (Date) getProperty(GMT_BUY);
+		return changeToDate(getProperty(GMT_BUY));
 	}
 
 	public void setGmtBuy(Date gmtBuy) {
@@ -90,7 +99,7 @@ public class Equipment extends Protocol {
 	}
 
 	public Date getGmtLastRepair() {
-		return (Date) getProperty(GMT_LAST_REPAIR);
+		return changeToDate(getProperty(GMT_LAST_REPAIR));
 	}
 
 	public void setGmtLastRepair(Date gmtLastRepair) {
@@ -106,7 +115,14 @@ public class Equipment extends Protocol {
 	}
 
 	public Integer getEquipmentId() {
-		return (Integer) getProperty(EQUIPMENT_ID);
+		Object object=getProperty(EQUIPMENT_ID);
+		if (object instanceof Double){
+			return ((Double)object).intValue();
+		}
+		if (object instanceof Integer){
+			return (Integer)object;
+		}
+		return null;
 	}
 
 	public void setEquipmentId(Integer equipmentId) {
@@ -114,7 +130,17 @@ public class Equipment extends Protocol {
 	}
 
 	public Date getGmtCreate() {
-		return (Date) getProperty(GMT_CREATE);
+		return changeToDate(getProperty(GMT_CREATE));
+	}
+	
+	private Date changeToDate(Object date){
+		if (date instanceof String){
+			return new Date((String)date);
+		}else if (date instanceof Date){
+			return (Date)date;
+		}else {
+			return null;
+		}
 	}
 
 	public void setGmtCreate(Date gmtCreate) {
@@ -122,7 +148,7 @@ public class Equipment extends Protocol {
 	}
 
 	public Date getGmtModified() {
-		return (Date) getProperty(GMT_MODIFIED);
+		return changeToDate(getProperty(GMT_MODIFIED));
 	}
 
 	public void setGmtModified(Date gmtModified) {

@@ -32,11 +32,10 @@ public class ManagerUI extends JFrame {
 	private int width,height;
 	private JPanel left,right;
 	
-	private StaffInfoPanel staffinfoPanel;
-	private EquipmentBriefPanel equipmentbriefpanel;
-	private SectionBriefPanel sectionbriefpanel;
-	private WorkerHandlingPanel workerhandlingpanel;
-	private SearchPanel searchpanel;
+	private StaffInfoPanel staffInfoPanel;
+	private SectionBriefPanel sectionBriefPanel;
+	private WorkerHandlingPanel workerHandlingPanel;
+	private SearchPanel searchPanel;
 	private HistoryPanel historyPanel;
 	
 	public ManagerUI(DataCenter dataCenter){
@@ -46,24 +45,59 @@ public class ManagerUI extends JFrame {
 	}
 	
 	private void initialization(){
-		Person staff = new Person();
-		staff.setID("201106004000");
-		staff.setGender("男");
-		staff.setImgPath("imgs/head.png");
-		staff.setName("张三");
-		staff.setRFID("1234567901");
-		staff.setJob("清洗消毒工段长");
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		this.setBackground(Color.black);
 		left=new JPanel();
 		left.setPreferredSize(new Dimension((int)(width*0.22),height));
 		
-		staffinfoPanel=new StaffInfoPanel();
-		staffinfoPanel.setWidth((int)(width*0.22));
-		staffinfoPanel.setHeight((int)(height*0.25));
-		staffinfoPanel.setStaff(staff);
-		staffinfoPanel.initialization();
-		left.add(staffinfoPanel);
+		
+		staffInfoPanel.setWidth((int)(width*0.22));
+		staffInfoPanel.setHeight((int)(height*0.25));
+		staffInfoPanel.initialization();
+		left.add(staffInfoPanel);
+		
+		sectionBriefPanel=new SectionBriefPanel();
+		sectionBriefPanel.setWidth((int)(width*0.22));
+		sectionBriefPanel.setHeight((int)(height*0.75));
+		sectionBriefPanel.initialization();
+		left.add(sectionBriefPanel);
+		this.add(left);
+		
+		right=new JPanel();
+		right.setPreferredSize(new Dimension((int)(width*0.77),height));
+//		right.add(new HandlingPanel((int)(width*0.77),(int)(height*0.6)));
+		
+		workerHandlingPanel.setWidth((int)(width*0.77));
+		workerHandlingPanel.setHeight((int)(height*0.6));
+		workerHandlingPanel.initialization();
+		right.add(workerHandlingPanel);
+	//	right.add(new WorkerHandlingPanel((int)(width*0.77),(int)(height*0.6)));
+		
+		
+		
+		searchPanel.setWidth((int)(width*0.77));
+		searchPanel.setHeight((int)(height*0.055));
+		searchPanel.initialization();
+		right.add(searchPanel);
+		
+		
+		historyPanel.setWidth((int) (width*0.77));
+		historyPanel.setHeight((int) (height*0.32));
+		historyPanel.initialization();
+//		right.add(new HistoryPanel((int)(width*0.77),(int)(height*0.32),HistoryType));
+		right.add(historyPanel);
+		this.add(right);
+		testData();
+	}
+	public void testData(){
+		Person staff = new Person();
+		staff.setID("201106004000");
+		staff.setGender("男");
+		staff.setImgPath("imgs/head.png");
+		staff.setName("张三");
+//		staff.setRFID("1234567901");
+		staff.setJob("清洗消毒工段长");
+		staffInfoPanel.setStaff(staff);
 		
 		List<String> detailTitel=new ArrayList<String>();
 		detailTitel.add("试剂一");
@@ -77,7 +111,7 @@ public class ManagerUI extends JFrame {
 		detailValue.add("30g/ml");
 		Equipment equipment1=new Equipment();
 		equipment1.setType("清洗消毒机");
-		equipment1.setName("清洗消毒1号机");
+		equipment1.setName("清洗消毒test1号机");
 		equipment1.setId("12345678901");
 		equipment1.setCapacity("40把");
 		equipment1.setGmtCreate(new Date("2014/3/4 15:00:39"));
@@ -86,63 +120,46 @@ public class ManagerUI extends JFrame {
 		equipment1.setManufacturer("shinva");
 		equipment1.setDetailTitel(detailTitel);
 		equipment1.setDetailValue(detailValue);
+		Equipment equipment2=new Equipment();
+		equipment2.setType("清洗消毒机");
+		equipment2.setName("清洗消毒2号机");
+		equipment2.setId("12345678902");
+		equipment2.setCapacity("40把");
+		equipment2.setGmtCreate(new Date("2014/3/4 15:00:39"));
+		equipment2.setGmtModified(new Date("2014/3/5 16:00:48"));
+		equipment2.setGmtLastRepair(new Date("2014/3/5 14:30:22"));
+		equipment2.setManufacturer("shinva");
+		equipment2.setDetailTitel(new ArrayList<String>(detailTitel));
+		equipment2.setDetailValue(new ArrayList<String>(detailValue));
 		
 		List<Equipment> equipments=new ArrayList<Equipment>();
 		equipments.add(equipment1);
-		
-		
+		//equipments.add(equipment2);
+
 		Section section=new Section();
 		section.setName("清洗消毒");
 		section.setCapacity("180把");
 		section.setManager("张三");
 		section.setManagerID("1234567901");
 		section.setEquipments(equipments);
-		
-		sectionbriefpanel=new SectionBriefPanel();
-		sectionbriefpanel.setWidth((int)(width*0.22));
-		sectionbriefpanel.setHeight((int)(height*0.75));
-		sectionbriefpanel.setSection(section);
-		sectionbriefpanel.initialization();
-		left.add(sectionbriefpanel);
-		this.add(left);
-		
-		right=new JPanel();
-		right.setPreferredSize(new Dimension((int)(width*0.77),height));
-//		right.add(new HandlingPanel((int)(width*0.77),(int)(height*0.6)));
-		
-		workerhandlingpanel=new WorkerHandlingPanel();
-		workerhandlingpanel.setWidth((int)(width*0.77));
-		workerhandlingpanel.setHeight((int)(height*0.6));
-		workerhandlingpanel.initialization();
-		right.add(workerhandlingpanel);
-	//	right.add(new WorkerHandlingPanel((int)(width*0.77),(int)(height*0.6)));
-		
-		
+		sectionBriefPanel.setSection(section);
+		equipments.add(equipment2);
+		section.setEquipments(equipments);
+		sectionBriefPanel.setSection(section);
+
 		List<String> searchtype=new ArrayList<String>();
 		searchtype.add("RFID");
 		searchtype.add("姓名");
 		searchtype.add("设备");
 		searchtype.add("测试");
-		
-		searchpanel=new SearchPanel();
-		searchpanel.setWidth((int)(width*0.77));
-		searchpanel.setHeight((int)(height*0.055));
-		searchpanel.setSearchType(searchtype);
-		searchpanel.initialization();
-		right.add(searchpanel);
+		searchPanel.setSearchType(searchtype);
 		
 		List<String> HistoryType=new ArrayList<String>();
 		HistoryType.add("设备");
 		HistoryType.add("工段");
-		historyPanel=new HistoryPanel();
-		historyPanel.setWidth((int) (width*0.77));
-		historyPanel.setHeight((int) (height*0.32));
 		historyPanel.setSubTitel(HistoryType);
-		historyPanel.initialization();
-//		right.add(new HistoryPanel((int)(width*0.77),(int)(height*0.32),HistoryType));
-		right.add(historyPanel);
-		this.add(right);
 	}
+	
 	public void showUp() {
 		this.setUndecorated(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -159,18 +176,35 @@ public class ManagerUI extends JFrame {
 		return height;
 	}
 
-	public StaffInfoPanel getStaffInfoPanel(StaffInfoPanel staffinfoPanel){
-		return staffinfoPanel;
-	}
-	public void setStaffInfoPanel(){
-		this.staffinfoPanel=staffinfoPanel;
-	}
-	
 	public HistoryPanel getHistoryPanel() {
 		return historyPanel;
 	}
 
 	public void setHistoryPanel(HistoryPanel historyPanel) {
 		this.historyPanel = historyPanel;
+	}
+	public void setSearchPanel(SearchPanel searchPanel){
+		this.searchPanel=searchPanel;
+	}
+	public SearchPanel getSearchPanel(){
+		return searchPanel;
+	}
+	public void setStaffInfoPanel(StaffInfoPanel staffInfoPanel){
+		this.staffInfoPanel=staffInfoPanel;
+	}
+	public StaffInfoPanel getStaffInfoPanel(){
+		return staffInfoPanel;
+	}
+	public void setWorkerHandlingPanel(WorkerHandlingPanel workerHandlingPanel){
+		this.workerHandlingPanel=workerHandlingPanel;
+	}
+	public WorkerHandlingPanel getworkerHandlingPanel(){
+		return workerHandlingPanel;
+	}
+	public void setSectionBriefPanel(SectionBriefPanel sectionBriefPanel){
+		this.sectionBriefPanel=sectionBriefPanel;
+	}
+	public SectionBriefPanel getSectionBriefPanel(){
+		return sectionBriefPanel;
 	}
 }

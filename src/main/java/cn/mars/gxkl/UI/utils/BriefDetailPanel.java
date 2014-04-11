@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,6 +19,8 @@ import javax.swing.JTextField;
 
 import cn.mars.gxkl.UI.dataobject.BriefDetailObject;
 import cn.mars.gxkl.controller.PannelExecutor;
+import cn.mars.gxkl.sender.Sender4Face;
+import static cn.mars.gxkl.utils.Jsoner.*;
 
 /**
  * Copyright 2014 MARS
@@ -31,13 +35,15 @@ public class BriefDetailPanel extends JPanel implements MouseListener,
 	 * 
 	 */
 	private static final long serialVersionUID = 5808306429972803032L;
-	String value, titel;
-	int width, height;
-	JPanel panel;
-	JTextField ValueTextField;
-	JLabel TitelLabel;
-	JButton button1, button2;
-	Font font;
+	private String value, titel;
+	private int width, height;
+	private JPanel panel;
+	private JTextField ValueTextField;
+	private JLabel TitelLabel;
+	private JButton button1, button2;
+	private Font font;
+	private Sender4Face sender4Face;
+	private String lastText = "";
 
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
 
@@ -111,7 +117,6 @@ public class BriefDetailPanel extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource() == this) {
 			button1.setVisible(true);
 			button2.setVisible(true);
@@ -119,15 +124,17 @@ public class BriefDetailPanel extends JPanel implements MouseListener,
 			ValueTextField.setOpaque(true);
 			ValueTextField.setForeground(Color.black);
 		} else if (e.getSource() == button1) {
-
 			int n = JOptionPane.showConfirmDialog(null, "确认更改参数吗", "确认更改",
 					JOptionPane.YES_NO_OPTION);
 			if (n == JOptionPane.YES_OPTION) {
-				value = ValueTextField.getText();
-				ValueTextField.setText(value);
 				ValueTextField.setEditable(false);
 				ValueTextField.setOpaque(false);
 				ValueTextField.setForeground(Color.white);
+				if(!lastText.equals(ValueTextField.getText())) {
+					Map<String,String> map = new HashMap<String,String>();
+					map.put(ValueTextField.getName(), ValueTextField.getText());
+					sender4Face.send(toJson(map));
+				}
 			} else if (n == JOptionPane.NO_OPTION) {
 				ValueTextField.setText(value);
 				ValueTextField.setEditable(false);
@@ -144,6 +151,7 @@ public class BriefDetailPanel extends JPanel implements MouseListener,
 			button1.setVisible(false);
 			button2.setVisible(false);
 		} else if (e.getSource() == ValueTextField) {
+			lastText = ValueTextField.getText();
 			if (!ValueTextField.isEditable()) {
 				button1.setVisible(true);
 				button2.setVisible(true);
@@ -155,6 +163,14 @@ public class BriefDetailPanel extends JPanel implements MouseListener,
 		}
 	}
 
+	public Sender4Face getSender4Face() {
+		return sender4Face;
+	}
+
+	public void setSender4Face(Sender4Face sender4Face) {
+		this.sender4Face = sender4Face;
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
