@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Person extends Protocol {
 	
-	private String PATH = "userIconPath",NAME = "staffName",GENDER = "gender",ID = "staffId",JOB = "departmentName",EQUIPMENT_ID="equipmentId";
+	private String PATH = "userIconPath",NAME = "staffName",GENDER = "staffGender",ID = "staffId",JOB = "staffDepartmentName",EQUIPMENT_ID="equipmentId";
 	
 	public Person() {
 		super();
@@ -31,7 +31,12 @@ public class Person extends Protocol {
 	}
 	
 	public String getID() {
-		return (String)getProperty(ID);
+		Object object=getProperty(ID);
+		if (object instanceof Double){
+			return String.valueOf(((Double)getProperty(ID)).intValue());
+		}else {
+			return String.valueOf(object);
+		}
 	}
 	
 	public void setID(String id) {

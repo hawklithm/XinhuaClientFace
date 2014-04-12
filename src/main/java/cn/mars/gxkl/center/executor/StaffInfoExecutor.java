@@ -38,11 +38,11 @@ public class StaffInfoExecutor implements Executor,Sender{
 
 	@Override
 	public void decode(AppProtocol response) {
-		List<Person> equipments=translate(response);
-		for (int i=0;i<equipments.size();i++){
-			System.out.println("[MachineInfoExecutor]"+Jsoner.toJson(equipments.get(i)));
+		List<Person> persons=translate(response);
+		for (int i=0;i<persons.size();i++){
+			System.out.println("[StaffInfoExecutor]"+Jsoner.toJson(persons.get(i)));
 		}
-		msg2Face.setText(equipments);
+		msg2Face.setText(persons);
 	}
 	
 	private List< Person> translate(AppProtocol response){

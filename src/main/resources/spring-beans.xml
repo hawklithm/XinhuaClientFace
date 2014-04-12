@@ -54,10 +54,10 @@
 		init-method="initialization">
 		<property name="map">
 			<map>
-<!--  				<entry key="/ProcessInfoManager" value-ref="processInfoExecutor" /> -->
-<!--  				<entry key="/Announcement" value-ref="announcementExecutor"/>
-				-->
+  				<entry key="/ProcessInfoManager" value-ref="processInfoExecutor" /> 
+  				<entry key="/Announcement" value-ref="announcementExecutor"/>
 				<entry key="/MachineManager" value-ref="machineInfoExecutor"/>
+				<entry key="/StaffManager" value-ref="staffInfoExecutor"/>
 			</map>
 		</property>
 	</bean>
@@ -76,6 +76,12 @@
 	</bean>
 	<bean id="announcementExecutor" class="cn.mars.gxkl.center.executor.AnnouncementExecutor">
 		<property name="targetUrl" value="/Announcement"/>
+	</bean>
+	
+	<bean id="staffInfoExecutor" class="cn.mars.gxkl.center.executor.StaffInfoExecutor">
+		<property name="targetUrl" value="/StaffManager"/>
+		<property name="msg2Face" ref="staffpanel_worker"/>
+		<property name="targetMachineRFID" value="1025"/>
 	</bean>
 
 </beans>
