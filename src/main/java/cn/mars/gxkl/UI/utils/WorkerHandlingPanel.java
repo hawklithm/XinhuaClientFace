@@ -4,21 +4,30 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 
 import cn.mars.gxkl.UI.Msg2Face;
+import cn.mars.gxkl.UI.dataobject.EquipItemInfoHandler;
+import cn.mars.gxkl.testData.ItemInfoDOData;
+import cn.mars.gxkl.utils.Pair;
 
 public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 	/**
@@ -26,27 +35,61 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 	 */
 	private static final long serialVersionUID = 2312768428623069441L;
 	private int width, height;
-	private JPanel right, left, topStatistics, bottomStatistics;
-	private String titel = ":实时统计信息";
-	private Font font_titel, font_detatil_titel, font_detatil_value;
+	private JPanel left, topStatistics, bottomStatistics;
+	private Font font_Title;
 	private Color color = new Color(0x16, 0x49, 0x9a);
+	private JTextPane detailPane = new JTextPane();
+	private SimpleAttributeSet fontSet = new SimpleAttributeSet(),nbspSet = new SimpleAttributeSet();
+	
+	private String[] itemTbTitle = {"器械类型","RFID"};
+	private String[] staTbTitle = {"器械类型","正在处理","已处理"};
+	private String processName = "清洗消毒";
+	private String[] rowName = {
+			"RIFD：","器械名称：","器械类型：","医院ID：","器械状态：","操作员：","是否可换：","remark：","创建时间：","修改时间："
+	};
 
-	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
+//	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
+	private EquipItemInfoHandler handler = new EquipItemInfoHandler();
+	
+	private DefaultTableModel staModel = new DefaultTableModel() {
+		
+		private static final long serialVersionUID = -1304030423395805825L;
+
+		public boolean isCellEditable(int row,int column) {
+			return false;
+		}
+	};
+	private DefaultTableModel itemModel = new DefaultTableModel() {
+
+		private static final long serialVersionUID = -6346234311461713590L;
+
+		public boolean isCellEditable(int row,int column) {
+			if(column==0) {
+				column++;
+			}
+			String rfid = (String)this.getValueAt(row, column);
+			setDocument(handler.getItemByRfid(rfid));
+			return false;
+		}
+	};
 
 
 	public void initialization() {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		this.setPreferredSize(new Dimension(width, height));
 		this.setBackground(color);
-		font_titel = new Font("宋体", Font.BOLD, width / 50);
-		font_detatil_titel = new Font("宋体", Font.BOLD, height / 20);
-		font_detatil_value = new Font("宋体", Font.BOLD, height / 20);
+		font_Title = new Font("宋体", Font.BOLD, width / 50);
 
 		left = getLeft((int) (width * 0.4), height);
-		right = getRight((int) (width * 0.57), height);
+//		right = getRight((int) (width * 0.57), height);
 
 		this.add(left);
-		this.add(right);
+//		this.add(right);
+//		detailedComboBox = new DetailedComboBox((int) (width * 0.57), height,handler);
+		initRight((int) (width * 0.57), height);
+		this.add(detailPane);
+//		this.add(detailedComboBox);
+		setText(new ItemInfoDOData().getData());
 	}
 
 	private JPanel getLeft(int width, int height) {
@@ -56,143 +99,87 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		panel.setBackground(color);
 		panel.setOpaque(false);
 		topStatistics = getStatisticsPanel((int) (width * 0.9),
-				(int) (height * 0.5), "清洗消毒工段");
+				(int) (height * 0.5),itemTbTitle,itemModel);
 		panel.add(topStatistics);
 		bottomStatistics = getStatisticsPanel((int) (width * 0.9),
-				(int) (height * 0.5), "清洗消毒1号机");
+				(int) (height * 0.5),staTbTitle,staModel);
 		panel.add(bottomStatistics);
 		return panel;
 	}
 
-	private JPanel getRight(int width, int height) {
-		JPanel panel = new JPanel();
-		JPanel titelPanel = new JPanel();
-		JPanel detailPanel = new JPanel();
-
-		panel.setPreferredSize(new Dimension(width, height));
-		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 5));
-		panel.setBackground(color);
-		panel.setOpaque(false);
-
-		titelPanel.setPreferredSize(new Dimension(width, height / 18));
-		titelPanel.setBackground(color);
-		titelPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-
-		titelPanel.setOpaque(false);
-
-		JLabel titelLabel = new JLabel("xxx设备：正在处理");
-		titelLabel.setPreferredSize(new Dimension(width / 3, height / 18));
-		titelLabel.setFont(new Font("宋体", Font.BOLD, width / 30));
-		titelLabel.setForeground(Color.white);
-		titelPanel.add(titelLabel);
-
-		List<String> subtitel = new ArrayList<String>();
-		subtitel.add("RFID:123124123124124");
-		subtitel.add("RFID:123124123124124");
-		subtitel.add("RFID:123124123124124");
-		subtitel.add("RFID:123124123124124");
-		subtitel.add("RFID:123124123124124");
-		subtitel.add("RFID:123124123124124");
-		subtitel.add("RFID:123124123124124");
-		subtitel.add("RFID:123124123124124");
-		final DefaultComboBoxModel subtitels = new DefaultComboBoxModel();
-		for (String str : subtitel) {
-			subtitels.addElement(str);
+	private void initRight(int width,int height) {
+		StyleConstants.setFontSize(fontSet, (int)(height*0.05));
+		StyleConstants.setFontSize(nbspSet, (int)(height*0.02));
+		detailPane.setEditable(false);
+		detailPane.setParagraphAttributes(fontSet, false);
+		detailPane.setPreferredSize(new Dimension(width,height));
+		StyledDocument document = detailPane.getStyledDocument();
+		try {
+			for(String str : rowName) {
+				document.insertString(document.getLength(), str+"\n", fontSet);
+				document.insertString(document.getLength(), "\n", nbspSet);
+			}
+		} catch (BadLocationException e) {
+			e.printStackTrace();
 		}
-		JComboBox subTitel = new JComboBox(subtitels);
-		subTitel.setSelectedIndex(0);
-		subTitel.setPreferredSize(new Dimension(width * 2 / 3 - 20, height / 18));
-		subTitel.setFont(new Font("宋体", Font.BOLD, width / 30));
-		titelPanel.add(subTitel);
-		panel.add(titelPanel);
-
-		detailPanel.setPreferredSize(new Dimension(width, height * 16 / 18));
-		detailPanel.setBackground(Color.white);
-		detailPanel.setOpaque(true);
-		detailPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "RFID",
-				"12345645687"));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "名称", "手术锤"));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "正在进行", "清洗消毒"));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "当前操作员", "李华"));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "所属单位", "中心自有"));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "开机时间",
-				"2014/3/30 14:50"));
-		detailPanel.add(getDetailItemPanel(width, height / 18, "所属单位", "华西医院"));
-
-		panel.add(detailPanel);
-		return panel;
 	}
-
-	private JPanel getDetailItemPanel(int width, int height, String Titel,
-			String Value) {
-		JPanel DetailItemPanel = new JPanel();
-		DetailItemPanel.setPreferredSize(new Dimension(width, height));
-		DetailItemPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		DetailItemPanel.add(getDetailTitelLabel(Titel));
-		DetailItemPanel.add(getDetailValueLabel(Value));
-		return DetailItemPanel;
+	
+	private void setDocument(ItemInfoDO item) {
+		detailPane.setText("");
+		StyledDocument document = detailPane.getStyledDocument();
+		try {
+			document.insertString(document.getLength(), rowName[0]+item.getItemId()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[1]+item.getItemName()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[2]+item.getItemType()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[3]+item.getHospitalId()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[4]+item.getStatus()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[5]+item.getManufacturer()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[6]+item.isInterconvertible()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[7]+item.getRemark()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[8]+item.getGmtCreate()+"\n", fontSet);
+			document.insertString(document.getLength(), "\n", nbspSet);
+			document.insertString(document.getLength(), rowName[9]+item.getGmtModified()+"\n", fontSet);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
 	}
-
-	private JLabel getDetailTitelLabel(String str) {
-		JLabel detailTitelLabel = new JLabel(str + "：");
-		detailTitelLabel.setFont(font_detatil_titel);
-		return detailTitelLabel;
-	}
-
-	private JLabel getDetailValueLabel(String str) {
-		JLabel detailValueLabel = new JLabel(str);
-		detailValueLabel.setFont(font_detatil_value);
-		return detailValueLabel;
-	}
-
-	private JPanel getStatisticsPanel(int width, int height, String str) {
+	
+//	private JPanel initEqpDataPanel(int width,int height,String str) {
+//		String[] tableTitle = {"器械类型","正在处理","已处理"};
+//		
+//		
+//	}
+	
+	private JPanel getStatisticsPanel(int width, int height, String[] tableTitle, DefaultTableModel model) {
 		JPanel panel = new JPanel();
-		JLabel topic = new JLabel(str + titel);
+		JPanel topic = new JPanel();
+		topic.setPreferredSize(new Dimension(width, (int) (height / 8)));
+		topic.setLayout(new FlowLayout(FlowLayout.CENTER,5,0));
+		topic.setOpaque(false);
+		if(tableTitle.length==2) {
+			topic.add(getTitleLabel(processName + "设备正在处理"));
+		}
+		else {
+			topic.add(getTitleLabel(processName+"设备统计信息"));
+		}
 		JTable table;
 		panel.setPreferredSize(new Dimension(width, height - 10));
 		panel.setBackground(color);
 		panel.setOpaque(false);
+		
 
-		topic.setPreferredSize(new Dimension(width, (int) (height / 8)));
-		topic.setFont(font_titel);
-		topic.setForeground(Color.white);
-
-		String[] titels = { new String("器械类型"), new String("已处理"),
-				new String("待处理"), new String("正在处理") };
-		String[][] info = {
-				{ "手术锤", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" },
-				{ "手术锤", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" },
-				{ "手术锤", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" },
-				{ "手术锤", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" },
-				{ "手术锤", "1003", "1005", "300" },
-				{ "手术钳子", "1003", "1005", "300" },
-				{ "手术剪刀", "1003", "1005", "300" },
-				{ "手术棒槌", "1003", "1005", "300" }
-			};
-		DefaultTableModel model = new DefaultTableModel(info, titels) {
-			public boolean isCellEditable(int row,int column) {
-				
-				return false;
-			}
-		};
+//		String[] Titles = { new String("器械类型"), new String("待处理"),
+//				new String("正在处理"), new String("已处理") };
+		model.setColumnIdentifiers(tableTitle);
+		model.setColumnCount(tableTitle.length);
 		table = new JTable(model);
 		Font font = new Font("宋体", Font.BOLD, width / 35);
 		table.setFont(font);
@@ -207,6 +194,13 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		return panel;
 	}
 
+	private JLabel getTitleLabel(String str) {
+		JLabel label = new JLabel(str);
+		label.setFont(font_Title);
+		label.setForeground(Color.white);
+		return label;
+	}
+	
 	public void setWidth(int width) {
 		this.width = width;
 	}
@@ -225,8 +219,23 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 
 	@Override
 	public void setText(List<?> msg) {
-		for (Object object : msg) {
-			itemCache.add((ItemInfoDO) object);
+		handler.addItemVector((List<ItemInfoDO>)msg);
+		Map<String,List<Integer>> ret = handler.getStaVector();
+		Iterator<String> iterator = ret.keySet().iterator();
+		while(iterator.hasNext()) {
+			String key = iterator.next();
+			List<Integer> staData = ret.get(key);
+			int index = staData.get(0);
+			if(index+1>staModel.getRowCount()) {
+				staModel.setRowCount(index+1);
+			}
+			staModel.setValueAt(key, index, 0);
+			for(int i=1;i<=2;i++) {
+				staModel.setValueAt(staData.get(i), index, i);
+			}
+		}
+		for(ItemInfoDO item : (List<ItemInfoDO>)msg) {
+			itemModel.addRow(new Object[]{item.getItemName(),item.getItemId().toString()});
 		}
 	}
 

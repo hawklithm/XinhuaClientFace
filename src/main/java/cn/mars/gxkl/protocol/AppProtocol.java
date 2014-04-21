@@ -3,7 +3,7 @@ package cn.mars.gxkl.protocol;
 public class AppProtocol {
 	
 	private String targetUrl,status,content,authenticate,response,keepAlive;
-	
+	//包括目标的URL，状态码，内容，验证信息，相应的内容，是否保持持续连接
 	public AppProtocol(String content) {
 		this.content = content;
 	}

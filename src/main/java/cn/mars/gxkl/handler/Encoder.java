@@ -1,5 +1,5 @@
 package cn.mars.gxkl.handler;
 
 public interface Encoder {
-	public String encode(Object object);
+	public String encode(Object object);   //±àÂë
 }

@@ -3,7 +3,7 @@ package cn.mars.gxkl.protocol;
 import java.util.Map;
 
 public class Person extends Protocol {
-	
+	//人的头像，名称，性别，id，Rfid，还有工作
 	private String PATH = "userIconPath",NAME = "staffName",GENDER = "staffGender",ID = "staffId",JOB = "staffDepartmentName",EQUIPMENT_ID="equipmentId";
 	
 	public Person() {

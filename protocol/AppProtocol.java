@@ -1,5 +1,8 @@
 package cn.mars.gxkl.protocol;
-
+/*
+ * App协议
+ * 包括目标URL,状态码、内容、验证消息、响应
+ */
 public class AppProtocol {
 	
 	private String targetUrl,status,content,authenticate,response;
@@ -11,7 +14,7 @@ public class AppProtocol {
 	public AppProtocol() {
 		/***
 		 * 
-		 *  空构造函数
+		 *  绌烘瀯閫犲嚱鏁�
 		 * 
 		 ***/
 	}

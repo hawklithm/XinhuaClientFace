@@ -6,7 +6,7 @@ import cn.mars.gxkl.observe.Observer;
 
 public class Translator implements Observer {
 	
-	private DataCenter dataCenter;
+	private DataCenter dataCenter;   //包括注册，移出，通知等内容
 	
 	public Translator(DataCenter dataCenter) {
 		this.dataCenter = dataCenter;

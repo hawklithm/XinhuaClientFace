@@ -29,10 +29,8 @@ public class SectionBriefPanel extends JPanel implements Msg2Face {
 	private Section section;
 	private String[][] equipmentData;
 	private String[] equipmentName;
-	private int rowNum, colNum;
 	private JLabel name, capacity, manager, managerID, equipmentNum;
-	private JScrollPane scrollPane;
-
+	private SectionEquipmentPanel sectionEquipmentPanel;
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
 	private Font font;
 
@@ -47,13 +45,14 @@ public class SectionBriefPanel extends JPanel implements Msg2Face {
 		manager = getJLabel("工段负责人：");
 		managerID = getJLabel("负责人ID：");
 		equipmentNum=getJLabel("设备数：");
-		
+		sectionEquipmentPanel=new SectionEquipmentPanel();
 		this.add(name);
 		this.add(capacity);
 		this.add(manager);
 		this.add(managerID);
 		this.add(equipmentNum);
-
+		this.add(sectionEquipmentPanel.getScrollPane());
+		sectionEquipmentPanel.setSize(width-12, height/2);
 	}
 
 	public void setSection(Section section) {
@@ -63,47 +62,41 @@ public class SectionBriefPanel extends JPanel implements Msg2Face {
 		manager.setText("工段负责人：" + section.getManager());
 		managerID.setText("负责人ID：" + section.getManagerID());
 		equipmentNum.setText("工段设备数：" + section.getEquipments().size());
-		rowNum = section.getEquipments().get(0).getDetailTitel().size() + 7;
-		colNum = section.getEquipments().size();
-		equipmentData = getData(rowNum, colNum);
-	
-				
+		getData(section);
+		sectionEquipmentPanel.setRowHeader(equipmentName);
+		sectionEquipmentPanel.addRow(equipmentData);		
+		sectionEquipmentPanel.setSize(width-12, height/2);
 	}
-
-	private String[][] getData(int rowNum, int colNum) {
-		String[][] Data = new String[rowNum][colNum + 1];
-		equipmentName = new String[colNum + 1];
-		equipmentName[0] = "设备名称";
-		Data[0][0] = "设备型号";
-		Data[1][0] = "RFID";
-		Data[2][0] = "容量";
-		Data[3][0] = "购买时间";
-		Data[4][0] = "最近操作";
-		Data[5][0] = "最近修复";
-		Data[6][0] = "生产厂商";
-		for (int i = 7; i < rowNum; i++) {
-			Data[i][0] = section.getEquipments().get(0).getDetailTitel()
-					.get(i - 7);
+	
+	private void getData(Section section) {
+		int colNum=section.getEquipments().size();
+		int rowNum=section.getEquipments().get(0).getDetailTitel().size()+8;
+		equipmentData=new String[rowNum][colNum];
+		equipmentName=new String[rowNum];
+		equipmentName[0]="设备名称";
+		equipmentName[1]="谁边型号";
+		equipmentName[2]="RFID";
+		equipmentName[3]="容量";
+		equipmentName[4]="购买时间";
+		equipmentName[5]="最近操作";
+		equipmentName[6]="最近修复";
+		equipmentName[7]="生产厂商";
+		for(int i=8;i<rowNum;i++){
+			equipmentName[i]=section.getEquipments().get(0).getDetailTitel().get(i-8);
 		}
-		for (int j = 0; j < colNum; j++) {
-			equipmentName[j + 1] = section.getEquipments().get(j).getName();
-			System.out.println("j:"+j+";"+section.getEquipments().get(j).getName());
-			Data[0][j + 1] = section.getEquipments().get(j).getType();
-			Data[1][j + 1] = section.getEquipments().get(j).getId();
-			Data[2][j + 1] = section.getEquipments().get(j).getCapacity();
-			Data[3][j + 1] = section.getEquipments().get(j).getGmtCreate()
-					.toLocaleString();
-			Data[4][j + 1] = section.getEquipments().get(j).getGmtModified()
-					.toLocaleString();
-			Data[5][j + 1] = section.getEquipments().get(j).getGmtLastRepair()
-					.toLocaleString();
-			Data[6][j + 1] = section.getEquipments().get(j).getManufacturer();
-			for (int i = 7; i < rowNum; i++) {
-				Data[i][j + 1] = section.getEquipments().get(j)
-						.getDetailValue().get(i - 7);
+		for(int i=0;i<colNum;i++){
+			equipmentData[0][i]=section.getEquipments().get(i).getName();
+			equipmentData[1][i]=section.getEquipments().get(i).getType();
+			equipmentData[2][i]=""+section.getEquipments().get(i).getEquipmentId();
+			equipmentData[3][i]=section.getEquipments().get(i).getCapacity();
+			equipmentData[4][i]=section.getEquipments().get(i).getGmtCreate().toLocaleString();
+			equipmentData[5][i]=section.getEquipments().get(i).getGmtModified().toLocaleString();
+			equipmentData[6][i]=section.getEquipments().get(i).getGmtLastRepair().toLocaleString();
+			equipmentData[7][i]=section.getEquipments().get(i).getManufacturer();
+			for(int j=8;j<rowNum;j++){
+				equipmentData[j][i]=section.getEquipments().get(i).getDetailValue().get(j-8);
 			}
 		}
-		return Data;
 	}
 
 	

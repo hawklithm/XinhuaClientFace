@@ -3,7 +3,7 @@ package cn.mars.gxkl.protocol;
 import java.util.Map;
 
 public class Item extends Protocol {
-	
+	//名称，RFID，处理流程，过程，历史纪录
 	private String NAME = "name",RFID = "rfid",PROCEDURE = "procedure",PROCESS = "process",HISTORY = "history";
 	
 	public Item() {

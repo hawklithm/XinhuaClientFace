@@ -17,7 +17,10 @@ import cn.mars.gxkl.utils.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
+/*
+ * 机器信息执行器
+ * 
+ */
 public class MachineInfoExecutor implements Executor,Sender {
 
 	private boolean isInitialFirst=true;
@@ -37,7 +40,12 @@ public class MachineInfoExecutor implements Executor,Sender {
 		return;
 	}
 	
-
+/*
+ * 解码
+ * 
+ * (non-Javadoc)
+ * @see cn.mars.gxkl.center.communication.Executor#decode(cn.mars.gxkl.protocol.AppProtocol)
+ */
 	@Override
 	public void decode(AppProtocol response) {
 		List<Equipment> equipments=translate(response);
@@ -60,6 +68,7 @@ public class MachineInfoExecutor implements Executor,Sender {
 		}
 		return null;
 	}
+	//编码
 	private String encoder(Equipment liveMsg,String operateType) {
 //		LiveMessageProtocol liveMsg = new LiveMessageProtocol();
 //		liveMsg.setProcessName(processNow);
@@ -97,7 +106,6 @@ public class MachineInfoExecutor implements Executor,Sender {
 	}
 
 
-	@Override
 	public void query(Object object) {
 		Integer id=(Integer) object;
 		Equipment equipment=new Equipment();

@@ -2,7 +2,7 @@ package cn.mars.gxkl.controller.dataobject;
 
 public class ObjectPair {
 	private String name;
-	private String containt;
+	private String containt;//name,value
 	public String getName() {
 		return name;
 	}

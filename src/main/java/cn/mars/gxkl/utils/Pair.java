@@ -1,6 +1,6 @@
 package cn.mars.gxkl.utils;
 
-public class Pair<T,V> {
+public class Pair<T,V> {//Object是成对的
 	private T first;
 	private V last;
 	

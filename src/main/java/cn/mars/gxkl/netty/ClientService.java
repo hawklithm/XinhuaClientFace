@@ -18,14 +18,17 @@ import org.jboss.netty.handler.codec.frame.LengthFieldPrepender;
 import cn.mars.gxkl.protocol.AppProtocol;
 
 import com.google.gson.Gson;
-
+/*
+ * 默认为48800个管道
+ */
 public class ClientService {
+	//段口号，地址，管道，管道处理、连接与否
 	private int port;
 	private String address;
 	private Channel channel;
 	private NettyHandler handler;
-	private boolean connected = false,ack = false,connectionStatus = true;
-	ConcurrentLinkedQueue<AppProtocol> infoCache;
+	private boolean connected = false,ack = false,connectionStatus = true;//连接与否，消息的相应状态，连接状态
+	ConcurrentLinkedQueue<AppProtocol> infoCache;//信息的缓存
 	ConcurrentLinkedQueue<AppProtocol> emergCache;
 	
 	public ClientService(int port) {
@@ -35,7 +38,7 @@ public class ClientService {
 	}
 	
 	public ClientService(String address,int port) {
-		this.address = address;
+		this.address = address;    //主机的IP地址和端口号
 		this.port = port;
 		initialization();
 	}
@@ -84,7 +87,7 @@ public class ClientService {
 				// TODO Auto-generated method stub
 				ChannelPipeline pipeline = Channels.pipeline();
 				pipeline.addLast("DOWN_FRAME_HANDLER", new LengthFieldPrepender(2, false));
-				pipeline.addLast("UP_FRAME_HANDLER", new LengthFieldBasedFrameDecoder(
+				pipeline.addLast("UP_FRAME_HANDLER", new LengthFieldBasedFrameDecoder(//LengthFieldBaseFrameDecoder解码器
 						Integer.MAX_VALUE, 0, 2, 0, 2));
 				pipeline.addLast("clientHandler", handler);
 				return pipeline;

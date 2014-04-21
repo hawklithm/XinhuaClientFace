@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import cn.mars.gxkl.UI.utils.EquipmentBriefPanel;
 import cn.mars.gxkl.UI.utils.HistoryPanel;
+import cn.mars.gxkl.UI.utils.ProcessHandlingPanel;
 import cn.mars.gxkl.UI.utils.SearchPanel;
 import cn.mars.gxkl.UI.utils.SectionBriefPanel;
 import cn.mars.gxkl.UI.utils.StaffInfoPanel;
@@ -34,7 +35,14 @@ public class ManagerUI extends JFrame {
 	
 	private StaffInfoPanel staffInfoPanel;
 	private SectionBriefPanel sectionBriefPanel;
-	private WorkerHandlingPanel workerHandlingPanel;
+	private ProcessHandlingPanel processHandlingPanel;
+	public ProcessHandlingPanel getProcessHandlingPanel() {
+		return processHandlingPanel;
+	}
+
+	public void setProcessHandlingPanel(ProcessHandlingPanel processHandlingPanel) {
+		this.processHandlingPanel = processHandlingPanel;
+	}
 	private SearchPanel searchPanel;
 	private HistoryPanel historyPanel;
 	
@@ -67,10 +75,10 @@ public class ManagerUI extends JFrame {
 		right.setPreferredSize(new Dimension((int)(width*0.77),height));
 //		right.add(new HandlingPanel((int)(width*0.77),(int)(height*0.6)));
 		
-		workerHandlingPanel.setWidth((int)(width*0.77));
-		workerHandlingPanel.setHeight((int)(height*0.6));
-		workerHandlingPanel.initialization();
-		right.add(workerHandlingPanel);
+		processHandlingPanel.setWidth((int)(width*0.77));
+		processHandlingPanel.setHeight((int)(height*0.6));
+		processHandlingPanel.initialization();
+		right.add(processHandlingPanel);
 	//	right.add(new WorkerHandlingPanel((int)(width*0.77),(int)(height*0.6)));
 		
 		
@@ -111,8 +119,8 @@ public class ManagerUI extends JFrame {
 		detailValue.add("30g/ml");
 		Equipment equipment1=new Equipment();
 		equipment1.setType("清洗消毒机");
-		equipment1.setName("清洗消毒test1号机");
-		equipment1.setId("12345678901");
+		equipment1.setName("清洗消毒1号机");
+		equipment1.setEquipmentId(1234567890);
 		equipment1.setCapacity("40把");
 		equipment1.setGmtCreate(new Date("2014/3/4 15:00:39"));
 		equipment1.setGmtModified(new Date("2014/3/5 16:00:48"));
@@ -123,7 +131,7 @@ public class ManagerUI extends JFrame {
 		Equipment equipment2=new Equipment();
 		equipment2.setType("清洗消毒机");
 		equipment2.setName("清洗消毒2号机");
-		equipment2.setId("12345678902");
+		equipment2.setEquipmentId(1234567891);
 		equipment2.setCapacity("40把");
 		equipment2.setGmtCreate(new Date("2014/3/4 15:00:39"));
 		equipment2.setGmtModified(new Date("2014/3/5 16:00:48"));
@@ -194,12 +202,6 @@ public class ManagerUI extends JFrame {
 	}
 	public StaffInfoPanel getStaffInfoPanel(){
 		return staffInfoPanel;
-	}
-	public void setWorkerHandlingPanel(WorkerHandlingPanel workerHandlingPanel){
-		this.workerHandlingPanel=workerHandlingPanel;
-	}
-	public WorkerHandlingPanel getworkerHandlingPanel(){
-		return workerHandlingPanel;
 	}
 	public void setSectionBriefPanel(SectionBriefPanel sectionBriefPanel){
 		this.sectionBriefPanel=sectionBriefPanel;

@@ -21,13 +21,14 @@ import cn.mars.gxkl.utils.Pair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
-
+/*
+ * 流水线过程信息执行器
+ */
 public class ProcessInfoExecutor implements Executor,Sender {
-	
 	private boolean isInitialFirst=true;
 	private ClientService client;
 	private String targetUrl;
-	private String processName=Constant.processName[0];
+	private String processName=Constant.processName[0];   //默认是分类
 	private Msg2Face msg2Face;
 
 	@Override
@@ -173,7 +174,6 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		this.targetUrl = targetUrl;
 	}
 
-	@Override
 	public void query(Object object) {
 		processName=(String)object;
 		LiveMessageProtocol msg=new LiveMessageProtocol();

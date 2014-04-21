@@ -176,7 +176,7 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 			addString(index, info.getLast());
 			itemInfo.add(info.getFirst());
 		}
-//		statisticInfo.setText(itemInfo);
+		statisticInfo.setText(itemInfo);
 	}
 
 	public int getWidth() {

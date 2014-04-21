@@ -9,6 +9,8 @@ import sun.security.krb5.internal.Ticket;
 public class HandleDetails {
 
 	private Map<String, Object> condition;
+	//信息的添加，移出，包的添加、包的移出
+	//仪器的RFid号、员工的员工号、订单的RFID
 	final private String ITEM_ADD = "itemAdd", ITEM_REMOVE = "itemRemove",
 			PACKAGE_ADD = "packageAdd", PACKAGE_REMOVE = "packageRemove",
 			MACHINE_RFID = "machineRFID", STAFF_RFID = "staffRFID", CUBAGE = "cubage",

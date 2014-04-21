@@ -14,7 +14,7 @@
 		<constructor-arg ref="dataCenter" />
 	  	<property name="historyPanel" ref="historyPanel_worker"/> 
 	 	<property name="equipmentBriefPanel" ref="equipmentbriefPanel_worker" />
-	 	<property name="workerHandlingPanel" ref="workerhandlingPanel_worker" />
+	 	<property name="workerHandlingPanel" ref="workerhandlingPanel" />
 	 	<property name="searchPanel" ref="searchpanel_worker"/>
 	 	<property name="staffInfoPanel" ref="staffpanel_worker"/>
 	</bean>
@@ -23,7 +23,7 @@
 	    <constructor-arg ref="dataCenter" />
 	    <property name="historyPanel" ref="historyPanel_manager"/> 
 	 	<property name="sectionBriefPanel" ref="sectionBriefPanel_manager" />
-	 	<property name="workerHandlingPanel" ref="workerhandlingPanel_manager" />
+	 	<property name="processHandlingPanel" ref="processhandlingPanel" />
 	 	<property name="searchPanel" ref="searchpanel_manager" />
 	 	<property name="staffInfoPanel" ref="staffpanel_manager" />
 	</bean>
@@ -32,7 +32,7 @@
 	</bean>
 	<bean id="equipmentbriefPanel_worker" class="cn.mars.gxkl.UI.utils.EquipmentBriefPanel">
 	</bean>
-	<bean id="workerhandlingPanel_worker" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel">
+	<bean id="processhandlingPanel" class="cn.mars.gxkl.UI.utils.ProcessHandlingPanel">
 	</bean>
 	<bean id="searchpanel_worker" class="cn.mars.gxkl.UI.utils.SearchPanel">
 	</bean>
@@ -43,7 +43,7 @@
 	</bean>
 	<bean id="sectionBriefPanel_manager" class="cn.mars.gxkl.UI.utils.SectionBriefPanel">
 	</bean>
-	<bean id="workerhandlingPanel_manager" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel">
+	<bean id="workerhandlingPanel" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel">
 	</bean>
 	<bean id="searchpanel_manager" class="cn.mars.gxkl.UI.utils.SearchPanel">
 	</bean>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Section extends Protocol {
+	//名称，容量，管理员，管理员的ID，配置的内容
 	private String NAME = "name", CAPACITY = "capacity", MANAGER = "manager",
 			MANAGERID = "managerID",EQUIPMENTS="equipments";
 

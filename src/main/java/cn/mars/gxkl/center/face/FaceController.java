@@ -13,6 +13,7 @@ import cn.mars.gxkl.utils.Pair;
 
 public class FaceController implements DetailContoller,MachineInfoController,RealTimeTabController,WorkerBaseInfoController{
 	
+	//主面板的控制
 	private WorkerUI face;
 
 	@Override

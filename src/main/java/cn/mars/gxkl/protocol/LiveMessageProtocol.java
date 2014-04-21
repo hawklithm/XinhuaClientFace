@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class LiveMessageProtocol {
 	
-	Map<String,Object> condition;
+	Map<String,Object> condition;//信息协议，包括流程名称，流程的ID,处理的具体信息
 	
 	
 	final private String PROCESSNAME = "processName",ID = "id",RETVALUE = "retValue";

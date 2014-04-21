@@ -2,7 +2,7 @@ package com.multiagent.hawklithm.item.dataobject;
 
 import java.util.Date;
 
-public class ItemInfoDO {
+public class ItemInfoDO {  //∂©µ•–≈œ¢
 	private Integer itemId;
 	private Date gmtCreate;
 	private Date gmtModified;

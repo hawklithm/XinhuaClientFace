@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/*
+ * 流程操作协议
+ */
 public class LiveMessageProtocol {
 	
 	Map<String,Object> condition;

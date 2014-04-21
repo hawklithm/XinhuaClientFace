@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Protocol {
-	
+	//协议通过的Map,通过标记，来最终查找对应的实际内容
 	private Map<String, Object> condition = new HashMap<String,Object>();
 	
 	public Protocol() {}

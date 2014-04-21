@@ -18,7 +18,13 @@ import cn.mars.gxkl.utils.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
+/*
+ * 消息通知执行器
+ * Executor主要是用来确定解析协议并且渲染界面、发送初始请求，与服务器进行连接
+ * Sender发送查询更新功能
+ * 
+ * 
+ */
 public class AnnouncementExecutor implements Executor,Sender{
 
 	private boolean isInitialFirst=true;
@@ -33,7 +39,10 @@ public class AnnouncementExecutor implements Executor,Sender{
 	public void sendInitRequest() {
 		client.sendMessage(encoder(new LiveMessageProtocol()));
 	}
-
+/*
+ * 解码(non-Javadoc)
+ * @see cn.mars.gxkl.center.communication.Executor#decode(cn.mars.gxkl.protocol.AppProtocol)
+ */
 	@Override
 	public void decode(AppProtocol response) {
 		List<Pair<Date, String>>pairs=translate(response);
@@ -76,7 +85,9 @@ public class AnnouncementExecutor implements Executor,Sender{
 		return null;
 	}
 
-	
+/*
+ * 编码
+ */
 	private String encoder(LiveMessageProtocol liveMsg) {
 //		LiveMessageProtocol liveMsg = new LiveMessageProtocol();
 //		liveMsg.setProcessName(processNow);

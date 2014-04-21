@@ -9,15 +9,9 @@ import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.utils.Pair;
 
 /**
-<<<<<<< .mine
  *控制中心 
  * @author hawklithm
  * 2014-4-11下午5:56:56
-=======
- * 
- * 交互中心
- * @author hawklithm 2014-3-30锟斤拷锟斤拷2:12:39
->>>>>>> .r355
  */
 public class CommunicationCenter implements Runnable {
 
@@ -72,7 +66,7 @@ public class CommunicationCenter implements Runnable {
 			infoHandler();
 		}
 	}
-//消息处理
+
 	private void infoHandler() {
 //		AppProtocol response = new AppProtocol();// client.getMessage();
 		AppProtocol response =client.getMessage();
