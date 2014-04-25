@@ -99,7 +99,7 @@ public class ManagerUI extends JFrame {
 	}
 	public void testData(){
 		Person staff = new Person();
-		staff.setID("201106004000");
+		//staff.setID("201106004000");
 		staff.setGender("ÄĞ");
 		staff.setImgPath("imgs/head.png");
 		staff.setName("ÕÅÈı");

@@ -20,7 +20,6 @@ import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 
 import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.UI.dataobject.ProcessItemInfoHandler;
-import cn.mars.gxkl.testData.ItemInfoDOData;
 import cn.mars.gxkl.utils.Pair;
 
 public class ProcessHandlingPanel extends JPanel implements Msg2Face {
@@ -80,7 +79,7 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 //		this.add(right);
 		detailedComboBox = new DetailedComboBox((int) (width * 0.57), height,handler);
 		this.add(detailedComboBox);
-		setText(new ItemInfoDOData().getData());
+//		setText(new ItemInfoDOData().getData());
 	}
 
 	private JPanel getLeft(int width, int height) {
@@ -183,7 +182,7 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 
 	@Override
 	public void setText(List<?> msg) {
-		handler.addItemVector((List<ItemInfoDO>)msg);
+		handler.addItemVector((List<Pair<Integer, ItemInfoDO>>)msg);
 		List<Pair<String,List<Integer>>> ret = handler.getEquipmentData();
 		for(Pair<String,List<Integer>> pair : ret) {
 			String name = pair.getFirst();

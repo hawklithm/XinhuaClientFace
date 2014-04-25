@@ -89,7 +89,7 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		initRight((int) (width * 0.57), height);
 		this.add(detailPane);
 //		this.add(detailedComboBox);
-		setText(new ItemInfoDOData().getData());
+//		setText(new ItemInfoDOData().getData());
 	}
 
 	private JPanel getLeft(int width, int height) {

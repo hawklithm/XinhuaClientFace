@@ -22,6 +22,13 @@ import cn.mars.gxkl.protocol.Person;
 
 /**
  * @author 
+ * dataCenter数据中心处理
+ * 员工信息
+ * 设备概要信息
+ * 工人处理信息
+ * 搜索框
+ * 历史记录
+ * 默认的长度和宽度
  * 
  */
 public class WorkerUI extends JFrame {
@@ -98,7 +105,7 @@ public class WorkerUI extends JFrame {
 
 	private void testData(){
 		Person staff = new Person();
-		staff.setID("201106004000");
+		//staff.setID("201106004000");
 		staff.setGender("男");
 		staff.setImgPath("imgs/head.png");
 		staff.setName("李华");

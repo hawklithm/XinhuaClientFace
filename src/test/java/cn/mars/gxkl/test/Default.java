@@ -74,10 +74,10 @@ public class Default extends JFrame {
 	}
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring-beans.xml");
-		Default defaultUI = (Default)context.getBean("testUI");
+		//Default defaultUI = (Default)context.getBean("testUI");
 //		StaffInfoPanel staffInfoPanel = (StaffInfoPanel)context.getBean("staffInfoPanel");
 //		defaultUI.add(staffInfoPanel);
-		defaultUI.showUp();
+		//defaultUI.showUp();
 	}
 
 	

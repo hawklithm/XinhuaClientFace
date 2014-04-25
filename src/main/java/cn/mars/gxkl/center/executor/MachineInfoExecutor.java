@@ -12,16 +12,17 @@ import cn.mars.gxkl.netty.ClientService;
 import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.protocol.Equipment;
 import cn.mars.gxkl.protocol.FrontEndingCommunicationProtocol;
+import cn.mars.gxkl.sender.Sender4Face;
 import cn.mars.gxkl.utils.Jsoner;
-import cn.mars.gxkl.utils.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 /*
  * 机器信息执行器
+ * targetUrl代表的本执行器处理的URL
  * 
  */
-public class MachineInfoExecutor implements Executor,Sender {
+public class MachineInfoExecutor implements Executor,Sender,Sender4Face {
 
 	private boolean isInitialFirst=true;
 	private ClientService client;
@@ -133,6 +134,12 @@ public class MachineInfoExecutor implements Executor,Sender {
 
 	public void setMsg2Face(Msg2Face msg2Face) {
 		this.msg2Face = msg2Face;
+	}
+
+	@Override
+	public void send(String msg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -11,8 +11,8 @@ public class Constant {
 		"sterilestorageprocess"
 	};
 	//״̬
-	public static final String ITEM_STATUS_TODO = "todo",
-							   ITEM_STATUS_DOING = "doing",
-							   ITEM_STATUS_DONE = "done";
+	public static final int ITEM_STATUS_TODO = 0x00,
+							   ITEM_STATUS_DOING = 0x01,
+							   ITEM_STATUS_DONE = 0x02;
 	
 }

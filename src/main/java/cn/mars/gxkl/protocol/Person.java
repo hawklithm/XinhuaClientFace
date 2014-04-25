@@ -13,7 +13,6 @@ public class Person extends Protocol {
 	public Person(Map<String,Object> condition) {
 		super(condition);
 	}
-	
 	public String getImgPath() {
 		return (String)getProperty(PATH);
 	}
@@ -39,7 +38,7 @@ public class Person extends Protocol {
 		}
 	}
 	
-	public void setID(String id) {
+	public void setID(Integer id) {
 		setProperty(ID,id);
 	}
 	

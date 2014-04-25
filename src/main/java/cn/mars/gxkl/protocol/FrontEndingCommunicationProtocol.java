@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/*
+ * 前后台交互协议。包括执行的类型
+ * 数据库表的类型
+ * 】状态
+ * 长度、偏移量
+ * 
+ */
 public class FrontEndingCommunicationProtocol<T> extends Protocol {
 
 	private static final String OPERATE_TYPE = "operateType",

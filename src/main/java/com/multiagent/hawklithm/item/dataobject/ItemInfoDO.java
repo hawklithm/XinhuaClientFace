@@ -1,6 +1,7 @@
 package com.multiagent.hawklithm.item.dataobject;
 
 import java.util.Date;
+import java.util.Map;
 
 public class ItemInfoDO {  //订单信息
 	private Integer itemId;
@@ -12,11 +13,27 @@ public class ItemInfoDO {  //订单信息
 	private String manufacturer;
 	private boolean interconvertible;
 	private String remark;
-	private String status;
-	public String getStatus() {
+	private int status;
+	
+	public ItemInfoDO(){}
+	
+	public ItemInfoDO(Map<String,Object> map) {
+		this.setGmtCreate(new Date(map.get("gmtCreate").toString()));
+		this.setGmtModified(new Date(map.get("gmtModified").toString()));
+		this.setHospitalId((Integer)map.get("hospitalId"));
+		this.setInterconvertible((boolean)map.get("interconvertible"));
+		this.setItemId((int) Float.parseFloat(map.get("itemId").toString()));
+		this.setItemName((String)map.get("itemName"));
+		this.setItemType((int) Float.parseFloat(map.get("itemType").toString()));
+		this.setManufacturer((String)map.get("manufacturer"));
+		this.setRemark((String)map.get("remark"));
+		this.setStatus((int) Float.parseFloat(map.get("status").toString()));
+	}
+	
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 	public Integer getItemId() {

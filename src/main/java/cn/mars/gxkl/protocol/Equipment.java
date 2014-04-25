@@ -6,6 +6,15 @@ import java.util.Map;
 
 /**
  * @author afsd-pc 设备描述类 包含对应参数
+ * 生产厂家
+ * 详情
+ * 价格
+ * 购买日期
+ * 数量
+ *ID
+ *类型
+ *表的创建时间
+ *表的更新时间
  */
 public class Equipment extends Protocol {
 	private String MANUFACTURER = "manufacturer", DETAIL = "detail",

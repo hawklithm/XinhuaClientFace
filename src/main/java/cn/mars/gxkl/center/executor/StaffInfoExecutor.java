@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class StaffInfoExecutor implements Executor,Sender{
-	private boolean isInitialFirst=true;
+	private boolean isInitialFirst=false;
 	private ClientService client;
 	private String targetUrl="/StaffManager";
 	private int targetMachineRFID=1025;
@@ -31,7 +31,7 @@ public class StaffInfoExecutor implements Executor,Sender{
 
 	@Override
 	public void sendInitRequest() {
-		query(new Integer(targetMachineRFID));
+//		query(new Integer(targetMachineRFID));
 		return;
 	}
 	
@@ -58,6 +58,10 @@ public class StaffInfoExecutor implements Executor,Sender{
 		}
 		return null;
 	}
+	/*
+	 * rows存放的是实例
+	 * condition存放的是操作类型
+	 */
 	private String encoder(Person liveMsg,String operateType) {
 //		LiveMessageProtocol liveMsg = new LiveMessageProtocol();
 //		liveMsg.setProcessName(processNow);
@@ -75,16 +79,20 @@ public class StaffInfoExecutor implements Executor,Sender{
 		 msg.setTargetUrl(targetUrl);
 		msg.setContent(gson.toJson(content));
 		msg.setAuthenticate("");
+		System.out.println("卧槽"+gson.toJson(msg));
+		if(gson.toJson(msg)==null){
+			System.out.println("卧槽"+"居然是控制");
+		}
 		return gson.toJson(msg);
 	}
 
-	public ClientService getClient() {
-		return client;
-	}
+//	public ClientService getClient() {
+//		return client;
+//	}
 
-	public void setClient(ClientService client) {
-		this.client = client;
-	}
+//	public void setClient(ClientService client) {
+//		this.client = client;
+//	}
 
 	public String getTargetUrl() {
 		return targetUrl;
@@ -97,10 +105,12 @@ public class StaffInfoExecutor implements Executor,Sender{
 
 	@Override
 	public void query(Object object) {
-		Integer id=(Integer) object;
+		Integer id=(Integer)object;
 		Person person=new Person();
-		person.setEquipmentId(id);
+		person.setID(id);
+		System.out.println("开始准备发送");
 		client.sendMessage(encoder(person,"operateQuery"));
+		System.out.println("成功了");
 	}
 
 	@Override
@@ -123,6 +133,14 @@ public class StaffInfoExecutor implements Executor,Sender{
 
 	public void setMsg2Face(Msg2Face msg2Face) {
 		this.msg2Face = msg2Face;
+	}
+
+	public ClientService getClient() {
+		return client;
+	}
+
+	public void setClient(ClientService client) {
+		this.client = client;
 	}
 
 

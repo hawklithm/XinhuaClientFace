@@ -171,6 +171,7 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 	@Override
 	public void setText(List<?> msg) {
 		List<Object> itemInfo = new ArrayList<Object>();
+		System.out.println("setText start");
 		for (Object object : msg) {
 			Pair<ItemInfoDO, String> info = (Pair<ItemInfoDO, String>) object;
 			addString(index, info.getLast());

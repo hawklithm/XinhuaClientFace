@@ -21,16 +21,18 @@ import cn.mars.gxkl.utils.Pair;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
+import com.multiagent.hawklithm.item.dataobject.MachinedItemInfoDO;
+
 /*
  * 流水线过程信息执行器
  */
-public class ProcessInfoExecutor implements Executor,Sender {
-	private boolean isInitialFirst=true;
+public class ProcessInfoExecutor implements Executor, Sender {
+	private boolean isInitialFirst = true;
 	private ClientService client;
 	private String targetUrl;
-	private String processName=Constant.processName[0];   //默认是分类
+	private String processName = Constant.processName[0]; // 默认是分类
 	private Msg2Face msg2Face;
-
+	
 	@Override
 	public boolean isInitialFirst() {
 		return isInitialFirst;
@@ -38,27 +40,29 @@ public class ProcessInfoExecutor implements Executor,Sender {
 
 	@Override
 	public void sendInitRequest() {
-		LiveMessageProtocol msg=new LiveMessageProtocol();
+		LiveMessageProtocol msg = new LiveMessageProtocol();
 		msg.setProcessName(processName);
-		client.sendMessage(encoder(msg,true));
+		client.sendMessage(encoder(msg, true));
 	}
 
 	@Override
 	public void decode(AppProtocol response) {
-		List<Pair<ItemInfoDO, String>>pairs=translate(response);
-		for (int i=0;i<pairs.size();i++){
-			System.out.println(pairs.get(i).getFirst().toString()+": "+pairs.get(i).getLast());
+		List<Pair<MachinedItemInfoDO, String>> pairs = translate(response);
+		for (int i = 0; i < pairs.size(); i++) {
+			System.out.println(pairs.get(i).getFirst().toString() + ": "
+					+ pairs.get(i).getLast());
 		}
 		msg2Face.setText(pairs);
 	}
-	
-	private List<Pair<ItemInfoDO, String>> translate(AppProtocol response){
+
+	private List<Pair<MachinedItemInfoDO, String>> translate(AppProtocol response) {
 		try {
-			List<Pair<ItemInfoDO, String>> ans = new ArrayList<Pair<ItemInfoDO, String>>();
-			FrontEndingCommunicationProtocol<LiveMessageProtocol> msgContent = Jsoner.fromJson(
-					response.getResponse(),
-					new TypeToken<FrontEndingCommunicationProtocol<LiveMessageProtocol>>() {
-					}.getType());
+			List<Pair<MachinedItemInfoDO, String>> ans = new ArrayList<Pair<MachinedItemInfoDO, String>>();
+			FrontEndingCommunicationProtocol<LiveMessageProtocol> msgContent = Jsoner
+					.fromJson(
+							response.getResponse(),
+							new TypeToken<FrontEndingCommunicationProtocol<LiveMessageProtocol>>() {
+							}.getType());
 			List<LiveMessageProtocol> liveMessage = msgContent.getRows();
 			for (int i = 0; i < liveMessage.size(); i++) {
 				LiveMessageProtocol pro = liveMessage.get(i);
@@ -73,10 +77,19 @@ public class ProcessInfoExecutor implements Executor,Sender {
 					}
 					int rfid = handleDetails.getMachineRfid();
 					try {
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemAdd(), "进入设备", "器械"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getItemRemove(), "离开设备", "器械"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageAdd(), "进入设备","手术包"));
-						ans.addAll(handleRetValue(handleDetails.getTimeStamp(), handleDetails.getPackageRemove(), "离开设备","手术包"));
+						ans.addAll(handleRetValue(handleDetails.getTimeStamp(),
+								handleDetails.getMachineRfid(),
+								handleDetails.getStaffRFID(),
+								handleDetails.getItemInfo(),
+								handleDetails.getSourceType()));
+						// ans.addAll(handleRetValue(handleDetails.getTimeStamp(),
+						// handleDetails.getItemAdd(), "进入设备", "器械"));
+						// ans.addAll(handleRetValue(handleDetails.getTimeStamp(),
+						// handleDetails.getItemRemove(), "离开设备", "器械"));
+						// ans.addAll(handleRetValue(handleDetails.getTimeStamp(),
+						// handleDetails.getPackageAdd(), "进入设备","手术包"));
+						// ans.addAll(handleRetValue(handleDetails.getTimeStamp(),
+						// handleDetails.getPackageRemove(), "离开设备","手术包"));
 					} catch (NullPointerException e) {
 						continue;
 					}
@@ -88,6 +101,7 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		}
 		return null;
 	}
+
 	private ItemInfoDO map2ItemInfoDO(Map<String, Object> map) {
 		ItemInfoDO ret = new ItemInfoDO();
 
@@ -122,22 +136,37 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		return ret;
 	}
 
-	private List<Pair<ItemInfoDO, String>> handleRetValue(Date time, List<Object> rfid, String dir,
-			String type) {
-		List<Pair<ItemInfoDO, String>> ans = new ArrayList<Pair<ItemInfoDO, String>>();
-		int size = rfid.size();
-		for (int i = 0; i < size; i++) {
-			ItemInfoDO itemInfo = map2ItemInfoDO((Map<String, Object>) rfid.get(i));
-
-			ans.add(new Pair<ItemInfoDO, String>(itemInfo,"["+ itemInfo.getGmtCreate().toString()+"]"+ type + " " + itemInfo.getItemName() + " " + dir
-					+ " RFID:" + itemInfo.getItemId().toString()));
+	private List<Pair<MachinedItemInfoDO, String>> handleRetValue(Date time, int mRfid,
+			int sRfid, List<Map<String,Object>> maps, String sourceType) {
+		List<Pair<MachinedItemInfoDO, String>> ans = new ArrayList<Pair<MachinedItemInfoDO, String>>();
+		for (Map<String,Object> map : maps) {
+			MachinedItemInfoDO item = new MachinedItemInfoDO(map,mRfid);
+			ans.add(new Pair<MachinedItemInfoDO, String>(item, "[" + time.toString()
+					+ "]" + item.getItemName() + " " + item.getStatus()
+					+ " RFID:" + item.getItemId()));
 		}
 		return ans;
 	}
-	
-	private String encoder(LiveMessageProtocol liveMsg,boolean keepAlive) {
-//		LiveMessageProtocol liveMsg = new LiveMessageProtocol();
-//		liveMsg.setProcessName(processNow);
+
+	private List<Pair<ItemInfoDO, String>> handleRetValue(Date time,
+			List<Object> rfid, String dir, String type) {
+		List<Pair<ItemInfoDO, String>> ans = new ArrayList<Pair<ItemInfoDO, String>>();
+		int size = rfid.size();
+		for (int i = 0; i < size; i++) {
+			ItemInfoDO itemInfo = map2ItemInfoDO((Map<String, Object>) rfid
+					.get(i));
+
+			ans.add(new Pair<ItemInfoDO, String>(itemInfo, "["
+					+ itemInfo.getGmtCreate().toString() + "]" + type + " "
+					+ itemInfo.getItemName() + " " + dir + " RFID:"
+					+ itemInfo.getItemId().toString()));
+		}
+		return ans;
+	}
+
+	private String encoder(LiveMessageProtocol liveMsg, boolean keepAlive) {
+		// LiveMessageProtocol liveMsg = new LiveMessageProtocol();
+		// liveMsg.setProcessName(processNow);
 		List<LiveMessageProtocol> rows = new ArrayList<LiveMessageProtocol>();
 		rows.add(liveMsg);
 		FrontEndingCommunicationProtocol<LiveMessageProtocol> content = new FrontEndingCommunicationProtocol<LiveMessageProtocol>();
@@ -148,11 +177,11 @@ public class ProcessInfoExecutor implements Executor,Sender {
 		content.setRows(rows);
 		Gson gson = new Gson();
 		AppProtocol msg = new AppProtocol();
-//		msg.setTargetUrl(url);
-		 msg.setTargetUrl(targetUrl);
+		// msg.setTargetUrl(url);
+		msg.setTargetUrl(targetUrl);
 		msg.setContent(gson.toJson(content));
 		msg.setAuthenticate("");
-		if (keepAlive){
+		if (keepAlive) {
 			msg.setKeepAlive("keep_alive_true");
 		}
 		return gson.toJson(msg);
@@ -175,16 +204,16 @@ public class ProcessInfoExecutor implements Executor,Sender {
 	}
 
 	public void query(Object object) {
-		processName=(String)object;
-		LiveMessageProtocol msg=new LiveMessageProtocol();
+		processName = (String) object;
+		LiveMessageProtocol msg = new LiveMessageProtocol();
 		msg.setProcessName(processName);
-		client.sendMessage(encoder(msg,true));
+		client.sendMessage(encoder(msg, true));
 	}
 
 	@Override
 	public void update(Object object) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String getProcessName() {

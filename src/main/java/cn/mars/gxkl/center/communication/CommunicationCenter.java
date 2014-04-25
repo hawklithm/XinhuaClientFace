@@ -9,22 +9,21 @@ import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.utils.Pair;
 
 /**
-<<<<<<< .mine
- *控制中心 
- * @author hawklithm
- * 2014-4-11下午5:56:56
-=======
  * 
  * 交互中心
+<<<<<<< .mine
+ *map包含了URL和相应的处理Executor
+=======
+ * 
+>>>>>>> .r363
  * @author hawklithm 2014-3-30锟斤拷锟斤拷2:12:39
->>>>>>> .r355
+ * 当接受到了消息以后，可以根据targetUrl来找到响应的Executor来进行处理
  */
 public class CommunicationCenter implements Runnable {
 
 	private ClientService client;
 	private boolean closed = false;
 	private Map<String, Executor> map = new HashMap<String, Executor>();
-
 
 	public void initialization() {
 		System.out.println("connecting");
@@ -33,7 +32,6 @@ public class CommunicationCenter implements Runnable {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -72,8 +70,9 @@ public class CommunicationCenter implements Runnable {
 			infoHandler();
 		}
 	}
-//消息处理
-	private void infoHandler() {
+	
+	// 消息处理
+	public void infoHandler() {
 //		AppProtocol response = new AppProtocol();// client.getMessage();
 		AppProtocol response =client.getMessage();
 		if (response == null) {
@@ -88,6 +87,7 @@ public class CommunicationCenter implements Runnable {
 	public void initRequest(Executor executor) {
 		executor.sendInitRequest();
 	}
+	
 
 	public void execute(Executor executor, String message) {
 	}
@@ -95,8 +95,6 @@ public class CommunicationCenter implements Runnable {
 	public void closeConnection() {
 		closed = true;
 	}
-
-
 
 	public Map<String, Executor> getMap() {
 		return map;
@@ -106,7 +104,6 @@ public class CommunicationCenter implements Runnable {
 		this.map = map;
 	}
 
-
 	public ClientService getClient() {
 		return client;
 	}
@@ -114,5 +111,4 @@ public class CommunicationCenter implements Runnable {
 	public void setClient(ClientService client) {
 		this.client = client;
 	}
-
 }

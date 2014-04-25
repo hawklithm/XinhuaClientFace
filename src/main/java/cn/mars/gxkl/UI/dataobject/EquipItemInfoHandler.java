@@ -41,7 +41,7 @@ public class EquipItemInfoHandler implements Rfid2Item,ItemsAddition {
 			data.add(0);
 			data.add(0);
 		}
-		String status = item.getStatus();
+		int status = item.getStatus();
 		switch(status) {
 			case ITEM_STATUS_DOING:data.set(1, data.get(1)+1);break;
 			case ITEM_STATUS_DONE:data.set(2, data.get(2)+1);

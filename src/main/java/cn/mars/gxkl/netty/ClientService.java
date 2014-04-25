@@ -23,16 +23,19 @@ import com.google.gson.Gson;
  */
 public class ClientService {
 	//段口号，地址，管道，管道处理、连接与否
-	private int port;
+	private int port=48800;
 	private String address;
-	private Channel channel;
-	private NettyHandler handler;
+	private static Channel channel;
+	public NettyHandler handler;
 	private boolean connected = false,ack = false,connectionStatus = true;//连接与否，消息的相应状态，连接状态
 	ConcurrentLinkedQueue<AppProtocol> infoCache;//信息的缓存
 	ConcurrentLinkedQueue<AppProtocol> emergCache;
-	
+	public ClientService(){
+		this.address = "127.0.0.1";
+		initialization();
+	}
 	public ClientService(int port) {
-		this.port = port;
+		this.port =port;
 		this.address = "127.0.0.1";
 		initialization();
 	}
@@ -54,7 +57,7 @@ public class ClientService {
 			@Override
 			public void messageHandler(String message) {
 				// TODO Auto-generated method stub
-				System.out.println("Client recieve: "+message);
+				System.out.println("客户端接收到的信息是:"+message);
 //				AppProtocol response = decoder(message);
 				Gson gson = new Gson();
 				AppProtocol response = gson.fromJson(message, AppProtocol.class);
@@ -73,10 +76,18 @@ public class ClientService {
 					infoCache.add(response);
 				}
 			}
+		
 			@Override
 			public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-				System.out.println("Connect successfullly!");
+				if(e.getChannel()==null){
+					System.out.println("卧槽，怎么可能失控的呢");
+				}
+	
+				
+				System.out.println("connect successfullly!");
+				System.out.println("i'm client!");
 				channel = e.getChannel();
+				System.out.println("channel是否为空"+channel==null);
 				connected = true;
 			}
 		};
@@ -86,6 +97,9 @@ public class ClientService {
 			public ChannelPipeline getPipeline() throws Exception {
 				// TODO Auto-generated method stub
 				ChannelPipeline pipeline = Channels.pipeline();
+				// pipeline.addLast("encode", new StringEncoder());
+				    // 接受信息的时候会被处理
+			//pipeline.addLast("decode", new StringDecoder());
 				pipeline.addLast("DOWN_FRAME_HANDLER", new LengthFieldPrepender(2, false));
 				pipeline.addLast("UP_FRAME_HANDLER", new LengthFieldBasedFrameDecoder(//LengthFieldBaseFrameDecoder解码器
 						Integer.MAX_VALUE, 0, 2, 0, 2));
@@ -93,7 +107,7 @@ public class ClientService {
 				return pipeline;
 			}
 		});
-		bootstrap.connect(new InetSocketAddress(address, port));
+		bootstrap.connect(new InetSocketAddress(address,port));
 	}
 	
 	public boolean getACK() {
@@ -111,7 +125,9 @@ public class ClientService {
 	public void sendMessage(String msg) {
 		ack = false;
 		connectionStatus = true;
-		handler.sendMessage(msg, channel);
+		System.out.println("正在发送");
+		handler.sendMessage(msg,channel);
+		System.out.println("发送成功");
 	}
 	
 	public AppProtocol getMessage() {
@@ -137,11 +153,7 @@ public class ClientService {
 	}
 	
 	public void closeClient() {
-		/***
-		 * 
-		 *鍏抽棴
-		 * 
-		 ***/
+	System.out.println("连接关闭");
 	}
 	
 }

@@ -33,7 +33,7 @@ public class ItemInfoDOData {
 			item.setItemType(x);
 			item.setManufacturer("’‚ « ≤√¥");
 			item.setRemark("remark");
-			String status = "";
+			int status = 0;
 			switch(item.getItemId()%3) {
 			case 0: status = Constant.ITEM_STATUS_DOING;break;
 			case 1: status = Constant.ITEM_STATUS_DONE;break;
