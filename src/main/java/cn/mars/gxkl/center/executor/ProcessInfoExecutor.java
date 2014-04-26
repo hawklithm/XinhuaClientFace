@@ -23,6 +23,8 @@ import com.google.gson.reflect.TypeToken;
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 import com.multiagent.hawklithm.item.dataobject.MachinedItemInfoDO;
 
+import static cn.mars.gxkl.constant.Constant.*;
+
 /*
  * 流水线过程信息执行器
  */
@@ -141,9 +143,16 @@ public class ProcessInfoExecutor implements Executor, Sender {
 		List<Pair<MachinedItemInfoDO, String>> ans = new ArrayList<Pair<MachinedItemInfoDO, String>>();
 		for (Map<String,Object> map : maps) {
 			MachinedItemInfoDO item = new MachinedItemInfoDO(map,mRfid);
-			ans.add(new Pair<MachinedItemInfoDO, String>(item, "[" + time.toString()
-					+ "]" + item.getItemName() + " " + item.getStatus()
-					+ " RFID:" + item.getItemId()));
+			String msg = "[" + time.toString()
+					+ "]" + item.getItemName() + " ";
+			String status = "状态：";
+			switch(item.getStatus()) {
+				case ITEM_STATUS_TODO: status+="等待处理";break;
+				case ITEM_STATUS_DOING: status+="正在处理";break;
+				case ITEM_STATUS_DONE: status+="处理完成";
+			}
+			msg += (status+" "+"机器RFID："+item.getMachineId()+ " RFID:" + item.getItemId());
+			ans.add(new Pair<MachinedItemInfoDO, String>(item, msg));
 		}
 		return ans;
 	}

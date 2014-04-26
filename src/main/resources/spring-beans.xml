@@ -41,6 +41,7 @@
 	</bean>
 
 	<bean id="historyPanel_manager" class="cn.mars.gxkl.UI.utils.HistoryPanel">
+		<property name="statisticInfo" ref="processhandlingPanel" />
 	</bean>
 	<bean id="sectionBriefPanel_manager" class="cn.mars.gxkl.UI.utils.SectionBriefPanel">
 	</bean>
@@ -75,7 +76,7 @@
 
 	<bean id="processInfoExecutor" class="cn.mars.gxkl.center.executor.ProcessInfoExecutor">
 		<property name="targetUrl" value="/ProcessInfoManager" />
-		<property name="msg2Face" ref="historyPanel_worker" />
+		<property name="msg2Face" ref="historyPanel_manager" />
 	</bean>
 	<bean id="announcementExecutor" class="cn.mars.gxkl.center.executor.AnnouncementExecutor">
 		<property name="targetUrl" value="/Announcement" />
@@ -83,7 +84,7 @@
 
 	<bean id="staffInfoExecutor" class="cn.mars.gxkl.center.executor.StaffInfoExecutor">
 		<property name="targetUrl" value="/StaffManager" />
-		<property name="msg2Face" ref="staffpanel_worker" />
+		<property name="msg2Face" ref="staffpanel_manager" />
 		<property name="targetMachineRFID" value="1025" />
 	</bean>
 	<bean id="login" class="cn.mars.gxkl.UI.Login"></bean>

@@ -21,6 +21,7 @@ import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.utils.Pair;
 
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
+import com.multiagent.hawklithm.item.dataobject.MachinedItemInfoDO;
 
 /**
  * Copyright 2014 MARS
@@ -173,7 +174,7 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 		List<Object> itemInfo = new ArrayList<Object>();
 		System.out.println("setText start");
 		for (Object object : msg) {
-			Pair<ItemInfoDO, String> info = (Pair<ItemInfoDO, String>) object;
+			Pair<MachinedItemInfoDO, String> info = (Pair<MachinedItemInfoDO, String>) object;
 			addString(index, info.getLast());
 			itemInfo.add(info.getFirst());
 		}

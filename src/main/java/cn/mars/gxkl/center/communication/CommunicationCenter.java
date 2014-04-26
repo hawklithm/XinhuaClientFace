@@ -10,14 +10,14 @@ import cn.mars.gxkl.utils.Pair;
 
 /**
  * 
- * 交互中心
+ * 浜や簰涓績
 <<<<<<< .mine
- *map包含了URL和相应的处理Executor
+ *map鍖呭惈浜哢RL鍜岀浉搴旂殑澶勭悊Executor
 =======
  * 
 >>>>>>> .r363
- * @author hawklithm 2014-3-30锟斤拷锟斤拷2:12:39
- * 当接受到了消息以后，可以根据targetUrl来找到响应的Executor来进行处理
+ * @author hawklithm 2014-3-30閿熸枻鎷烽敓鏂ゆ嫹2:12:39
+ * 褰撴帴鍙楀埌浜嗘秷鎭互鍚庯紝鍙互鏍规嵁targetUrl鏉ユ壘鍒板搷搴旂殑Executor鏉ヨ繘琛屽鐞�
  */
 public class CommunicationCenter implements Runnable {
 
@@ -71,7 +71,7 @@ public class CommunicationCenter implements Runnable {
 		}
 	}
 	
-	// 消息处理
+	// 娑堟伅澶勭悊
 	public void infoHandler() {
 //		AppProtocol response = new AppProtocol();// client.getMessage();
 		AppProtocol response =client.getMessage();

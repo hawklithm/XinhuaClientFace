@@ -1,7 +1,6 @@
 package cn.mars.gxkl.UI.utils;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
@@ -19,10 +18,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
-
 import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.UI.dataobject.Rfid2Item;
+
+import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 
 public class DetailedComboBox extends JPanel implements Msg2Face {
 
@@ -121,6 +120,6 @@ public class DetailedComboBox extends JPanel implements Msg2Face {
 		for(String rfid : (List<String>)msg) {
 			model.addElement(rfid);
 		}
-		comboBox.setSelectedIndex(0);
+//		comboBox.setSelectedIndex(0);
 	}
 }

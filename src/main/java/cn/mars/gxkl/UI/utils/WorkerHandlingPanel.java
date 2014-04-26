@@ -219,24 +219,24 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 
 	@Override
 	public void setText(List<?> msg) {
-		handler.addItemVector((List<ItemInfoDO>)msg);
-		Map<String,List<Integer>> ret = handler.getStaVector();
-		Iterator<String> iterator = ret.keySet().iterator();
-		while(iterator.hasNext()) {
-			String key = iterator.next();
-			List<Integer> staData = ret.get(key);
-			int index = staData.get(0);
-			if(index+1>staModel.getRowCount()) {
-				staModel.setRowCount(index+1);
-			}
-			staModel.setValueAt(key, index, 0);
-			for(int i=1;i<=2;i++) {
-				staModel.setValueAt(staData.get(i), index, i);
-			}
-		}
-		for(ItemInfoDO item : (List<ItemInfoDO>)msg) {
-			itemModel.addRow(new Object[]{item.getItemName(),item.getItemId().toString()});
-		}
+//		handler.addItemVector((List<ItemInfoDO>)msg);
+//		Map<String,List<Integer>> ret = handler.getStaVector();
+//		Iterator<String> iterator = ret.keySet().iterator();
+//		while(iterator.hasNext()) {
+//			String key = iterator.next();
+//			List<Integer> staData = ret.get(key);
+//			int index = staData.get(0);
+//			if(index+1>staModel.getRowCount()) {
+//				staModel.setRowCount(index+1);
+//			}
+//			staModel.setValueAt(key, index, 0);
+//			for(int i=1;i<=2;i++) {
+//				staModel.setValueAt(staData.get(i), index, i);
+//			}
+//		}
+//		for(ItemInfoDO item : (List<ItemInfoDO>)msg) {
+//			itemModel.addRow(new Object[]{item.getItemName(),item.getItemId().toString()});
+//		}
 	}
 
 }

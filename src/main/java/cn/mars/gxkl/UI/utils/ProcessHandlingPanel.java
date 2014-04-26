@@ -6,7 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -17,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
+import com.multiagent.hawklithm.item.dataobject.MachinedItemInfoDO;
 
 import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.UI.dataobject.ProcessItemInfoHandler;
@@ -34,12 +37,13 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 	private String[] pcsTbTitle = {"器械类型","待处理","正在处理","已处理"};
 	private String[] eqmTbTitle = {"器械类型","正在处理","已处理"};
 	private String processName = "清洗消毒";
-	private int equipId = 1,equipNum = 1;
+	private int equipId = 1,equipNum = 0;
 
 //	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
 	private ProcessItemInfoHandler handler = new ProcessItemInfoHandler();
 	
 	private DetailedComboBox detailedComboBox;
+	DefaultComboBoxModel<String> comModel = new DefaultComboBoxModel<String>();
 	private DefaultTableModel pcsModel = new DefaultTableModel() {
 		
 		private static final long serialVersionUID = -6346234311461713590L;
@@ -48,7 +52,8 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 			if(column == 0) {
 				return false;
 			}
-			detailedComboBox.setText(handler.getRfidVector(-1, row, column));
+			String name = (String)this.getValueAt(row, 0);
+			detailedComboBox.setText(handler.getRfidVector(0, name,column));
 			return false;
 		}
 	};
@@ -60,7 +65,11 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 			if(column == 0) {
 				return false;
 			}
-			detailedComboBox.setText(handler.getRfidVector(equipId, row, column));
+			String name = (String)this.getValueAt(row, 0);
+			List<String> rfids = handler.getRfidVector(equipId, name, column);
+			if(rfids == null)
+				return false;
+			detailedComboBox.setText(rfids);
 			return false;
 		}
 	};
@@ -112,20 +121,25 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 		if(tableTitle.length==3) {
 			topic.add(getTitleLabel(processName + "设备"));
 			JComboBox<String> comboBox = new JComboBox<String>();
-			DefaultComboBoxModel<String> comModel = new DefaultComboBoxModel<String>();
 			for (int i = 1; i <= equipNum; i++) {
 				comModel.addElement("" + i);
 			}
 			comboBox.addItemListener(new ItemListener() {
 				@Override
 				public void itemStateChanged(ItemEvent e) {
-					equipId = (int)e.getItem();
-					//TODO
+					equipId = Integer.valueOf((String) e.getItem());
+					List<List<String>> list = handler.getStatisticNumber(equipId);
+					while(eqpModel.getRowCount()>0) {
+						eqpModel.removeRow(eqpModel.getRowCount()-1);
+					}
+					for(List<String> data : list) {
+						eqpModel.addRow(data.toArray());
+					}
 				}
 				
 			});
 			comboBox.setModel(comModel);
-			comboBox.setSelectedIndex(0);
+//			comboBox.setSelectedIndex(0);
 			topic.add(comboBox);
 			topic.add(getTitleLabel(Title));
 		}
@@ -182,20 +196,27 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 
 	@Override
 	public void setText(List<?> msg) {
-		handler.addItemVector((List<Pair<Integer, ItemInfoDO>>)msg);
-		List<Pair<String,List<Integer>>> ret = handler.getEquipmentData();
-		for(Pair<String,List<Integer>> pair : ret) {
-			String name = pair.getFirst();
-			List<Integer> valueVector = pair.getLast();
-			int index = valueVector.get(0);
-			if(ret.size()>eqpModel.getRowCount()) {
-				eqpModel.setRowCount(ret.size());
-			}
-			eqpModel.setValueAt(name, index, 0);
-			for(int i=1;i<=2;i++) {
-				eqpModel.setValueAt(valueVector.get(i), index, i);
+		handler.addItemVector((List<MachinedItemInfoDO>)msg);
+		List<List<String>> ret = handler.getStatisticNumber(equipId);
+		int machineNumber =  handler.getMachineNumber();
+		if(machineNumber != equipNum) {
+			equipNum = machineNumber;
+			for (int i = 1; i <= equipNum; i++) {
+				comModel.addElement("" + i);
 			}
 		}
+		while(eqpModel.getRowCount()>0) {
+			eqpModel.removeRow(eqpModel.getRowCount()-1);
+		}
+		for(List<String> data : ret) {
+			eqpModel.addRow(data.toArray());
+		}
+		ret = handler.getStatisticNumber(0);
+		while(pcsModel.getRowCount()>0) {
+			pcsModel.removeRow(pcsModel.getRowCount()-1);
+		}
+		for(List<String> data : ret) {
+			pcsModel.addRow(data.toArray());
+		}
 	}
-
 }
