@@ -33,7 +33,7 @@ public class DetailedComboBox extends JPanel implements Msg2Face {
 	
 	private int height,width;
 	private String[] rowName = {
-			"RIFD：","器械名称：","器械类型：","医院ID：","器械状态：","操作员：","是否可换：","remark：","创建时间：","修改时间："
+			"RIFD：","器械名称：","器械类型：","医院ID：","器械状态：","生产厂家：","是否可换：","处理过程："
 	};
 	private Rfid2Item map;
 	
@@ -106,9 +106,6 @@ public class DetailedComboBox extends JPanel implements Msg2Face {
 			document.insertString(document.getLength(), "\n", nbspSet);
 			document.insertString(document.getLength(), rowName[7]+item.getRemark()+"\n", fontSet);
 			document.insertString(document.getLength(), "\n", nbspSet);
-			document.insertString(document.getLength(), rowName[8]+item.getGmtCreate()+"\n", fontSet);
-			document.insertString(document.getLength(), "\n", nbspSet);
-			document.insertString(document.getLength(), rowName[9]+item.getGmtModified()+"\n", fontSet);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}

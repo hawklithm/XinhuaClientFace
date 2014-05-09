@@ -8,6 +8,16 @@
           http://www.springframework.org/schema/security  http://www.springframework.org/schema/security/spring-security-3.0.xsd"
 	default-autowire="byName" default-lazy-init="false">
 
+	<import resource="spring-h2db.xml"/>
+
+	<bean id="equipItemInfoHandler" class="cn.mars.gxkl.UI.dataobject.EquipItemInfoHandler">
+    	<property name="itemMapper" ref="itemInfoMapper" />
+    </bean>
+    
+    <bean id="processItemInfoHandler" class="cn.mars.gxkl.UI.dataobject.ProcessItemInfoHandler">
+    	<property name="itemMapper" ref="itemInfoMapper" />
+    </bean>
+
 	<bean id="dataCenter" class="cn.mars.gxkl.observe.DataCenter"></bean>
 	<bean id="workerUI" class="cn.mars.gxkl.UI.WorkerUI" init-method="initialization">
 		<constructor-arg ref="dataCenter" />
@@ -34,6 +44,7 @@
 	<bean id="equipmentbriefPanel_worker" class="cn.mars.gxkl.UI.utils.EquipmentBriefPanel">
 	</bean>
 	<bean id="processhandlingPanel" class="cn.mars.gxkl.UI.utils.ProcessHandlingPanel">
+		<property name="handler" ref="processItemInfoHandler" />
 	</bean>
 	<bean id="searchpanel_worker" class="cn.mars.gxkl.UI.utils.SearchPanel">
 	</bean>
@@ -46,6 +57,7 @@
 	<bean id="sectionBriefPanel_manager" class="cn.mars.gxkl.UI.utils.SectionBriefPanel">
 	</bean>
 	<bean id="workerhandlingPanel" class="cn.mars.gxkl.UI.utils.WorkerHandlingPanel">
+		<property name="handler" ref="equipItemInfoHandler" />
 	</bean>
 	<bean id="searchpanel_manager" class="cn.mars.gxkl.UI.utils.SearchPanel">
 	</bean>
@@ -62,6 +74,7 @@
 				<entry key="/Announcement" value-ref="announcementExecutor" />
 				<entry key="/MachineManager" value-ref="machineInfoExecutor" />
 				<entry key="/StaffManager" value-ref="staffInfoExecutor" />
+				<entry key="/UserManager" value-ref="userInfoExecutor"/>
 			</map>
 		</property>
 	</bean>
@@ -86,6 +99,9 @@
 		<property name="targetUrl" value="/StaffManager" />
 		<property name="msg2Face" ref="staffpanel_manager" />
 		<property name="targetMachineRFID" value="1025" />
+	</bean>
+	<bean id="userInfoExecutor" class="cn.mars.gxkl.center.executor.UserInfoExecutor">
+	<property name="targetUrl" value="/UserManager"/>
 	</bean>
 	<bean id="login" class="cn.mars.gxkl.UI.Login"></bean>
 </beans>

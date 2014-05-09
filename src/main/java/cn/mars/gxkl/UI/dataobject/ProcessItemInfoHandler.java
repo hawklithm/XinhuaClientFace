@@ -2,120 +2,97 @@ package cn.mars.gxkl.UI.dataobject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import static cn.mars.gxkl.constant.Constant.*;
-import cn.mars.gxkl.UI.dataobject.utils.StatisticNumber;
-import cn.mars.gxkl.UI.dataobject.utils.StatisticTableCell;
-import cn.mars.gxkl.utils.Pair;
+import cn.mars.gxkl.sql.entity.SelectEntity;
+import cn.mars.gxkl.sql.entity.StatisticEntity;
+import cn.mars.gxkl.sql.mapper.ItemInfoMapper;
 
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 import com.multiagent.hawklithm.item.dataobject.MachinedItemInfoDO;
 
-public class ProcessItemInfoHandler implements ItemsAddition,Rfid2Item {
-	
-	private Map<String, StatisticTableCell[]> table = new TreeMap<String, StatisticTableCell[]>();
+import static cn.mars.gxkl.constant.Constant.ITEM_STATUS_TODO;
+
+public class ProcessItemInfoHandler implements Rfid2Item, ItemsAddition {
+
+	private ItemInfoMapper itemMapper;
 	private List<String> machineNum2MachinedRfid = new ArrayList<String>();
-	private Map<String,MachinedItemInfoDO> rfid2Item = new HashMap<String,MachinedItemInfoDO>();
-
-	@Override
-	public ItemInfoDO getItemByRfid(String rfid) {
-		return rfid2Item.get(rfid);
-	}
-
+	
 	@Override
 	public void addItemVector(List<?> items) {
 		for(MachinedItemInfoDO item : (List<MachinedItemInfoDO>)items) {
-			String name = item.getItemName();
 			String mRfid = item.getMachineId().toString();
-			StatisticTableCell[] cell = table.get(name);
-			if(cell == null) {
-				cell = new StatisticTableCell[] {
-						new StatisticTableCell(),new StatisticTableCell(),new StatisticTableCell()
-				};
+			if(!machineNum2MachinedRfid.contains(mRfid)&&item.getStatus() != ITEM_STATUS_TODO) {
+				machineNum2MachinedRfid.add(mRfid);
 			}
-			switch(item.getStatus()) {
-				case ITEM_STATUS_TODO: cell[0].add(item);break;
-				case ITEM_STATUS_DOING: {
-					cell[1].add(item);
-					if(cell[0].contains(item)) {
-						cell[0].remove(item);
-					}
-					if(!machineNum2MachinedRfid.contains(mRfid)) {
-						machineNum2MachinedRfid.add(mRfid);
-					}
-				}break;
-				case ITEM_STATUS_DONE: {
-					cell[2].add(item);
-					if(cell[1].contains(item)) {
-						cell[1].remove(item);
-					}
-					if(!machineNum2MachinedRfid.contains(mRfid)) {
-						machineNum2MachinedRfid.add(mRfid);
-					}
+			MachinedItemInfoDO entity = itemMapper.getItemByRfid(item.getItemId());
+			if(entity != null) {
+				if(entity.getStatus() != item.getStatus()) {
+					itemMapper.deleteByRfid(item.getItemId());
 				}
 			}
-			table.put(name, cell);
-			rfid2Item.put(item.getItemId().toString(), item);
+			itemMapper.insert(item);
 		}
 	}
 
 	@Override
-	public List<String> getRfidVector(int equipId, String name, int column) {
+	public List<String> getRfidVector(final int equipId, final String name, final int column) {
+		List<Integer> tmp = null;
+		SelectEntity entity = new SelectEntity();
+		entity.setItemName(name);
 		if(equipId == 0) {
-			return table.get(name)[column-1].getAllRfid();
+			entity.setStatus(column);
+			tmp =  itemMapper.getRfidsByNameAndStatus(entity);
 		}
-		return table.get(name)[column].getRfidByMachineRfid(machineNum2MachinedRfid.get(equipId-1));
+		else {
+			entity.setStatus(column+1);
+			entity.setMachineId(Integer.parseInt(machineNum2MachinedRfid.get(equipId-1)));
+			tmp =  itemMapper.getRfidsByNameStatusAndMachineId(entity);
+		}
+		List<String> list = new ArrayList<String>();
+		for(Integer i : tmp) {
+			list.add(i.toString());
+		}
+		return list;
 	}
-	
-//	public List<String>[] getAllStatisticNumber() {
-//		Iterator<String> iterator = table.keySet().iterator();
-//		List<List<String>> all = new ArrayList<List<String>>();
-//		while(iterator.hasNext()) {
-//			String name = iterator.next();
-//			List<String> list = new ArrayList<String>();
-//			list.add(name);
-//			StatisticNumber[] staNum = table.get(name);
-//			for(StatisticNumber now : staNum) {
-//				list.add(""+now.getNumber());
-//			}
-//		}
-//		return (List<String>[])all.toArray();
-//	}
+
+	@Override
+	public ItemInfoDO getItemByRfid(String rfid) {
+		return itemMapper.getItemByRfid(Integer.parseInt(rfid));
+	}
 	
 	public int getMachineNumber() {
 		return machineNum2MachinedRfid.size();
 	}
 	
-	public List<List<String>> getStatisticNumber(int machineNum) {
-		Iterator<String> iterator = table.keySet().iterator();
-		List<List<String>> all = new ArrayList<List<String>>();
-		while(iterator.hasNext()) {
-			String name = iterator.next();
-			List<String> list = new ArrayList<String>();
-			list.add(name);
-			StatisticNumber[] staNum = table.get(name);
-			for(StatisticNumber now : staNum) {
-				if(machineNum == 0) {
-					list.add(now.getNumber().toString());
-				}
-				else {
-					Integer tmp = now.getNumberByMachineRfid(machineNum2MachinedRfid.get(machineNum-1));
-					if(tmp == null) {
-						tmp = 0;
-					}
-					list.add(tmp.toString());
-				}
-			}
-			if(machineNum != 0) {
-				list.remove(1);
-			}
-			all.add(list);
+	public List<List<String>> getStatisticNumber(int equipId) {
+		List<StatisticEntity> list = null;
+		if(equipId == 0) {
+			list = itemMapper.getProcessStatistic();
 		}
-		return all;
+		else {
+			list = itemMapper.getMachineStatisticByMachineRfid(Integer.parseInt(machineNum2MachinedRfid.get(equipId-1)));
+		}
+		List<List<String>> ans = new ArrayList<List<String>>();
+		for(StatisticEntity entity : list) {
+			List<String> tmp = new ArrayList<String>();
+			tmp.add(entity.getItemName());
+			if(equipId == 0) {
+				tmp.add(entity.getTodo().toString());
+			}
+			tmp.add(entity.getDoing().toString());
+			tmp.add(entity.getDone().toString());
+			ans.add(tmp);
+		}
+		return ans;
 	}
-	
+
+	public ItemInfoMapper getItemMapper() {
+		return itemMapper;
+	}
+
+	public void setItemMapper(ItemInfoMapper itemMapper) {
+		this.itemMapper = itemMapper;
+	}
+
 }

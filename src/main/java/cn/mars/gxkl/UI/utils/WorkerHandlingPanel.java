@@ -23,6 +23,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
+import com.multiagent.hawklithm.item.dataobject.MachinedItemInfoDO;
 
 import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.UI.dataobject.EquipItemInfoHandler;
@@ -49,8 +50,16 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 	};
 
 //	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
-	private EquipItemInfoHandler handler = new EquipItemInfoHandler();
+	private EquipItemInfoHandler handler;
 	
+	public EquipItemInfoHandler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(EquipItemInfoHandler handler) {
+		this.handler = handler;
+	}
+
 	private DefaultTableModel staModel = new DefaultTableModel() {
 		
 		private static final long serialVersionUID = -1304030423395805825L;
@@ -219,24 +228,21 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 
 	@Override
 	public void setText(List<?> msg) {
-//		handler.addItemVector((List<ItemInfoDO>)msg);
-//		Map<String,List<Integer>> ret = handler.getStaVector();
-//		Iterator<String> iterator = ret.keySet().iterator();
-//		while(iterator.hasNext()) {
-//			String key = iterator.next();
-//			List<Integer> staData = ret.get(key);
-//			int index = staData.get(0);
-//			if(index+1>staModel.getRowCount()) {
-//				staModel.setRowCount(index+1);
-//			}
-//			staModel.setValueAt(key, index, 0);
-//			for(int i=1;i<=2;i++) {
-//				staModel.setValueAt(staData.get(i), index, i);
-//			}
-//		}
-//		for(ItemInfoDO item : (List<ItemInfoDO>)msg) {
-//			itemModel.addRow(new Object[]{item.getItemName(),item.getItemId().toString()});
-//		}
+		handler.addItemVector((List<MachinedItemInfoDO>)msg);
+		List<List<String>> ret = handler.getStatisticNumber();
+		while(staModel.getRowCount()>0) {
+			staModel.removeRow(staModel.getRowCount()-1);
+		}
+		for(List<String> data : ret) {
+			staModel.addRow(data.toArray());
+		}
+		ret = handler.getRuntimeInformation();
+		while(itemModel.getRowCount()>0) {
+			itemModel.removeRow(itemModel.getRowCount()-1);
+		}
+		for(List<String> data : ret) {
+			itemModel.addRow(data.toArray());
+		}
 	}
 
 }
