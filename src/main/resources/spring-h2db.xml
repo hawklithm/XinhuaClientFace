@@ -36,4 +36,8 @@
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean>
     
+    <bean id="clearDatabase" class="cn.mars.gxkl.sql.mapper.ClearDatabase">
+    	<constructor-arg name="itemInfoMapper" ref="itemInfoMapper" />
+    </bean>
+    
 </beans>
