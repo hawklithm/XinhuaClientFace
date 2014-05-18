@@ -192,6 +192,8 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		table = new JTable(model);
 		Font font = new Font("ËÎÌו", Font.BOLD, width / 35);
 		table.setFont(font);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
 		table.setPreferredScrollableViewportSize(new Dimension(width - 20,
 				height / 8 * 7 - 10));
 //		table.setEnabled(false);

@@ -166,6 +166,8 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 		model.setColumnCount(tableTitle.length);
 		table = new JTable(model);
 		Font font = new Font("ËÎÌו", Font.BOLD, width / 35);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
 		table.setFont(font);
 		table.setPreferredScrollableViewportSize(new Dimension(width - 20,
 				height / 8 * 7 - 10));
