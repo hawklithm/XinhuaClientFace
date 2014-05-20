@@ -68,7 +68,7 @@ public class BriefDetailPanel extends JPanel implements MouseListener,
 		TitelLabel.setForeground(Color.white);
 
 		ValueTextField = new JTextField(value);
-		ValueTextField.setPreferredSize(new Dimension((int) (width * 0.2),
+		ValueTextField.setPreferredSize(new Dimension((int) (width * 0.4),
 				(int) (height * 0.7)));
 		ValueTextField.setEditable(false);
 		ValueTextField.setOpaque(false);

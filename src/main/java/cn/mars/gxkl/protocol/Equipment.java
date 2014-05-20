@@ -1,5 +1,6 @@
 package cn.mars.gxkl.protocol;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
  *表的更新时间
  */
 public class Equipment extends Protocol {
-	private String MANUFACTURER = "manufacturer", DETAIL = "detail",
+	private String MANUFACTURER = "manufacturer", DETAIL = "detail",DETAILTITEL="detailtitel",
 			DETAILVALUE = "detalvalue", ID = "id", NAME = "name",
 			CAPACITY = "capacity", GMT_BUY = "gmtBuy",
 			GMT_LAST_REPAIR = "gmtLastRepair",
@@ -77,18 +78,40 @@ public class Equipment extends Protocol {
 		return (String) getProperty(MANUFACTURER);
 	}
 	public void setDetail(String detail){
+		setProperty(DETAIL,detail);
+		String[] detailList;
+		if(detail.indexOf("；")>=0){
+			detailList=detail.split("；");
+		}else{
+			detailList=detail.split(";");
+		}
 		
+		List<String> detailTitel=new ArrayList<String>();
+		List<String> detailValue=new ArrayList<String>();
+		for(int i=0;i < detailList.length;i++){
+			int t=detailList[i].indexOf("：");
+			if(t<0){
+				t=detailList[i].indexOf(":");
+			}
+			String titel=detailList[i].substring(0, t);
+			String value=detailList[i].substring(t+1);
+			detailTitel.add(titel);
+			detailValue.add(value);
+		}
+		this.setDetailTitel(detailTitel);
+		this.setDetailValue(detailValue);
 	}
+	
 	public String getDetail(){
-		String detail="";
-		return detail;
+		
+		return (String) getProperty(DETAIL);
 	}
 	public void setDetailTitel(List<String> detailtitel) {
-		setProperty(DETAIL, detailtitel);
+		setProperty(DETAILTITEL, detailtitel);
 	}
 
 	public List<String> getDetailTitel() {
-		return (List<String>) getProperty(DETAIL);
+		return (List<String>) getProperty(DETAILTITEL);
 	}
 
 	public void setDetailValue(List<String> detailvalue) {

@@ -5,7 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.mars.gxkl.UI.Login;
+import cn.mars.gxkl.UI.ManagerUI;
 import cn.mars.gxkl.UI.Msg2Face;
+import cn.mars.gxkl.UI.WorkerUI;
 import cn.mars.gxkl.center.communication.Executor;
 import cn.mars.gxkl.center.communication.Sender;
 import cn.mars.gxkl.netty.ClientService;
@@ -20,10 +25,12 @@ import com.google.gson.reflect.TypeToken;
 public class StaffInfoExecutor implements Executor,Sender{
 	private boolean isInitialFirst=false;
 	private ClientService client;
-	private String targetUrl="/StaffManager";
+	private String targetUrl;
 	private int targetMachineRFID=1025;
 	private Msg2Face msg2Face;
-
+    private ManagerUI managerUI;
+    private WorkerUI workerUI;
+    private Login login;
 	@Override
 	public boolean isInitialFirst() {
 		return isInitialFirst;
@@ -37,12 +44,31 @@ public class StaffInfoExecutor implements Executor,Sender{
 	
 
 	@Override
-	public void decode(AppProtocol response) {
+	public void decode(AppProtocol response) throws Exception {
 		List<Person> persons=translate(response);
 		for (int i=0;i<persons.size();i++){
 			System.out.println("[StaffInfoExecutor]"+Jsoner.toJson(persons.get(i)));
 		}
+		if(persons.get(0).getName()==null){
+			login.setMsg("请输入正确的员工编号");
+			return;
+		}
+		if(!persons.isEmpty()){
+			
 		msg2Face.setText(persons);
+		}
+		System.out.println(persons.get(0).getGender());
+		System.out.println("要熬那个"+persons.get(0).getPassword());
+
+		if(login.getPassword().getText().toString().equals(persons.get(0).getPassword()))
+		{
+		 workerUI.showUp();	
+		}
+		else{
+			login.setMsg("密码错误");
+			return;
+		}
+	    login.setVisible(false);
 	}
 	
 	private List< Person> translate(AppProtocol response){
@@ -79,21 +105,10 @@ public class StaffInfoExecutor implements Executor,Sender{
 		 msg.setTargetUrl(targetUrl);
 		msg.setContent(gson.toJson(content));
 		msg.setAuthenticate("");
-		System.out.println("卧槽"+gson.toJson(msg));
 		if(gson.toJson(msg)==null){
-			System.out.println("卧槽"+"居然是控制");
 		}
 		return gson.toJson(msg);
 	}
-
-//	public ClientService getClient() {
-//		return client;
-//	}
-
-//	public void setClient(ClientService client) {
-//		this.client = client;
-//	}
-
 	public String getTargetUrl() {
 		return targetUrl;
 	}
@@ -105,12 +120,8 @@ public class StaffInfoExecutor implements Executor,Sender{
 
 	@Override
 	public void query(Object object) {
-		Integer id=(Integer)object;
-		Person person=new Person();
-		person.setID(id);
-		System.out.println("开始准备发送");
+		Person person=(Person)object;
 		client.sendMessage(encoder(person,"operateQuery"));
-		System.out.println("成功了");
 	}
 
 	@Override
@@ -141,6 +152,30 @@ public class StaffInfoExecutor implements Executor,Sender{
 
 	public void setClient(ClientService client) {
 		this.client = client;
+	}
+
+	public ManagerUI getManagerUI() {
+		return managerUI;
+	}
+
+	public void setManagerUI(ManagerUI managerUI) {
+		this.managerUI = managerUI;
+	}
+
+	public WorkerUI getWorkerUI() {
+		return workerUI;
+	}
+
+	public void setWorkerUI(WorkerUI workerUI) {
+		this.workerUI = workerUI;
+	}
+
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 
 

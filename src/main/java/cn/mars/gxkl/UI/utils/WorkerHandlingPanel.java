@@ -46,7 +46,7 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 	private String[] staTbTitle = {"器械类型","正在处理","已处理"};
 	private String processName = "清洗消毒";
 	private String[] rowName = {
-			"RIFD：","器械名称：","器械类型：","医院ID：","器械状态：","操作员：","是否可换：","remark：","创建时间：","修改时间："
+			"RIFD：","器械名称：","器械类型：","医院ID：","器械状态：","生产厂商：","是否可换：","remark："
 	};
 
 //	private List<ItemInfoDO> itemCache = new ArrayList<ItemInfoDO>();
@@ -95,7 +95,7 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		this.add(left);
 //		this.add(right);
 //		detailedComboBox = new DetailedComboBox((int) (width * 0.57), height,handler);
-		initRight((int) (width * 0.57), height);
+		initRight((int) (width * 0.58), height);
 		this.add(detailPane);
 //		this.add(detailedComboBox);
 //		setText(new ItemInfoDOData().getData());
@@ -121,7 +121,7 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		StyleConstants.setFontSize(nbspSet, (int)(height*0.02));
 		detailPane.setEditable(false);
 		detailPane.setParagraphAttributes(fontSet, false);
-		detailPane.setPreferredSize(new Dimension(width,height));
+		detailPane.setPreferredSize(new Dimension(width,height-20));
 		StyledDocument document = detailPane.getStyledDocument();
 		try {
 			for(String str : rowName) {
@@ -152,10 +152,6 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 			document.insertString(document.getLength(), rowName[6]+item.isInterconvertible()+"\n", fontSet);
 			document.insertString(document.getLength(), "\n", nbspSet);
 			document.insertString(document.getLength(), rowName[7]+item.getRemark()+"\n", fontSet);
-			document.insertString(document.getLength(), "\n", nbspSet);
-			document.insertString(document.getLength(), rowName[8]+item.getGmtCreate()+"\n", fontSet);
-			document.insertString(document.getLength(), "\n", nbspSet);
-			document.insertString(document.getLength(), rowName[9]+item.getGmtModified()+"\n", fontSet);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -171,13 +167,14 @@ public class WorkerHandlingPanel extends JPanel implements Msg2Face {
 		JPanel panel = new JPanel();
 		JPanel topic = new JPanel();
 		topic.setPreferredSize(new Dimension(width, (int) (height / 8)));
-		topic.setLayout(new FlowLayout(FlowLayout.CENTER,5,0));
+	//	topic.setLayout(new FlowLayout(FlowLayout.CENTER,5,0));
+		topic.setLayout(new FlowLayout(FlowLayout.LEFT,5,0));
 		topic.setOpaque(false);
 		if(tableTitle.length==2) {
-			topic.add(getTitleLabel(processName + "设备正在处理"));
+			topic.add(getTitleLabel("正在处理"));
 		}
 		else {
-			topic.add(getTitleLabel(processName+"设备统计信息"));
+			topic.add(getTitleLabel("今日统计"));
 		}
 		JTable table;
 		panel.setPreferredSize(new Dimension(width, height - 10));

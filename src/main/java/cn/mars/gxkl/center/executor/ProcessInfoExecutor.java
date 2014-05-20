@@ -19,6 +19,7 @@ import cn.mars.gxkl.utils.Jsoner;
 import cn.mars.gxkl.utils.Pair;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.multiagent.hawklithm.item.dataobject.ItemInfoDO;
 import com.multiagent.hawklithm.item.dataobject.MachinedItemInfoDO;
@@ -29,12 +30,13 @@ import static cn.mars.gxkl.constant.Constant.*;
  * 流水线过程信息执行器
  */
 public class ProcessInfoExecutor implements Executor, Sender {
-	private boolean isInitialFirst = true;
+	
+	private boolean isInitialFirst =true;
 	private ClientService client;
 	private String targetUrl;
+	private int machineRFId = -1;
 	private String processName = Constant.processName[0]; // 默认是分类
 	private Msg2Face msg2Face;
-	
 	@Override
 	public boolean isInitialFirst() {
 		return isInitialFirst;
@@ -48,7 +50,7 @@ public class ProcessInfoExecutor implements Executor, Sender {
 	}
 
 	@Override
-	public void decode(AppProtocol response) {
+	public void decode(AppProtocol response) throws Exception {
 		List<Pair<MachinedItemInfoDO, String>> pairs = translate(response);
 		for (int i = 0; i < pairs.size(); i++) {
 			System.out.println(pairs.get(i).getFirst().toString() + ": "
@@ -185,6 +187,7 @@ public class ProcessInfoExecutor implements Executor, Sender {
 		content.setCondition(condition);
 		content.setRows(rows);
 		Gson gson = new Gson();
+		
 		AppProtocol msg = new AppProtocol();
 		// msg.setTargetUrl(url);
 		msg.setTargetUrl(targetUrl);
@@ -216,6 +219,8 @@ public class ProcessInfoExecutor implements Executor, Sender {
 		processName = (String) object;
 		LiveMessageProtocol msg = new LiveMessageProtocol();
 		msg.setProcessName(processName);
+		if(machineRFId != -1)
+			msg.setId(machineRFId);
 		client.sendMessage(encoder(msg, true));
 	}
 
@@ -225,13 +230,21 @@ public class ProcessInfoExecutor implements Executor, Sender {
 
 	}
 
-	public String getProcessName() {
+	/*public String getProcessName() {
 		return processName;
 	}
 
+	public int getMachineRFId() {
+		return machineRFId;
+	}
+
+	public void setMachineRFId(int machineRFId) {
+		this.machineRFId = machineRFId;
+	}
+	
 	public void setProcessName(String processName) {
 		this.processName = processName;
-	}
+	}*/
 
 	public void setInitialFirst(boolean isInitialFirst) {
 		this.isInitialFirst = isInitialFirst;
@@ -241,7 +254,7 @@ public class ProcessInfoExecutor implements Executor, Sender {
 		return msg2Face;
 	}
 
-	public void test() {
+	public void test() throws JsonSyntaxException, Exception {
 		String str1 = "{\"response\":\"{\\\"condition\\\":{\\\"status\\\":\\\"ok\\\"},\\\"rows\\\":[{\\\"condition\\\":{\\\"processName\\\":\\\"sortingprocess\\\",\\\"retValue\\\":[{\\\"itemInfo\\\":[{\\\"status\\\":1,\\\"itemId\\\":1000010,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:24:29 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:24:29 PM\\\",\\\"itemName\\\":\\\"test\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"。。。。\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000008,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:23:18 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:23:18 PM\\\",\\\"itemName\\\":\\\"呵呵呵呵\\\",\\\"itemType\\\":3,\\\"manufacturer\\\":\\\"未知\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000009,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:24:15 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:24:15 PM\\\",\\\"itemName\\\":\\\"王大锤\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"王大锤\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000002,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:19:22 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:19:22 PM\\\",\\\"itemName\\\":\\\"锤子\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000003,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:19:42 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:19:42 PM\\\",\\\"itemName\\\":\\\"手术钳\\\",\\\"itemType\\\":1,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"呵呵呵呵\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000001,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:18:31 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:17:23 PM\\\",\\\"itemName\\\":\\\"手术钳\\\",\\\"itemType\\\":1,\\\"manufacturer\\\":\\\"sdfasdf\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"asdfasdf\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000006,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:20:57 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:20:57 PM\\\",\\\"itemName\\\":\\\"武士刀\\\",\\\"itemType\\\":3,\\\"manufacturer\\\":\\\"日本\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000007,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:22:59 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:22:59 PM\\\",\\\"itemName\\\":\\\"手术刀\\\",\\\"itemType\\\":3,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000004,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:20:02 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:20:02 PM\\\",\\\"itemName\\\":\\\"手术钳\\\",\\\"itemType\\\":1,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"吼吼吼\\\"},{\\\"status\\\":1,\\\"itemId\\\":1000005,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:20:26 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:20:26 PM\\\",\\\"itemName\\\":\\\"雷神之锤\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"仙宫\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"托尔的锤子\\\"}],\\\"machineRFID\\\":1023,\\\"staffRFID\\\":0,\\\"timeStamp\\\":\\\"Apr 28, 2014 3:07:01 PM\\\",\\\"sourceType\\\":\\\"gate_tag\\\"}]}}]}\",\"status\":\"connected\",\"targetUrl\":\"/ProcessInfoManager\"}";
 //		String str2 = "{\"response\":\"{\\\"condition\\\":{\\\"status\\\":\\\"ok\\\"},\\\"rows\\\":[{\\\"condition\\\":{\\\"processName\\\":\\\"sortingprocess\\\",\\\"retValue\\\":[{\\\"itemInfo\\\":[{\\\"status\\\":2,\\\"itemId\\\":1000010,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:24:29 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:24:29 PM\\\",\\\"itemName\\\":\\\"test\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"。。。。\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000008,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:23:18 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:23:18 PM\\\",\\\"itemName\\\":\\\"呵呵呵呵\\\",\\\"itemType\\\":3,\\\"manufacturer\\\":\\\"未知\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000009,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:24:15 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:24:15 PM\\\",\\\"itemName\\\":\\\"王大锤\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"王大锤\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000002,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:19:22 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:19:22 PM\\\",\\\"itemName\\\":\\\"锤子\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000003,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:19:42 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:19:42 PM\\\",\\\"itemName\\\":\\\"手术钳\\\",\\\"itemType\\\":1,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"呵呵呵呵\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000001,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:18:31 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:17:23 PM\\\",\\\"itemName\\\":\\\"手术钳\\\",\\\"itemType\\\":1,\\\"manufacturer\\\":\\\"sdfasdf\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"asdfasdf\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000006,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:20:57 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:20:57 PM\\\",\\\"itemName\\\":\\\"武士刀\\\",\\\"itemType\\\":3,\\\"manufacturer\\\":\\\"日本\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000007,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:22:59 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:22:59 PM\\\",\\\"itemName\\\":\\\"手术刀\\\",\\\"itemType\\\":3,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000004,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:20:02 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:20:02 PM\\\",\\\"itemName\\\":\\\"手术钳\\\",\\\"itemType\\\":1,\\\"manufacturer\\\":\\\"电子科大\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"吼吼吼\\\"},{\\\"status\\\":2,\\\"itemId\\\":1000005,\\\"gmtCreate\\\":\\\"Mar 26, 2014 2:20:26 PM\\\",\\\"gmtModified\\\":\\\"Mar 26, 2014 2:20:26 PM\\\",\\\"itemName\\\":\\\"雷神之锤\\\",\\\"itemType\\\":2,\\\"manufacturer\\\":\\\"仙宫\\\",\\\"interconvertible\\\":true,\\\"remark\\\":\\\"托尔的锤子\\\"}],\\\"machineRFID\\\":1024,\\\"staffRFID\\\":0,\\\"timeStamp\\\":\\\"Apr 28, 2014 3:07:13 PM\\\",\\\"sourceType\\\":\\\"\\\"}]}}]}\",\"status\":\"connected\",\"targetUrl\":\"/ProcessInfoManager\"}";
 		decode(new Gson().fromJson(str1, AppProtocol.class));

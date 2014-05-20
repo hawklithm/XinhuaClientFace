@@ -74,7 +74,7 @@ public class WorkerUI extends JFrame {
 		left.add(staffinfoPanel);
 	
 		equipmentbriefPanel.setWidth((int)(width*0.22));
-		equipmentbriefPanel.setHeight((int)(height*0.75));
+		equipmentbriefPanel.setHeight((int)(height*0.73));
 		equipmentbriefPanel.initialization();
 		left.add(equipmentbriefPanel);
 		this.add(left);
@@ -87,31 +87,35 @@ public class WorkerUI extends JFrame {
 		workerhandlingPanel.initialization();
 		right.add(workerhandlingPanel);
 		
-		searchPanel.setWidth((int)(width*0.77));
-		searchPanel.setHeight((int)(height*0.055));
-		searchPanel.initialization();
-		right.add(searchPanel);
+//		searchPanel.setWidth((int)(width*0.77));
+//		searchPanel.setHeight((int)(height*0.055));
+//		searchPanel.initialization();
+//		right.add(searchPanel);
 		
 		
 		historyPanel.setWidth((int) (width*0.77));
-		historyPanel.setHeight((int) (height*0.32));
+		historyPanel.setHeight((int) (height*0.38));
 		historyPanel.initialization();
 
 		right.add(historyPanel);
 		this.add(right);
 		
-		testData();
+	testData();
 	}
 
 	private void testData(){
 		Person staff = new Person();
 		//staff.setID("201106004000");
 		staff.setGender("男");
-		staff.setImgPath("imgs/head.png");
+		//staff.setImgPath("imgs/head.png");
 		staff.setName("李华");
-//		staff.setRFID("1234567901");
+		
+		staff.setID(1234567901);
 		staff.setJob("清洗消毒操作员");
-		staffinfoPanel.setStaff(staff);
+	/*姚阿龙
+	 * 
+	 */
+	//staffinfoPanel.setStaff(staff);
 		
 		List<String> detailTitel=new ArrayList<String>();
 		detailTitel.add("试剂一");
@@ -122,16 +126,17 @@ public class WorkerUI extends JFrame {
 		detailValue.add("50g/ml");
 		detailValue.add("30g/ml");
 		Equipment equipment=new Equipment();
-		equipment.setType("清洗消毒机");
-		equipment.setName("清洗消毒1号机");
-		equipment.setId("12345678901");
+		equipment.setType("清洗消毒");
+		equipment.setName("大型清洗消毒器");
+		equipment.setEquipmentId(2024);
 		equipment.setCapacity("40把");
 		equipment.setGmtCreate(new Date("2014/3/4 15:00:39"));
 		equipment.setGmtModified(new Date("2014/3/5 16:00:48"));
 		equipment.setGmtLastRepair(new Date("2014/3/5 14:30:22"));
 		equipment.setManufacturer("shinva");
-		equipment.setDetailTitel(detailTitel);
-		equipment.setDetailValue(detailValue);
+		equipment.setDetail("水压：0.19 Mpa；温度：45 °C；清洗液：900 ML；");
+//		equipment.setDetailTitel(detailTitel);
+//		equipment.setDetailValue(detailValue);
 		equipmentbriefPanel.setEquipment(equipment);
 		
 
@@ -142,10 +147,6 @@ public class WorkerUI extends JFrame {
 		searchtype.add("测试");
 		searchPanel.setSearchType(searchtype);
 		
-		List<String> HistoryType=new ArrayList<String>();
-		HistoryType.add("设备");
-		HistoryType.add("工段");
-		historyPanel.setSubTitel(HistoryType);
 	}
 	
 	/**

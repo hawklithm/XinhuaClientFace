@@ -12,7 +12,13 @@ import java.util.Map;
  * 
  */
 public class FrontEndingCommunicationProtocol<T> extends Protocol {
-
+/*
+ * 操作类型
+ * 被操作表的名称
+ * 操作的状态
+ * 偏移量、长度
+ * rows根据T来定
+ */
 	private static final String OPERATE_TYPE = "operateType",
 			TABLE_TYPE = "tableType", STATUS = "status",
 			LENGTH = "lengths", OFFSET = "offset", RETURN_STATE_OK = "ok",

@@ -26,7 +26,9 @@ import com.google.gson.reflect.TypeToken;
  * 
  */
 public class AnnouncementExecutor implements Executor,Sender{
-
+/*
+ * ½«isInitialFirstÄ¬ÈÏÎªfalse;
+ */
 	private boolean isInitialFirst=true;
 	private ClientService client;
 	private String targetUrl;

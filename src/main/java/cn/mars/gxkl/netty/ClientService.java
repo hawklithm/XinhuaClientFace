@@ -15,6 +15,7 @@ import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder;
 import org.jboss.netty.handler.codec.frame.LengthFieldPrepender;
 
+
 import cn.mars.gxkl.protocol.AppProtocol;
 
 import com.google.gson.Gson;
@@ -80,14 +81,11 @@ public class ClientService {
 			@Override
 			public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
 				if(e.getChannel()==null){
-					System.out.println("卧槽，怎么可能失控的呢");
+					return;
 				}
-	
-				
 				System.out.println("connect successfullly!");
 				System.out.println("i'm client!");
 				channel = e.getChannel();
-				System.out.println("channel是否为空"+channel==null);
 				connected = true;
 			}
 		};
@@ -97,9 +95,6 @@ public class ClientService {
 			public ChannelPipeline getPipeline() throws Exception {
 				// TODO Auto-generated method stub
 				ChannelPipeline pipeline = Channels.pipeline();
-				// pipeline.addLast("encode", new StringEncoder());
-				    // 接受信息的时候会被处理
-			//pipeline.addLast("decode", new StringDecoder());
 				pipeline.addLast("DOWN_FRAME_HANDLER", new LengthFieldPrepender(2, false));
 				pipeline.addLast("UP_FRAME_HANDLER", new LengthFieldBasedFrameDecoder(//LengthFieldBaseFrameDecoder解码器
 						Integer.MAX_VALUE, 0, 2, 0, 2));
@@ -125,9 +120,8 @@ public class ClientService {
 	public void sendMessage(String msg) {
 		ack = false;
 		connectionStatus = true;
-		System.out.println("正在发送");
 		handler.sendMessage(msg,channel);
-		System.out.println("发送成功");
+		System.out.println(msg);
 	}
 	
 	public AppProtocol getMessage() {

@@ -4,6 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -12,6 +18,7 @@ import javax.swing.JPanel;
 
 import cn.mars.gxkl.UI.Msg2Face;
 import cn.mars.gxkl.protocol.Person;
+import cn.mars.gxkl.protocol.UserInfo;
 
 public class StaffInfoPanel extends JPanel implements Msg2Face {
 
@@ -22,7 +29,7 @@ public class StaffInfoPanel extends JPanel implements Msg2Face {
 	private int width, height;
 	private double scaleImgRate = 1.0;
 	private Person staff;
-
+     private int  worker_num;
 	private JLabel img, name,namevalue, gender,gendervalue, id,idvalue, rfid,rfidvalue, job,jobvalue;
 	private JPanel right;
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
@@ -71,16 +78,12 @@ public class StaffInfoPanel extends JPanel implements Msg2Face {
 		gender = getJLabel("性别：");
 		id = getJLabel("工号：" );
 		idvalue=getJLabel("   ");
-		rfid = getJLabel("RFID号：" );
-		rfidvalue=getJLabel("   ");
 		job = getJLabel("工作名：" );
 		jobvalue=getJLabel("   ");
 		right.add(name);
 		right.add(gender);
 		right.add(id);
 		right.add(idvalue);
-		right.add(rfid);
-		right.add(rfidvalue);
 		right.add(job);
 		right.add(jobvalue);
 		this.add(img);
@@ -119,20 +122,56 @@ public class StaffInfoPanel extends JPanel implements Msg2Face {
 		return height;
 	}
 
-	public void setStaff(Person staff){
+	public void setStaff(Person staff) throws MalformedURLException{
 		this.staff = staff;
-		img.setIcon(new ImageIcon(staff.getImgPath()));
-		name.setText("姓名：" + staff.getName());
-		gender.setText("性别：" + staff.getGender());
-		idvalue.setText("   "+ staff.getID());
-//		rfidvalue.setText("   "+ staff.getRFID());
-		jobvalue.setText("   "+ staff.getJob());
+		load();
+	 //img.setIcon(new ImageIcon(staff.getImgPath()));
+		//img.setIcon(new ImageIcon("http://img2.imgtn.bdimg.com/it/u=3452729668,1362003854&fm=21&gp=0.jpg"));
+		
+			//URL url=new URL("http://img2.imgtn.bdimg.com/it/u=3452729668,1362003854&fm=21&gp=0.jpg");
+			
+	img.setIcon(new ImageIcon("imgs/"+"touxiang.jpg"));
+		//	img.setIcon(new ImageIcon(url));
+		name.setText("姓名:   " +staff.getName());
+		gender.setText("性别:  " + staff.getGender());
+		id.setText("工号:  "+worker_num);
+		idvalue.setText("员工编号:"+ staff.getID());
+		jobvalue.setText("所在工段:"+ staff.getJob());
+	
 		
 	}
+	public void load(){
+		try {  
+		      URL url = new URL(  
+		    		 "http://127.0.0.1:8090/xinhua/imgs/1.jpg");  
+		      java.io.BufferedInputStream bis = new BufferedInputStream(url.openStream());  
+		      byte[] bytes = new byte[100];  
+		      OutputStream bos = new FileOutputStream(new File("imgs/touxiang.jpg"));  
+		      int len;  
+		      while ( (len = bis.read(bytes)) > 0) {  
+		        bos.write(bytes, 0, len);  
+		      }  
+		      bis.close();  
+		      bos.flush();  
+		      bos.close();  
+		  
+		    }  
+		    catch (Exception e) {  
+		      e.printStackTrace();  
+		    }  
+	}
 	@Override
-	public void setText(List<?> msg) {
+	public void setText(List<?> msg) throws MalformedURLException {
 		Person staff = (Person) msg.get(0);
 		setStaff(staff);
+	}
+
+	public int getWorker_num() {
+		return worker_num;
+	}
+
+	public void setWorker_num(int worker_num) {
+		this.worker_num = worker_num;
 	}
 
 }

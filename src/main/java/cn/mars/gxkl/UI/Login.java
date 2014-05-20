@@ -3,24 +3,25 @@ package cn.mars.gxkl.UI;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import cn.mars.gxkl.center.executor.StaffInfoExecutor;
 import cn.mars.gxkl.center.executor.UserInfoExecutor;
-import cn.mars.gxkl.netty.ClientService;
+
+import cn.mars.gxkl.protocol.Person;
 import cn.mars.gxkl.protocol.UserInfo;
 
 /*
  * 登陆界面
  */
-public class Login extends JFrame {
+public class Login extends JFrame implements Serializable{
 	private JTextField userName; // 定义文本输入框
 	private JPasswordField password; // 定义密码框
 	private JLabel jLabel1, jLabel2;
@@ -32,7 +33,7 @@ public class Login extends JFrame {
 	public Login() {
 		userName = new JTextField(12);
 		password = new JPasswordField(13);
-		jLabel1 = new JLabel("用户名");
+		jLabel1 = new JLabel("员工编号");
 		jLabel2 = new JLabel("密码");
 		login = new JButton("登陆");
 		cancel = new JButton("取消");
@@ -62,8 +63,6 @@ public class Login extends JFrame {
 		this.add(jp2);
 		this.add(jp3);
 		this.add(jp4);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
 		this.setTitle("登陆界面");
 		this.setBounds(500, 300, getWidth() / 2, getHeight() / 2);
 		this.setSize(500, 300);
@@ -72,14 +71,11 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			     if(userName.getText().equals("")||password.getText().equals("")){
-			    	 String str="用户或者密码为空";
-			    	System.out.println(str);
+			    	 String str="员工编号或者密码为空";
 			    	return ;
 			    	}
 			 UserInfo user=new UserInfo();
-			 
-		         user.setName(userName.getText());
-		         user.setPassword(password.getText());
+			 user.setName(userName.getText().toString());
 		         userInfoExecutor.query(user);
 			
 			}
@@ -97,11 +93,9 @@ public class Login extends JFrame {
 
 		});
 	}
-	public UserInfoExecutor getUserInfoExecutor() {
-		return userInfoExecutor;
-	}
-	public void setUserInfoExecutor(UserInfoExecutor userInfoExecutor) {
-		this.userInfoExecutor = userInfoExecutor;
+	public void showUp(){
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
 	}
 	public JTextField getUserName() {
 		return userName;
@@ -166,5 +160,12 @@ public class Login extends JFrame {
 	public void setMsg(String msg){
 		message.setText(msg);
 	}
+	public UserInfoExecutor getUserInfoExecutor() {
+		return userInfoExecutor;
+	}
+	public void setUserInfoExecutor(UserInfoExecutor userInfoExecutor) {
+		this.userInfoExecutor = userInfoExecutor;
+	}
+
 	
 }

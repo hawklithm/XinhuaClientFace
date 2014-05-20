@@ -83,19 +83,19 @@ public class ManagerUI extends JFrame {
 		
 		
 		
-		searchPanel.setWidth((int)(width*0.77));
-		searchPanel.setHeight((int)(height*0.055));
-		searchPanel.initialization();
-		right.add(searchPanel);
+//		searchPanel.setWidth((int)(width*0.77));
+//		searchPanel.setHeight((int)(height*0.055));
+//		searchPanel.initialization();
+//		right.add(searchPanel);
 		
 		
 		historyPanel.setWidth((int) (width*0.77));
-		historyPanel.setHeight((int) (height*0.32));
+		historyPanel.setHeight((int) (height*0.375));
 		historyPanel.initialization();
 //		right.add(new HistoryPanel((int)(width*0.77),(int)(height*0.32),HistoryType));
 		right.add(historyPanel);
 		this.add(right);
-		testData();
+	//	testData();
 	}
 	public void testData(){
 		Person staff = new Person();
@@ -105,7 +105,13 @@ public class ManagerUI extends JFrame {
 		staff.setName("张三");
 //		staff.setRFID("1234567901");
 		staff.setJob("清洗消毒工段长");
-		staffInfoPanel.setStaff(staff);
+		
+	
+		/*
+		 * 要熬那个
+		 */
+		
+		//姚阿龙staffInfoPanel.setStaff(staff);
 		
 		List<String> detailTitel=new ArrayList<String>();
 		detailTitel.add("试剂一");
@@ -162,10 +168,6 @@ public class ManagerUI extends JFrame {
 		searchtype.add("测试");
 		searchPanel.setSearchType(searchtype);
 		
-		List<String> HistoryType=new ArrayList<String>();
-		HistoryType.add("设备");
-		HistoryType.add("工段");
-		historyPanel.setSubTitel(HistoryType);
 	}
 	
 	public void showUp() {

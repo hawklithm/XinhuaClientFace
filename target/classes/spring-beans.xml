@@ -17,7 +17,6 @@
     <bean id="processItemInfoHandler" class="cn.mars.gxkl.UI.dataobject.ProcessItemInfoHandler">
     	<property name="itemMapper" ref="itemInfoMapper" />
     </bean>
-
 	<bean id="dataCenter" class="cn.mars.gxkl.observe.DataCenter"></bean>
 	<bean id="workerUI" class="cn.mars.gxkl.UI.WorkerUI" init-method="initialization">
 		<constructor-arg ref="dataCenter" />
@@ -89,7 +88,7 @@
 
 	<bean id="processInfoExecutor" class="cn.mars.gxkl.center.executor.ProcessInfoExecutor">
 		<property name="targetUrl" value="/ProcessInfoManager" />
-		<property name="msg2Face" ref="historyPanel_manager" />
+		<property name="msg2Face" ref="historyPanel_worker" />
 	</bean>
 	<bean id="announcementExecutor" class="cn.mars.gxkl.center.executor.AnnouncementExecutor">
 		<property name="targetUrl" value="/Announcement" />
@@ -97,11 +96,12 @@
 
 	<bean id="staffInfoExecutor" class="cn.mars.gxkl.center.executor.StaffInfoExecutor">
 		<property name="targetUrl" value="/StaffManager" />
-		<property name="msg2Face" ref="staffpanel_manager" />
+		<property name="msg2Face" ref="staffpanel_worker" />
 		<property name="targetMachineRFID" value="1025" />
 	</bean>
 	<bean id="userInfoExecutor" class="cn.mars.gxkl.center.executor.UserInfoExecutor">
 	<property name="targetUrl" value="/UserManager"/>
 	</bean>
 	<bean id="login" class="cn.mars.gxkl.UI.Login"></bean>
+	<bean id="selectorUI" class="cn.mars.gxkl.UI.SelectorUI"></bean>
 </beans>

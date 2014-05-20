@@ -8,17 +8,6 @@ import cn.mars.gxkl.netty.ClientService;
 import cn.mars.gxkl.protocol.AppProtocol;
 import cn.mars.gxkl.utils.Pair;
 
-/**
- * 
- * 浜や簰涓績
-<<<<<<< .mine
- *map鍖呭惈浜哢RL鍜岀浉搴旂殑澶勭悊Executor
-=======
- * 
->>>>>>> .r363
- * @author hawklithm 2014-3-30閿熸枻鎷烽敓鏂ゆ嫹2:12:39
- * 褰撴帴鍙楀埌浜嗘秷鎭互鍚庯紝鍙互鏍规嵁targetUrl鏉ユ壘鍒板搷搴旂殑Executor鏉ヨ繘琛屽鐞�
- */
 public class CommunicationCenter implements Runnable {
 
 	private ClientService client;
@@ -53,6 +42,8 @@ public class CommunicationCenter implements Runnable {
 		for (Map.Entry<String, Executor> entry : map.entrySet()) {
 			String key = entry.getKey().toString();
 			Executor executor = entry.getValue();
+			//executor.isInitialFirst可以用来判断是否建立连接
+			//如果返回值是true，则发送初始请求
 			if (executor.isInitialFirst()) {
 				initRequest(executor);
 			}
@@ -67,12 +58,17 @@ public class CommunicationCenter implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			infoHandler();
+			try {
+				infoHandler();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	// 娑堟伅澶勭悊
-	public void infoHandler() {
+	public void infoHandler() throws Exception {
 //		AppProtocol response = new AppProtocol();// client.getMessage();
 		AppProtocol response =client.getMessage();
 		if (response == null) {

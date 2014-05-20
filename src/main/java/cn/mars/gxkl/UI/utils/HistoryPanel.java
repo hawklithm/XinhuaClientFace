@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -39,48 +40,33 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 	private int Num;
 
 	private int width, height;
-	private List<String> subTitel;
-	private List<JTextArea> textAreaList = new ArrayList<JTextArea>();
+	private JTextArea textArea;
 	private Font font;
-	private JTabbedPane tabbedPane;
 	private Color bgColor = new Color(0x16, 0x49, 0x9a), fgColor = Color.white;
-	private int limit = 20;
+	private int limit = 200;
 	private boolean Enend;
 
 	private Msg2Face statisticInfo;
 
-//	public HistoryPanel(int width, int height, List<String> subTitel) {
-//		super();
-//		this.width = width;
-//		this.height = height;
-//		this.subTitel = subTitel;
-	
-//		initialization();
-//		Enend = true;
-//	}
+	// public HistoryPanel(int width, int height, List<String> subTitel) {
+	// super();
+	// this.width = width;
+	// this.height = height;
+	// this.subTitel = subTitel;
+
+	// initialization();
+	// Enend = true;
+	// }
 
 	public void initialization() {
 		font = new Font("宋体", Font.PLAIN, (int) (width * 0.015));
 		this.setPreferredSize(new Dimension(width, height));
 		this.setBackground(bgColor);
-		this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		tabbedPane = new JTabbedPane();
-		tabbedPane.setTabPlacement(JTabbedPane.TOP);
-		tabbedPane.setPreferredSize(new Dimension(width - 30, height - 50));
-		tabbedPane.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				// TODO Auto-generated method stub
-				index = tabbedPane.getSelectedIndex();
-			}
-
-		});
-
-
-		tabbedPane.setFont(font);
-		
-		this.add(tabbedPane);
-
+		this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+		this.add(this.getTitelPanel(width, height/12));
+		this.add(this.getTextPanel(width,height*11/12));
+        this.addString("fhkdfhkjs");
+/*
 		JButton button1 = new JButton("add");
 		button1.addActionListener(new ActionListener() {
 			int total = 0;;
@@ -88,12 +74,12 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				addString(index, "add:" + total);
+				addString("add:" + total);
 				total++;
 
 			}
-
 		});
+		this.add(button1);
 		JButton button2 = new JButton("end");
 		button2.addActionListener(new ActionListener() {
 
@@ -104,23 +90,43 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 			}
 
 		});
-		this.add(button1);
-		this.add(button2);
+		this.add(button2);*/
+
 		Enend = true;
 	}
-
-	private JScrollPane getPanel(int i) {
-		JScrollPane scrollpane;
-		JTextArea textarea = new JTextArea();
-		textarea.setFont(font);
-		textarea.selectAll();
-		textarea.setCaretPosition(textarea.getText().length());
-		textarea.requestFocus();
-		textarea.setEditable(false);
-		textAreaList.add(textarea);
-		scrollpane = new JScrollPane(textarea);
-		return scrollpane;
+	private JPanel getTitelPanel(int width,int height){
+		JPanel titel=new JPanel();
+		titel.setBackground(bgColor);
+		titel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+		titel.setPreferredSize(new Dimension(width-10,height));
+		JPanel titelLeft=new JPanel();
+		titelLeft.setBackground(bgColor);
+		Font font_Title = new Font("宋体", Font.BOLD, width / 50);
+		titelLeft.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));	
+		JLabel titelLabel=new JLabel("滚动信息");
+		titelLabel.setForeground(fgColor);
+		titelLabel.setFont(font_Title);	
+		titelLeft.add(titelLabel);
+		titel.add(titelLeft);
+		return titel;
 	}
+	private JPanel getTextPanel(int width,int height){
+		JPanel panel=new JPanel();
+		
+		JScrollPane scrollpane;
+		textArea = new JTextArea();
+		textArea.setFont(font);
+		textArea.selectAll();
+		textArea.setCaretPosition(textArea.getText().length());
+		textArea.requestFocus();
+		textArea.setEditable(false);
+		scrollpane = new JScrollPane(textArea);
+		scrollpane.setPreferredSize(new Dimension(width-30,height-30));
+		scrollpane.setBorder(null);
+		panel.add(scrollpane);
+		return panel;
+	}
+
 
 	/**
 	 * 设置流水信息框数据是否置于最下层
@@ -139,28 +145,29 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 	 * @param str
 	 *            所要添加的字符串
 	 */
-	public void addString(int index, String str) {
+	public void addString( String str) {
+		System.out.println("in");
 		String value;
 		int Position = 0;
 		int l = 0;
-		value = textAreaList.get(index).getText();
+		value = textArea.getText();
 		if (value.split("\n").length >= limit) {
-			Position = textAreaList.get(index).getCaretPosition();
+			Position = textArea.getCaretPosition();
 			l = value.indexOf("\n") + 1;
-			textAreaList.get(index).setText(value.substring(l));
+			textArea.setText(value.substring(l));
 		}
-		System.out.println(textAreaList.get(index).getCaretPosition());
-		textAreaList.get(index).append(str + "\n");
+		System.out.println("position:"+textArea.getCaretPosition());
+		textArea.append(str + "\n");
 		if (Enend) {
-			textAreaList.get(index).setCaretPosition(
-					textAreaList.get(index).getText().length());
-			textAreaList.get(index).requestFocus();
+			textArea.setCaretPosition(
+					textArea.getText().length());
+			textArea.requestFocus();
 		} else {
-			textAreaList.get(index).setCaretPosition(Position - l);
-			textAreaList.get(index).requestFocus();
+			textArea.setCaretPosition(Position - l);
+			textArea.requestFocus();
 		}
 	}
-	
+
 	public Msg2Face getStatisticInfo() {
 		return statisticInfo;
 	}
@@ -170,14 +177,17 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 	}
 
 	@Override
-	public void setText(List<?> msg) {
+	public void setText(List<?> msg) throws Exception {
+		System.out.println(this.toString());
 		List<Object> itemInfo = new ArrayList<Object>();
 		System.out.println("setText start");
 		for (Object object : msg) {
+			
 			Pair<MachinedItemInfoDO, String> info = (Pair<MachinedItemInfoDO, String>) object;
-			addString(index, info.getLast());
+			addString(info.getLast());
 			itemInfo.add(info.getFirst());
 		}
+		System.out.println("正式插入");
 		statisticInfo.setText(itemInfo);
 	}
 
@@ -197,26 +207,8 @@ public class HistoryPanel extends JPanel implements Msg2Face {
 		this.height = height;
 	}
 
-	public List<String> getSubTitel() {
-		return subTitel;
-	}
 
 
-	public void setSubTitel(List<String> subTitel){
-		if(this.subTitel!=null){
-			for(int i=0;i<this.subTitel.size();i++){
-				tabbedPane.removeTabAt(0);
-			}
-		}
-		this.subTitel=subTitel;
-		Num = subTitel.size();
-		int i = 0;
-		for (String str : subTitel) {
-			// JPanel panel=new JPanel();
-			// tabbedPane.addTab(str,getJLabel(width-50,height-30,str));
-			tabbedPane.addTab(str, getPanel(i));
-			i++;
-		}
-	}
+
 
 }

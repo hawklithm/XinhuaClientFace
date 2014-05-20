@@ -24,5 +24,5 @@ public interface Executor {
 	 * 解析并进行界面渲染
 	 * @param response
 	 */
-	void decode(AppProtocol response);
+	void decode(AppProtocol response) throws Exception;
 }

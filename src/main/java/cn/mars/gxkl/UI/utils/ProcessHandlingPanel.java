@@ -207,6 +207,7 @@ public class ProcessHandlingPanel extends JPanel implements Msg2Face {
 	public void setText(List<?> msg) {
 		handler.addItemVector((List<MachinedItemInfoDO>)msg);
 		int machineNumber =  handler.getMachineNumber();
+		
 		if(machineNumber != equipNum) {
 			equipNum = machineNumber;
 			comModel.removeAllElements();

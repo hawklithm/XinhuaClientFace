@@ -29,7 +29,7 @@ public class MachineInfoExecutor implements Executor,Sender,Sender4Face {
 	private String targetUrl;
 	private int targetMachineRFID=1025;
 	private Msg2Face msg2Face;
-
+    private int equipmentId;
 	@Override
 	public boolean isInitialFirst() {
 		return isInitialFirst;
@@ -48,12 +48,13 @@ public class MachineInfoExecutor implements Executor,Sender,Sender4Face {
  * @see cn.mars.gxkl.center.communication.Executor#decode(cn.mars.gxkl.protocol.AppProtocol)
  */
 	@Override
-	public void decode(AppProtocol response) {
+	public void decode(AppProtocol response) throws Exception {
 		List<Equipment> equipments=translate(response);
 		for (int i=0;i<equipments.size();i++){
 			System.out.println("[MachineInfoExecutor]"+Jsoner.toJson(equipments.get(i)));
 		}
-		msg2Face.setText(equipments);
+		if(!equipments.isEmpty()){
+		msg2Face.setText(equipments);}
 	}
 	
 	private List< Equipment> translate(AppProtocol response){
@@ -108,9 +109,8 @@ public class MachineInfoExecutor implements Executor,Sender,Sender4Face {
 
 
 	public void query(Object object) {
-		Integer id=(Integer) object;
 		Equipment equipment=new Equipment();
-		equipment.setEquipmentId(id);
+		equipment.setEquipmentId(equipmentId);
 		client.sendMessage(encoder(equipment,"operateQuery"));
 	}
 
@@ -141,5 +141,16 @@ public class MachineInfoExecutor implements Executor,Sender,Sender4Face {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public int getEquipmentId() {
+		return equipmentId;
+	}
+
+	public void setEquipmentId(int equipmentId) {
+		this.equipmentId = equipmentId;
+	}
+
+
+	
 
 }

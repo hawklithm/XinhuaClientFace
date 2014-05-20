@@ -5,7 +5,7 @@ import java.util.Map;
 public class Person extends Protocol {
 	//人的头像，名称，性别，id，Rfid，还有工作
 	private String PATH = "userIconPath",NAME = "staffName",GENDER = "staffGender",ID = "staffId",JOB = "staffDepartmentName",EQUIPMENT_ID="equipmentId";
-	
+	private String PASSWORD="password";
 	public Person() {
 		super();
 	}
@@ -66,5 +66,10 @@ public class Person extends Protocol {
 	public Integer getEquipmentId(){
 		return (Integer)getProperty(EQUIPMENT_ID);
 	}
-	
+	public String getPassword(){
+		return (String)getProperty(PASSWORD);
+	}
+	public void setPassword(String password){
+		setProperty(PASSWORD,password);
+	}
 }
